@@ -1,0 +1,23 @@
+{
+  "name": "the-third-eye",
+  "version": "0.0.1",
+  "description": "The New Approach for Blind People to Navigate Websites and Mobile Applications.  ",
+  "main": "dist/index.js",
+  "repository": "git@github.com:cattynip/the-third-eye.git",
+  "author": "cattynip <hi@cattynip.dev>",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn build && node dist/index.js",
+    "build": "tsup",
+    "lint": "yarn eslint . --fix && yarn prettier . --write"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "eslint": "^8.56.0",
+    "prettier": "3.1.1",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  }
+}
