@@ -3,9 +3,26 @@
   "name": "The Third Eye",
   "description": "The Third Eye",
   "version": "0.0.1",
+  "permissions": ["storage", "tabs"],
+  "icons": {
+    "16": "./images/logo_16.png",
+    "32": "./images/logo_32.png",
+    "48": "./images/logo_48.png",
+    "128": "./images/logo_128.png",
+    "512": "./images/logo_512.png",
+    "1024": "./images/logo_1024.png"
+  },
   "action": {
+    "default_title": "The Third Eye",
     "default_popup": "./pages/index.html",
-    "default_icon": "./images/logo.png"
+    "default_icon": {
+      "16": "./images/logo_16.png",
+      "32": "./images/logo_32.png",
+      "48": "./images/logo_48.png",
+      "128": "./images/logo_128.png",
+      "512": "./images/logo_512.png",
+      "1024": "./images/logo_1024.png"
+    }
   },
   "background": {
     "service_worker": "dist/background.js"
