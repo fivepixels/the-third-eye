@@ -3,7 +3,7 @@
   "name": "The Third Eye",
   "description": "The Third Eye",
   "version": "0.0.1",
-  "permissions": ["storage", "tabs"],
+  "permissions": ["activeTab", "scripting"],
   "icons": {
     "16": "./images/logo_16.png",
     "32": "./images/logo_32.png",
@@ -14,7 +14,7 @@
   },
   "action": {
     "default_title": "The Third Eye",
-    "default_popup": "./pages/index.html",
+    "default_popup": "./src/client/index.html",
     "default_icon": {
       "16": "./images/logo_16.png",
       "32": "./images/logo_32.png",
@@ -24,13 +24,18 @@
       "1024": "./images/logo_1024.png"
     }
   },
-  "background": {
-    "service_worker": "dist/background.js"
-  },
   "content_scripts": [
     {
-      "js": ["dist/index.js"],
-      "matches": ["https://*/*"]
+      "js": ["./dist/main.js"],
+      "matches": ["<all_urls>"]
     }
-  ]
+  ],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+B",
+        "mac": "Command+B"
+      }
+    }
+  }
 }
