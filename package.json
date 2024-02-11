@@ -12,6 +12,7 @@
     "lint": "yarn eslint . --fix && yarn prettier . --write"
   },
   "devDependencies": {
+    "@swc/core": "^1.4.0",
     "@types/chrome": "^0.0.256",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
