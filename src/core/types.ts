@@ -1,4 +1,6 @@
 export interface UserInformation {
+  isConfigured: boolean;
+
   personal: {
     name: string;
     age?: number;
@@ -7,22 +9,26 @@ export interface UserInformation {
     origin?: string;
   };
 
-  problem: {
+  major: {
     name: MajorProblems;
     info: ExtraInfoType;
     helper: MajorHelpers;
   };
 
-  extra: {};
-
-  disabledOn: string[];
-  logging: boolean;
+  extra: {
+    pinnedLinks: PinnedLinks[];
+    pinnedActions: PinnedActions[];
+    disabledOn: string[];
+    logging: boolean;
+  };
 }
 
+// Major
 export enum MajorProblems {
-  COLOUR_BLINDNESS = "COLOUR_BLINDNESS",
-  PARTIAL_BLINDNESS = "PARTIAL_BLINDNESS",
-  BLURINESS = "BLURINESS"
+  COMPLETE_BLINDNESS = "COMPLETE_BLINDNESS", // Helpers: speaker
+  PARTIAL_BLINDNESS = "PARTIAL_BLINDNESS", // Helpers: mover
+  BLURINESS = "BLURINESS", // Helpers: colour adjuster
+  COLOUR_BLINDNESS = "COLOUR_BLINDNESS" // Helpers: colour adjuster
 }
 
 export enum MajorHelpers {
@@ -65,6 +71,18 @@ export enum ColourBlindnessType {
   MONOCHROMACY = "MONOCHROMACY",
   ROD = "ROD",
   CONE = "CONE"
+}
+
+export interface PinnedLinks {
+  url: string;
+  name: string;
+  majorColour: string;
+}
+
+export interface PinnedActions {
+  name: string;
+  majorColour: string;
+  // TODO: add more fields here to help AI understand what the actions are
 }
 
 // Communicating between content script(cs) and service workers(sw)
