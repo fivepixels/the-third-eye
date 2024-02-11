@@ -3,7 +3,7 @@
   "name": "The Third Eye",
   "description": "The Third Eye",
   "version": "0.0.1",
-  "permissions": ["activeTab", "scripting", "storage", "tts"],
+  "permissions": ["activeTab", "scripting", "storage", "tts", "downloads"],
   "icons": {
     "16": "./images/logo_16.png",
     "32": "./images/logo_32.png",
