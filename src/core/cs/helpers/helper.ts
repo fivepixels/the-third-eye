@@ -6,13 +6,14 @@ abstract class Helper {
   protected userInformation?: UserInformation;
   protected name: MajorHelpers;
   protected description: string;
-  protected mainDOM: HTMLElement;
+  protected mainDOM: Document;
+
   private logger: Logger;
 
   constructor(name: MajorHelpers, description: string, logger: Logger) {
     this.name = name;
     this.description = description;
-    this.mainDOM = document.body;
+    this.mainDOM = document;
 
     this.logger = logger;
 
