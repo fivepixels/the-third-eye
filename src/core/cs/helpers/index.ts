@@ -1,6 +1,6 @@
-import { MajorHelpers, UserInformation } from "@src/core/types";
+import UserInformation, { MajorHelpers } from "user";
 import { getStorageData } from "@src/utils/storage";
-import Logger, { RecordStatus } from "../logger/logger";
+import Logger, { RecordStatus } from "./minor/logger";
 
 abstract class Helper {
   protected userInformation?: UserInformation;

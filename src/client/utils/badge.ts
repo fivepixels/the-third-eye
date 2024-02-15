@@ -1,36 +1,32 @@
-interface BadgeOptions {
-  url: string;
-  title: string;
+import { PinnedLinks } from "user";
+
+interface BadgeOptions extends PinnedLinks {
   showTitle: boolean;
-  backgroundColor: string;
-  size: number;
 }
 
 export function addBadge(parentElement: HTMLElement, opts: BadgeOptions): HTMLElement {
-  const createdBadgeBundle = document.createElement("div");
+  const createdBadgeBundle = document.createElement("a");
   const createdBadge = document.createElement("div");
   const createdAnchor = document.createElement("a");
 
+  createdBadgeBundle.href = opts.url;
   createdBadgeBundle.style.display = "flex";
   createdBadgeBundle.style.flexDirection = "column";
   createdBadgeBundle.style.alignItems = "center";
   createdBadgeBundle.style.justifyContent = "center";
 
-  createdAnchor.href = opts.url;
-
   createdBadge.style.marginBottom = "10px";
-  createdBadge.style.width = `${opts.size}px`;
-  createdBadge.style.height = `${opts.size}px`;
+  createdBadge.style.width = "90px";
+  createdBadge.style.height = "90px";
   createdBadge.style.borderRadius = "100%";
-  createdBadge.style.backgroundColor = opts.backgroundColor;
+  createdBadge.style.backgroundColor = opts.majorColour;
 
   createdBadgeBundle.appendChild(createdBadge);
-  createdBadgeBundle.appendChild(createdAnchor);
 
   if (opts.showTitle) {
     const createdTitle = document.createElement("span");
 
-    createdTitle.innerText = opts.title;
+    createdTitle.innerText = opts.name;
 
     createdTitle.style.fontSize = "20px";
     createdTitle.style.fontWeight = "700";
@@ -38,8 +34,6 @@ export function addBadge(parentElement: HTMLElement, opts: BadgeOptions): HTMLEl
 
     createdBadgeBundle.appendChild(createdTitle);
   }
-
-  parentElement.style.overflow = "scroll";
 
   parentElement.appendChild(createdBadgeBundle);
 

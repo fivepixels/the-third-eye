@@ -1,10 +1,20 @@
-import SpeakerHelper from "./helpers/speaker";
+import UserInformation from "user";
+import Helper from "@core/cs/helpers";
+import Logger from "@core/cs/helpers/minor/logger";
+import Notifier from "@core/cs/helpers/minor/notifier";
 
 class App {
-  constructor() {
-    const speaker = new SpeakerHelper();
+  private userInformation: UserInformation;
+  private neededHelpers: Helper[];
+  private logger: Logger;
+  private notifier: Notifier;
 
-    speaker.name;
+  constructor(userInformation: UserInformation) {
+    this.userInformation = userInformation;
+    this.logger = new Logger();
+    this.notifier = new Notifier();
+
+    this.neededHelpers = [];
   }
 }
 

@@ -1,4 +1,4 @@
-export function addLayout(name: string, title?: string): HTMLElement | false {
+export function addLayout(name: string): HTMLElement | false {
   const main = document.body.querySelector("main");
 
   if (!main) return false;
@@ -11,12 +11,10 @@ export function addLayout(name: string, title?: string): HTMLElement | false {
 
   createdLayout.setAttribute("id", `layout-${name}`);
 
-  if (title) {
-    const createdTitle = document.createElement("h2");
-    createdTitle.innerText = title;
+  const createdTitle = document.createElement("h2");
+  createdTitle.innerText = name.charAt(0).toUpperCase() + name.slice(1);
 
-    createdLayout.appendChild(createdTitle);
-  }
+  createdLayout.appendChild(createdTitle);
 
   const layoutBundle = document.createElement("div");
 
@@ -24,19 +22,22 @@ export function addLayout(name: string, title?: string): HTMLElement | false {
   layoutBundle.style.gap = "50px";
 
   function resizeHandler() {
+    let offset = 0;
+
     if (window.innerWidth < 350) {
-      layoutBundle.style.gridTemplateColumns = "repeat(1, minmax(0, 1fr))";
+      offset = 1;
     } else if (window.innerWidth < 500) {
-      layoutBundle.style.gridTemplateColumns = "repeat(2, minmax(0, 1fr))";
+      offset = 2;
     } else if (window.innerWidth < 650) {
-      layoutBundle.style.gridTemplateColumns = "repeat(3, minmax(0, 1fr))";
+      offset = 3;
     } else {
-      layoutBundle.style.gridTemplateColumns = "repeat(4, minmax(0, 1fr))";
+      offset = 4;
     }
+
+    layoutBundle.style.gridTemplateColumns = `repeat(${offset}, minmax(0, 1fr))`;
   }
 
   window.addEventListener("resize", resizeHandler);
-
   resizeHandler();
 
   createdLayout.appendChild(layoutBundle);
@@ -54,12 +55,4 @@ export function removeLayout(name: string): HTMLElement | false {
 
     return foundLayout;
   } else return false;
-}
-
-export function showElement(currentElement: HTMLElement) {
-  currentElement.style.display = "block";
-}
-
-export function hideElement(currentElement: HTMLElement) {
-  currentElement.style.display = "none";
 }

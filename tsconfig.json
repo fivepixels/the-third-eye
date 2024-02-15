@@ -10,13 +10,14 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "baseUrl": ".",
     "paths": {
       "@src/*": ["./src/*"],
+      "@client/*": ["./src/client/*"],
       "@core/*": ["./src/core/*"],
-      "@sw/*": ["./src/core/sw/*"],
-      "@cs/*": ["./src/core/cs/*"],
-      "@utils/*": ["./src/utils/*"]
-    }
-  },
-  "include": ["./src/**/*.ts"]
+      "@types/*": ["./types/*"]
+    },
+    "include": ["./src/**/*.ts"]
+  }
 }

@@ -1,4 +1,5 @@
-import { MajorHelpers } from "@src/core/types";
+import { MajorHelpers } from "user";
+import { getCurrentTime } from "@src/utils/getCurrentTime";
 
 interface Record {
   category: RecordCategory;
@@ -34,9 +35,12 @@ class Logger {
   }
 
   public makeLog(info: LogMakerReceive) {
+    // 0 | year-month-dayThour:minute:second | [category] > [logger] | [status] | message
+    // idx | 2024-02-15T21:57:28.584Z | SYSTEM > LOGGER | SUCCESSED | The logger is being initialized
+
     this.records.push({
       ...info,
-      happenedAt: this.getCurrentTime()
+      happenedAt: getCurrentTime()
     });
   }
 
@@ -66,16 +70,10 @@ class Logger {
     let plainText: string = "";
 
     this.records.map((value, idx) => {
-      plainText +=
-        `${idx} | [${value.category}] | [${value.logger}] | ${value.message} | ${value.happenedAt}` +
-        "\n";
+      plainText += `${idx} | ${value.happenedAt} | ${value.category} > ${value.logger} | ${value.status} | ${value.message}\n`;
     });
 
     return plainText;
-  }
-
-  private getCurrentTime(): string {
-    return new Date().toString();
   }
 }
 

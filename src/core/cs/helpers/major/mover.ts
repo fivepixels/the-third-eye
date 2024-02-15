@@ -1,6 +1,5 @@
-import { MajorHelpers } from "@src/core/types";
-import Helper from "./helper";
-import Logger from "../logger/logger";
+import Helper from "@core/cs/helpers";
+import Logger from "@core/cs/helpers/minor/logger";
 
 type MoverMode = "NONE" | "MOVING" | "ZOOMING";
 
@@ -9,32 +8,28 @@ class Mover extends Helper {
   private currentX: number;
   private currentY: number;
   private currentScale: number;
+  private isMouseDown: boolean;
 
   private indicator: HTMLCanvasElement;
   private pencil: CanvasRenderingContext2D;
   private isIndicatorOn: boolean;
 
-  private isMouseDown: boolean;
-
   constructor(logger: Logger) {
     super(
-      MajorHelpers.MOVER,
+      "MOVER",
       "The helper mover is the main helper for partially blind people who cannot see a part of their vision. You can use this helper by pressing the command or control key on your keyboard and dragging it with the mouse pointer. If you do that, you will be able to see the whole screen moving, following along with your pointer.",
       logger
     );
 
+    this.currentMode = "NONE";
+    this.currentX = 0;
+    this.currentY = 0;
+    this.currentScale = 1;
+    this.isMouseDown = false;
+
     this.indicator = this.mainDOM.createElement("canvas");
     this.pencil = this.indicator.getContext("2d")!;
     this.isIndicatorOn = false;
-
-    this.currentMode = "NONE";
-
-    this.currentX = 0;
-    this.currentY = 0;
-
-    this.currentScale = 1;
-
-    this.isMouseDown = false;
 
     this.init();
   }
@@ -43,6 +38,7 @@ class Mover extends Helper {
     this.initializeIndicator();
 
     this.mainDOM.addEventListener("keyup", () => {
+      this.act("SUCCESSED", `${this.currentMode} is disabled.`);
       this.currentMode = "NONE";
       this.removeIndicator();
     });
@@ -51,7 +47,8 @@ class Mover extends Helper {
       if (keyEvent.key === "Alt") {
         this.currentMode = "MOVING";
         this.attachIndicator();
-        this.removeUnmoveability();
+        this.adjustMovability(false);
+        this.act("SUCCESSED", "MOVING MODE is enabled.");
 
         return;
       }
@@ -59,14 +56,16 @@ class Mover extends Helper {
       if (keyEvent.key === "Shift") {
         this.currentMode = "ZOOMING";
         this.attachIndicator();
-        this.makeBodyUnmovable();
+        this.adjustMovability(true);
+        this.act("SUCCESSED", "ZOOMING MODE is enabled.");
 
         return;
       }
 
+      this.act("SUCCESSED", `${this.currentMode} is disabled.`);
       this.currentMode = "NONE";
       this.removeIndicator();
-      this.removeUnmoveability();
+      this.adjustMovability(false);
     });
 
     this.mainDOM.addEventListener("wheel", wheelEvent => {
@@ -128,12 +127,8 @@ class Mover extends Helper {
     this.pencil.scale(2, 2);
   }
 
-  private makeBodyUnmovable() {
-    this.mainDOM.body.style.overflow = "hidden";
-  }
-
-  private removeUnmoveability() {
-    this.mainDOM.body.style.overflow = "scroll";
+  private adjustMovability(enable: boolean) {
+    this.mainDOM.body.style.overflow = enable ? "hidden" : "scroll";
   }
 
   private attachIndicator() {
