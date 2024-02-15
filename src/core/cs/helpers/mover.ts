@@ -3,18 +3,12 @@ import Helper from "./helper";
 import Logger from "../logger/logger";
 
 type MoverMode = "NONE" | "MOVING" | "ZOOMING";
-type Point = {
-  x: number;
-  y: number;
-};
 
 class Mover extends Helper {
   private currentMode: MoverMode;
   private currentX: number;
   private currentY: number;
   private currentScale: number;
-
-  private firstPoint: Point;
 
   private indicator: HTMLCanvasElement;
   private pencil: CanvasRenderingContext2D;
@@ -40,11 +34,6 @@ class Mover extends Helper {
 
     this.currentScale = 1;
 
-    this.firstPoint = {
-      x: 0,
-      y: 0
-    };
-
     this.isMouseDown = false;
 
     this.init();
@@ -52,11 +41,6 @@ class Mover extends Helper {
 
   private init() {
     this.initializeIndicator();
-
-    /*
-     * Shift + Pressed Pointer Moving - Zoom in and out
-     * Alt + Pressed Pointer Moving - Moving the whole page
-     */
 
     this.mainDOM.addEventListener("keyup", () => {
       this.currentMode = "NONE";
@@ -67,33 +51,42 @@ class Mover extends Helper {
       if (keyEvent.key === "Alt") {
         this.currentMode = "MOVING";
         this.attachIndicator();
+        this.removeUnmoveability();
+
         return;
       }
 
       if (keyEvent.key === "Shift") {
         this.currentMode = "ZOOMING";
         this.attachIndicator();
+        this.makeBodyUnmovable();
+
         return;
       }
 
       this.currentMode = "NONE";
+      this.removeIndicator();
+      this.removeUnmoveability();
+    });
+
+    this.mainDOM.addEventListener("wheel", wheelEvent => {
+      if (this.currentMode === "ZOOMING") {
+        this.zoomMainDOM(wheelEvent.deltaY);
+        return;
+      }
     });
 
     this.mainDOM.addEventListener("mousemove", movingMouseEvent => {
-      if (this.currentMode === "NONE" || !this.isMouseDown) return;
+      if (this.currentMode === "NONE" || this.currentMode === "ZOOMING" || !this.isMouseDown)
+        return;
 
       if (this.currentMode === "MOVING") {
         this.moveMainDOM(movingMouseEvent.movementX, movingMouseEvent.movementY);
         return;
       }
-
-      if (this.currentMode === "ZOOMING") {
-        this.zoomMainDOM(movingMouseEvent.clientX, movingMouseEvent.clientY);
-        return;
-      }
     });
 
-    this.mainDOM.addEventListener("mousedown", mouseDownEvent => {
+    this.mainDOM.addEventListener("mousedown", () => {
       this.isMouseDown = true;
 
       if (this.currentMode === "MOVING") {
@@ -102,11 +95,6 @@ class Mover extends Helper {
       }
 
       if (this.currentMode === "ZOOMING") {
-        this.firstPoint = {
-          x: mouseDownEvent.clientX,
-          y: mouseDownEvent.clientY
-        };
-
         return;
       }
     });
@@ -121,11 +109,6 @@ class Mover extends Helper {
       }
 
       if (this.currentMode === "ZOOMING") {
-        this.firstPoint = {
-          x: 0,
-          y: 0
-        };
-
         return;
       }
     });
@@ -145,16 +128,26 @@ class Mover extends Helper {
     this.pencil.scale(2, 2);
   }
 
+  private makeBodyUnmovable() {
+    this.mainDOM.body.style.overflow = "hidden";
+  }
+
+  private removeUnmoveability() {
+    this.mainDOM.body.style.overflow = "scroll";
+  }
+
   private attachIndicator() {
     if (this.isIndicatorOn) return;
 
     this.mainDOM.body.appendChild(this.indicator);
     this.isIndicatorOn = true;
+    this.mainDOM.body.style.border = "solid white 2px";
   }
 
   private removeIndicator() {
     this.indicator.remove();
     this.isIndicatorOn = false;
+    this.mainDOM.body.style.border = "none";
   }
 
   private moveMainDOM(deltaX: number, deltaY: number) {
@@ -164,16 +157,8 @@ class Mover extends Helper {
     this.apply();
   }
 
-  private zoomMainDOM(finalX: number, finalY: number) {
-    const actualXDiff = this.firstPoint.x - finalX;
-    const actualYDiff = this.firstPoint.y - finalY;
-
-    const positiveXDifference = actualXDiff < 0 ? -actualXDiff : actualXDiff;
-    const positiveYDifference = actualYDiff < 0 ? -actualYDiff : actualYDiff;
-
-    const distance = Math.sqrt(positiveXDifference ** 2 + positiveYDifference ** 2) / 1000 + 1;
-
-    this.currentScale = distance;
+  private zoomMainDOM(amount: number) {
+    this.currentScale += amount / 3000;
 
     this.apply();
   }
