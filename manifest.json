@@ -29,12 +29,12 @@
   },
   "content_scripts": [
     {
-      "js": ["./dist/core/cs/main.js"],
+      "js": ["./dist/cs/main.js"],
       "matches": ["<all_urls>"]
     }
   ],
   "background": {
-    "service_worker": "./dist/core/sw/main.js"
+    "service_worker": "./dist/sw/main.js"
   },
   "host_permissions": ["http://*/*", "https://*/*"]
 }
