@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2015"],
+    "lib": ["DOM", "DOM.Iterable", "ES2023"],
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
@@ -8,15 +8,14 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
     "incremental": true,
-    "typeRoots": ["./types", "./node_modules/@types"],
     "baseUrl": ".",
+    "typeRoots": ["./types", "node_modules/@types"],
     "paths": {
       "@src/*": ["./src/*"],
+      "@types/*": ["./types/*"],
       "@client/*": ["./src/client/*"],
-      "@core/*": ["./src/core/*"],
-      "@types/*": ["./types/*"]
+      "@core/*": ["./src/core/*"]
     },
     "include": ["./src/**/*.ts"]
   }

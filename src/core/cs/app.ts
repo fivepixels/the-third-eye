@@ -1,20 +1,46 @@
-import UserInformation from "user";
+import UserInformation from "@src/types/user";
+
 import Helper from "@core/cs/helpers";
-import Logger from "@core/cs/helpers/minor/logger";
-import Notifier from "@core/cs/helpers/minor/notifier";
+
+// import Mover from "./helpers/major/mover";
+// import ColourAdjuster from "./helpers/major/colourAdjuster";
+// import Speaker from "./helpers/major/speaker";
 
 class App {
-  private userInformation: UserInformation;
+  private id: number;
+  private userInformation?: UserInformation;
   private neededHelpers: Helper[];
-  private logger: Logger;
-  private notifier: Notifier;
 
-  constructor(userInformation: UserInformation) {
+  constructor(userInformation?: UserInformation) {
+    this.id = 1;
     this.userInformation = userInformation;
-    this.logger = new Logger();
-    this.notifier = new Notifier();
 
     this.neededHelpers = [];
+
+    this.init();
+
+    console.log("NEW APP INSTANCE HAS BEEN CREATED.", Math.random() * 1000);
+
+    // this.logger.log({
+    //   logger: "MAIN",
+    //   message: "New Tab is open. New APP instance has been created.",
+    //   status: "SUCCESSED",
+    //   category: "SYSTEM"
+    // });
+  }
+
+  private init() {
+    if (!this.userInformation || !this.userInformation.major) return;
+
+    this.userInformation.major.neededHelpers.map(value => {
+      if (value.helper === "MOVER") {
+        // this.neededHelpers.push(new Mover(this.logger));
+      } else if (value.helper === "COLOUR_ADJUSTER") {
+        // this.neededHelpers.push(new ColourAdjuster(this.logger));
+      } else if (value.helper === "SPEAKER") {
+        // this.neededHelpers.push(new Speaker(this.logger));
+      }
+    });
   }
 }
 

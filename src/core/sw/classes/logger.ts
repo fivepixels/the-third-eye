@@ -1,5 +1,5 @@
-import { MajorHelpers } from "user";
-import { getCurrentTime } from "@src/utils/getCurrentTime";
+import { MajorHelpers } from "@src/types/user";
+import { getCurrentTime } from "../time";
 
 interface Record {
   category: RecordCategory;
@@ -9,7 +9,7 @@ interface Record {
   happenedAt: string;
 }
 
-export type LoggerType = MajorHelpers | "LOGGER";
+export type LoggerType = MajorHelpers | "LOGGER" | "MAIN";
 export type RecordCategory = "SYSTEM" | "HELPERS" | "ACTION";
 export type RecordStatus = "SUCCESSED" | "FAILED";
 
@@ -26,7 +26,7 @@ class Logger {
   constructor() {
     this.records = [];
 
-    this.makeLog({
+    this.log({
       category: "SYSTEM",
       logger: "LOGGER",
       status: "SUCCESSED",
@@ -34,7 +34,7 @@ class Logger {
     });
   }
 
-  public makeLog(info: LogMakerReceive) {
+  public log(info: LogMakerReceive) {
     // 0 | year-month-dayThour:minute:second | [category] > [logger] | [status] | message
     // idx | 2024-02-15T21:57:28.584Z | SYSTEM > LOGGER | SUCCESSED | The logger is being initialized
 
@@ -45,7 +45,7 @@ class Logger {
   }
 
   public export() {
-    this.makeLog({
+    this.log({
       category: "SYSTEM",
       logger: "LOGGER",
       status: "SUCCESSED",
@@ -64,6 +64,10 @@ class Logger {
     anchor.click();
     window.URL.revokeObjectURL(url);
     anchor.remove();
+  }
+
+  public logOnConsole() {
+    console.table(this.records);
   }
 
   private convertRecordsToString(): string {

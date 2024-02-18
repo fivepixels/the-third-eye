@@ -1,4 +1,4 @@
-import { PinnedLinks } from "user";
+import { PinnedLinks } from "@src/types/user";
 
 interface BadgeOptions extends PinnedLinks {
   showTitle: boolean;

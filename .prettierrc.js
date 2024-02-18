@@ -1,12 +1,12 @@
 const options = {
-  arrowParens: 'avoid',
+  arrowParens: "avoid",
   singleQuote: false,
   bracketSpacing: true,
-  endOfLine: 'lf',
+  endOfLine: "lf",
   semi: true,
   tabWidth: 2,
   useTabs: false,
-  trailingComma: 'none',
+  trailingComma: "none",
   printWidth: 100
 };
 

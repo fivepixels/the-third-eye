@@ -1,4 +1,4 @@
-import UserInformation from "user";
+import UserInformation from "@src/types/user";
 
 export async function getStorageData(): Promise<UserInformation> {
   return (await chrome.storage.sync.get()) as UserInformation;
