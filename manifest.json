@@ -3,7 +3,7 @@
   "name": "The Third Eye",
   "description": "The Third Eye",
   "version": "0.0.1",
-  "permissions": ["tabs", "storage", "tts", "scripting", "downloads"],
+  "permissions": ["storage", "activeTab", "tts"],
   "icons": {
     "16": "./images/logo_16.png",
     "32": "./images/logo_32.png",
@@ -14,7 +14,6 @@
   },
   "action": {
     "default_title": "The Third Eye",
-    "default_popup": "./src/client/popup/index.html",
     "default_icon": {
       "16": "./images/logo_16.png",
       "32": "./images/logo_32.png",
@@ -24,17 +23,14 @@
       "1024": "./images/logo_1024.png"
     }
   },
-  "chrome_url_overrides": {
-    "newtab": "./src/client/newtab/index.html"
-  },
   "content_scripts": [
     {
-      "js": ["./dist/cs/main.js"],
+      "js": ["./dist/core/cs/main.js"],
       "matches": ["<all_urls>"]
     }
   ],
   "background": {
-    "service_worker": "./dist/sw/main.js"
+    "service_worker": "./dist/core/sw/main.js"
   },
   "host_permissions": ["http://*/*", "https://*/*"]
 }
