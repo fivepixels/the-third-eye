@@ -4,6 +4,9 @@
   "description": "The Third Eye",
   "version": "0.0.1",
   "permissions": ["storage", "activeTab", "tts"],
+  "content_security_policy": {
+    "extension_page": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
   "icons": {
     "16": "./images/logo_16.png",
     "32": "./images/logo_32.png",
@@ -25,12 +28,12 @@
   },
   "content_scripts": [
     {
-      "js": ["./dist/core/cs/main.js"],
+      "js": ["./dist/cs/main.js"],
       "matches": ["<all_urls>"]
     }
   ],
   "background": {
-    "service_worker": "./dist/core/sw/main.js"
+    "service_worker": "./dist/sw/main.js"
   },
   "host_permissions": ["http://*/*", "https://*/*"]
 }

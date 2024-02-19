@@ -7,18 +7,23 @@
   "author": "cattynip <hi@cattynip.dev>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --build",
-    "dev": "tsc --watch",
+    "build": "rm -rf dist/ && webpack",
+    "dev": "rm -rf dist/ && webpack --watch",
     "lint": "eslint . --fix && prettier . --write"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.256",
+    "@types/node": "^20.11.19",
+    "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
     "eslint": "^8.56.0",
     "prettier": "3.1.1",
+    "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.2",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {}
 }

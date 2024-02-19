@@ -1,18 +1,22 @@
 {
+  "include": ["./src/**/*.ts"],
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "commonjs",
-    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "target": "ES5",
+    "baseUrl": "./",
     "allowJs": false,
     "outDir": "./dist",
     "removeComments": true,
     "strict": true,
     "alwaysStrict": true,
+    "skipLibCheck": true,
     "paths": {
       "@src/*": ["./src/*"],
       "@cs/*": ["./src/cs/*"],
-      "@sw/*": ["./src/sw/*"]
+      "@sw/*": ["./src/sw/*"],
+      "@shapes/*": ["./src/shapes/*"]
     }
-  },
-  "include": ["./src/**/*.ts"]
+  }
 }
