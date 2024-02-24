@@ -1,10 +1,10 @@
-import { Helpers as MajorHelpersName } from "@src/shapes/user";
+import { Helpers } from "@src/shapes/user";
 
 abstract class Helper {
-  private name: MajorHelpersName;
+  private name: Helpers;
   private description: string;
 
-  constructor(name: MajorHelpersName, description: string) {
+  constructor(name: Helpers, description: string) {
     this.name = name;
     this.description = description;
   }

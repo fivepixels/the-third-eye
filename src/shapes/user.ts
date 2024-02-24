@@ -1,4 +1,5 @@
 interface user {
+  isConfigured: boolean;
   problems: Problems;
   abilities: Difficulties[];
   neededHelpers: Helpers[];
@@ -17,13 +18,7 @@ export type Difficulties =
   | "CAN_SEE_IMAGES"
   | "CAN_RECOGNIZE_COLOURS";
 
-export type Helpers =
-  | "SUMMARIZER"
-  | "TEXT_READER"
-  | "IMAGE_ANAYLZER"
-  | "MOVER"
-  | "FILTER"
-  | "COLOUR_ADJUSTER";
+export type Helpers = "SUMMARIZER" | "TEXT_READER" | "IMAGE_ANAYLZER" | "MOVER" | "COLOUR_ADJUSTER";
 
 export type ColourDeficiency =
   | "PROTANOPIA"
