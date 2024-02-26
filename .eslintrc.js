@@ -14,7 +14,9 @@ const options = {
   rules: {
     indent: ["error", 2],
     "linebreak-style": ["error", "unix"],
-    quotes: ["error", "double"]
+    quotes: ["error", "double"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   }
 };
 
