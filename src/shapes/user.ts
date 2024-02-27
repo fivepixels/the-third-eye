@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface user {
   isConfigured: boolean;
   problems: Problems;
@@ -27,6 +28,8 @@ export type ColourDeficiency =
   | "PROTANOMALY"
   | "DEUTERANOMALY"
   | "TRITANOMALY"
+  | "ACHROMATOMALY"
+  | "ACHROMATOPSIA"
   | "MONOCHROMACY";
 
 export default user;

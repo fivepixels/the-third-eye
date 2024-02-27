@@ -1,11 +1,7 @@
+import { AIType } from "./ai";
 import user, { Helpers } from "./user";
 
-export type SendingMessageType =
-  | "FETCH_DATA"
-  | "CHANGE_DATA"
-  | "OPEN_ONBOARDING"
-  | "AI"
-  | "CHOICER";
+export type SendingMessageType = "FETCH_DATA" | "CHANGE_DATA" | "OPEN_ONBOARDING" | AIType;
 
 export interface SendingMessageShape<T extends SendingMessage> {
   body: T;
@@ -16,22 +12,19 @@ export interface SendingMessage {}
 export interface ExpectedRespondingMessage {}
 
 // FETCH_DATA
-export interface SendingFetchDataMessage extends SendingMessage {
-  wantedField: keyof user | "ALL" | (keyof user)[];
-}
+export interface SendingFetchDataMessage extends SendingMessage {}
 
 export interface ExpectedRespondingFetchDataMessage extends ExpectedRespondingMessage {
-  fetchedData: Partial<user>;
+  userInfo: user;
 }
 
 // CHANGE_DATA
 export interface SendingChangeDataMessage extends SendingMessage {
-  changedData: (prevData: user) => user;
+  changedData: user;
 }
 
 export interface ExpectedRespondingChangeDataMessage extends ExpectedRespondingMessage {
-  isChangedSuccessfully: true | string;
-  changedData: user;
+  updated: boolean;
 }
 
 // OPEN_ONBOARDING
@@ -72,7 +65,7 @@ export type responseCallback<T extends SendingMessage, U extends ExpectedRespond
   message: SendingMessageShape<T>,
   sender: chrome.runtime.MessageSender,
   sendResponse: (response: RespondingMessageShape<U>) => void
-) => void;
+) => Promise<boolean> | boolean;
 
 export type sendResponseCallback<T extends ExpectedRespondingMessage> = (
   response: RespondingMessageShape<T>
@@ -83,3 +76,8 @@ export interface RespondingMessageShape<T extends ExpectedRespondingMessage> {
   body: T;
   successfullyProcessed: true | RespondingMessageError;
 }
+
+export type RespondingMessageMainFunction<
+  T extends SendingMessage,
+  U extends ExpectedRespondingMessage
+> = (message: SendingMessageShape<T>, sender: chrome.runtime.MessageSender) => Promise<U> | U;

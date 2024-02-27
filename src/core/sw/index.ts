@@ -1,15 +1,34 @@
-import MessageManager from "./messageController";
-import StorageManager from "./storageController";
+import {
+  ExpectedRespondingChangeDataMessage,
+  ExpectedRespondingFetchDataMessage,
+  RespondingMessageMainFunction,
+  SendingChangeDataMessage,
+  SendingFetchDataMessage
+} from "@src/shapes/message";
+import user from "@src/shapes/user";
+import AttachListener from "./messenge";
 
-chrome.runtime.onInstalled.addListener(async () => {
-  const messageManager = new MessageManager();
-  const storageManager = new StorageManager();
+const fetchDataCallback: RespondingMessageMainFunction<
+  SendingFetchDataMessage,
+  ExpectedRespondingFetchDataMessage
+> = async () => {
+  const userInfo = (await chrome.storage.sync.get()) as user;
 
-  chrome.storage.sync.set({
-    isConfigured: true,
-    abilities: "asfjlafklj",
-    problesm: 20
-  });
+  return {
+    userInfo
+  };
+};
 
-  const tteData = await chrome.storage.sync.get();
-});
+const changeDataCallback: RespondingMessageMainFunction<
+  SendingChangeDataMessage,
+  ExpectedRespondingChangeDataMessage
+> = async message => {
+  await chrome.storage.sync.set(message.body.changedData);
+
+  return {
+    updated: true
+  };
+};
+
+chrome.runtime.onMessage.addListener(AttachListener("FETCH_DATA", fetchDataCallback));
+chrome.runtime.onMessage.addListener(AttachListener("CHANGE_DATA", changeDataCallback));

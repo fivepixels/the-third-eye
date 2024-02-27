@@ -2,8 +2,7 @@ import {
   ExpectedRespondingMessage,
   RespondingMessageShape,
   SendingMessage,
-  SendingMessageShape,
-  SendingMessageType
+  SendingMessageShape
 } from "@src/shapes/message";
 
 interface SendingMessageReceive<T extends SendingMessage, U extends ExpectedRespondingMessage> {
@@ -12,7 +11,7 @@ interface SendingMessageReceive<T extends SendingMessage, U extends ExpectedResp
   onError: (errorMessage: string) => void;
 }
 
-export function sendMessage<T extends SendingMessage, U extends ExpectedRespondingMessage>({
+export function sendCommandMessage<T extends SendingMessage, U extends ExpectedRespondingMessage>({
   messageBody,
   onMessageReceive,
   onError
@@ -30,26 +29,14 @@ export function sendMessage<T extends SendingMessage, U extends ExpectedRespondi
   );
 }
 
-export function getResponseFromMessage<
+export async function getResponseFromMessage<
   T extends SendingMessage,
   U extends ExpectedRespondingMessage
->(messageType: SendingMessageType, msg: T): U | string {
-  let responseBody: U | string = "";
+>(messageBody: SendingMessageShape<T>): Promise<U> {
+  const response = await chrome.runtime.sendMessage<
+    SendingMessageShape<T>,
+    RespondingMessageShape<U>
+  >(messageBody);
 
-  chrome.runtime.sendMessage<SendingMessageShape<T>, RespondingMessageShape<U>>(
-    {
-      body: msg,
-      type: messageType
-    },
-    response => {
-      if (typeof response.successfullyProcessed === "string") {
-        responseBody = response.successfullyProcessed;
-        return;
-      } else {
-        responseBody = response.body as U;
-      }
-    }
-  );
-
-  return responseBody;
+  return response.body;
 }
