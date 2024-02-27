@@ -1,20 +1,21 @@
-import path from "path";
 import webpack from "webpack";
-// import "webpack-dev-server";
+import path from "path";
+import { sync } from "glob";
 
 const config: webpack.Configuration = {
   mode: "development",
-  devtool: "source-map",
+  devtool: process.env.NODE_ENV === "production" ? false : "source-map",
   entry: {
-    "cs/main": "./src/core/cs/index.ts",
-    "sw/main": "./src/core/sw/index.ts"
+    cs: sync("./src/core/cs/**/*.ts"),
+    sw: sync("./src/core/sw/**/*.ts")
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name].js"
+    filename: "[name].js",
+    path: path.resolve(__dirname, "dist")
   },
   resolve: {
-    extensions: [".ts", ".js"]
+    extensions: [".ts", ".js"],
+    preferRelative: true
   },
   module: {
     rules: [
@@ -24,6 +25,16 @@ const config: webpack.Configuration = {
         exclude: /node_modules/
       }
     ]
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        default: false
+      }
+    }
+  },
+  stats: {
+    errorDetails: true
   }
 };
 

@@ -1,6 +1,7 @@
 {
-  "include": ["./src/**/*.ts"],
+  "include": ["./src/**/*.ts", "src/core/sw/messageManager."],
   "compilerOptions": {
+    "lib": ["DOM", "ES2015", "DOM.Iterable", "ScriptHost"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "module": "CommonJS",
@@ -17,6 +18,7 @@
       "@cs/*": ["./src/cs/*"],
       "@sw/*": ["./src/sw/*"],
       "@shapes/*": ["./src/shapes/*"]
-    }
+    },
+    "noImplicitAny": false
   }
 }
