@@ -1,7 +1,14 @@
 import { AIType } from "./ai";
-import user, { Helpers } from "./user";
+import { ExtractedWebPageContent } from "./analyzer";
+import user from "./user";
 
-export type SendingMessageType = "FETCH_DATA" | "CHANGE_DATA" | "OPEN_ONBOARDING" | AIType;
+export type SendingMessageType =
+  | "FETCH_DATA"
+  | "CHANGE_DATA"
+  | "TTS"
+  | "TTS_STOP"
+  | "OPEN_ONBOARDING"
+  | AIType;
 
 export interface SendingMessageShape<T extends SendingMessage> {
   body: T;
@@ -27,6 +34,17 @@ export interface ExpectedRespondingChangeDataMessage extends ExpectedRespondingM
   updated: boolean;
 }
 
+// TTS
+export interface SendingTTSMessage extends SendingMessage {
+  speak: string;
+}
+
+export interface ExpectedRespondingTTSMessage extends ExpectedRespondingMessage {}
+
+export interface SendingTTSStopMessage extends SendingMessage {}
+
+export interface ExpectedRespondingTTSStopMessage extends ExpectedRespondingMessage {}
+
 // OPEN_ONBOARDING
 export interface SendingOpenOnbardingMessage extends SendingMessage {
   openTabProperties: chrome.tabs.CreateProperties;
@@ -38,13 +56,28 @@ export interface ExpectedRespondingOpenOnboardingMessage extends ExpectedRespond
 }
 
 // AI
-export interface SendingAIMessage extends SendingMessage {
-  pageImageUrl: string;
-  userSituation: user;
-  sendingHelper: Helpers;
+export interface SendingPageAnalyzerMessage extends SendingMessage {
+  webpageData: ExtractedWebPageContent;
 }
 
-export interface ExpectedRespondingAIMessage extends ExpectedRespondingMessage {
+export interface ExpectedRespondingPageAnalyzerMessage extends ExpectedRespondingMessage {
+  script: string;
+}
+
+export interface SendingImageAnalyzerMessage extends SendingMessage {
+  imageUrl: string;
+}
+
+export interface ExpectedRespondingImageAnalyzerMessage extends ExpectedRespondingMessage {
+  script: string;
+}
+
+export interface SendingTextSummarizerMessage extends SendingMessage {
+  text: string;
+  speak?: boolean;
+}
+
+export interface ExpectedRespondingTextSummarizerMessage extends ExpectedRespondingMessage {
   script: string;
 }
 
