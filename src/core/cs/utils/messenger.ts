@@ -7,8 +7,8 @@ import {
 
 interface SendingMessageReceive<T extends SendingMessage, U extends ExpectedRespondingMessage> {
   messageBody: SendingMessageShape<T>;
-  onMessageReceive: (body: U) => void;
-  onError: (errorMessage: string) => void;
+  onMessageReceive?: (body: U) => void;
+  onError?: (errorMessage: string) => void;
 }
 
 export function sendCommandMessage<T extends SendingMessage, U extends ExpectedRespondingMessage>({
@@ -20,11 +20,11 @@ export function sendCommandMessage<T extends SendingMessage, U extends ExpectedR
     messageBody,
     response => {
       if (!response.successfullyProcessed) {
-        onError(response.successfullyProcessed);
+        if (onError) onError(response.successfullyProcessed);
         return;
       }
 
-      onMessageReceive(response.body);
+      if (onMessageReceive) onMessageReceive(response.body);
     }
   );
 }
