@@ -7,7 +7,8 @@ const config: webpack.Configuration = {
   devtool: process.env.NODE_ENV === "production" ? false : "source-map",
   entry: {
     cs: sync("./src/core/cs/**/*.ts"),
-    sw: sync("./src/core/sw/**/*.ts")
+    sw: sync("./src/core/sw/**/*.ts"),
+    client: sync("./src/core/client/**/*.ts")
   },
   output: {
     filename: "[name].js",

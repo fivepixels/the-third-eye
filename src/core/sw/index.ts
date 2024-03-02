@@ -3,17 +3,17 @@ import {
   ExpectedRespondingChangeDataMessage,
   ExpectedRespondingFetchDataMessage,
   RespondingMessageMainFunction,
-  SendingPageAnalyzerMessage,
   SendingChangeDataMessage,
   SendingFetchDataMessage,
   SendingImageAnalyzerMessage,
   ExpectedRespondingImageAnalyzerMessage,
+  SendingTTSSpeakMessage,
+  ExpectedRespondingTTSSpeakMessage,
+  SendingTTSStopMessage,
+  ExpectedRespondingTTSStopMessage,
   SendingTextSummarizerMessage,
   ExpectedRespondingTextSummarizerMessage,
-  SendingTTSMessage,
-  ExpectedRespondingTTSMessage,
-  SendingTTSStopMessage,
-  ExpectedRespondingTTSStopMessage
+  SendingPageAnalyzerMessage
 } from "@src/shapes/message";
 import user from "@src/shapes/user";
 import AttachListener from "./messenge";
@@ -44,8 +44,8 @@ const changeDataCallback: RespondingMessageMainFunction<
 };
 
 const ttsCallback: RespondingMessageMainFunction<
-  SendingTTSMessage,
-  ExpectedRespondingTTSMessage
+  SendingTTSSpeakMessage,
+  ExpectedRespondingTTSSpeakMessage
 > = async message => {
   chrome.tts.speak(message.body.speak);
 
@@ -61,40 +61,77 @@ const ttsStopCallback: RespondingMessageMainFunction<
   return;
 };
 
-const analyzePageCallback: RespondingMessageMainFunction<
+const pageAnalyzerCallback: RespondingMessageMainFunction<
   SendingPageAnalyzerMessage,
   ExpectedRespondingPageAnalyzerMessage
 > = async message => {
-  const analyzedPageScript = await aiManager.analyzePage(message.body.webpageData);
-
-  return {
-    script: analyzedPageScript
-  };
-};
-
-const analyzeImageCallback: RespondingMessageMainFunction<
-  SendingImageAnalyzerMessage,
-  ExpectedRespondingImageAnalyzerMessage
-> = async message => {
-  const analyzedImageScript = await aiManager.analyzeImage(message.body.imageUrl);
-
-  return {
-    script: analyzedImageScript
-  };
-};
-
-const summarizeTextCallback: RespondingMessageMainFunction<
-  SendingTextSummarizerMessage,
-  ExpectedRespondingTextSummarizerMessage
-> = async message => {
-  const summarizedScript = await aiManager.summarizeText(message.body.text);
+  let spoken = false;
+  let logged = false;
+  const analyzedPageScript = await aiManager.analyzePage(message.body.referencedData);
 
   if (message.body.speak) {
-    chrome.tts.speak(summarizedScript);
+    chrome.tts.speak(analyzedPageScript);
+    spoken = true;
+  }
+
+  if (message.body.log) {
+    console.log(`LOGGING: RESULT FOR PAGE ANALYZER - ${analyzedPageScript}`);
+    logged = true;
   }
 
   return {
-    script: summarizedScript
+    script: analyzedPageScript,
+    spoken,
+    logged
+  };
+};
+
+const ImageAnalyzerCallback: RespondingMessageMainFunction<
+  SendingImageAnalyzerMessage,
+  ExpectedRespondingImageAnalyzerMessage
+> = async message => {
+  let spoken = false;
+  let logged = false;
+  const analyzedImageScript = await aiManager.analyzeImage(message.body.referencedData);
+
+  if (message.body.speak) {
+    chrome.tts.speak(analyzedImageScript);
+    spoken = true;
+  }
+
+  if (message.body.log) {
+    console.log(`LOGGING: RESULT FOR PAGE ANALYZER - ${analyzedImageScript}`);
+    logged = true;
+  }
+  return {
+    script: analyzedImageScript,
+    spoken,
+    logged
+  };
+};
+
+const textSummarizerCallback: RespondingMessageMainFunction<
+  SendingTextSummarizerMessage,
+  ExpectedRespondingTextSummarizerMessage
+> = async message => {
+  let spoken = false;
+  let logged = false;
+  const summarizedScript = await aiManager.summarizeText(message.body.referencedData);
+
+  if (message.body.speak) {
+    chrome.tts.speak(summarizedScript);
+    spoken = true;
+  }
+
+  if (message.body.log) {
+    console.log(`LOGGING: RESULT FOR PAGE ANALYZER - ${summarizedScript}`);
+    logged = true;
+  }
+
+  return {
+    script: summarizedScript,
+    spoken,
+    logged
   };
 };
 
@@ -102,6 +139,6 @@ chrome.runtime.onMessage.addListener(AttachListener("FETCH_DATA", fetchDataCallb
 chrome.runtime.onMessage.addListener(AttachListener("CHANGE_DATA", changeDataCallback));
 chrome.runtime.onMessage.addListener(AttachListener("TTS", ttsCallback));
 chrome.runtime.onMessage.addListener(AttachListener("TTS_STOP", ttsStopCallback));
-chrome.runtime.onMessage.addListener(AttachListener("PAGE_ANALYZER", analyzePageCallback));
-chrome.runtime.onMessage.addListener(AttachListener("IMAGE_ANALYZER", analyzeImageCallback));
-chrome.runtime.onMessage.addListener(AttachListener("TEXT_SUMMARIZER", summarizeTextCallback));
+chrome.runtime.onMessage.addListener(AttachListener("PAGE_ANALYZER", pageAnalyzerCallback));
+chrome.runtime.onMessage.addListener(AttachListener("IMAGE_ANALYZER", ImageAnalyzerCallback));
+chrome.runtime.onMessage.addListener(AttachListener("TEXT_SUMMARIZER", textSummarizerCallback));

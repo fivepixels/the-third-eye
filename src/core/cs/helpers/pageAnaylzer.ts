@@ -1,3 +1,8 @@
+import {
+  ExpectedRespondingPageAnalyzerMessage,
+  SendingPageAnalyzerMessage
+} from "@src/shapes/message";
+import { sendCommandMessage } from "../utils/messenger";
 import Helper from "./helper";
 import {
   ExtractedWebPageContent,
@@ -7,16 +12,32 @@ import {
   PageMainData
 } from "@shapes/analyzer";
 
-class Summzrizer extends Helper {
+class PageAnalyzer extends Helper {
   readonly NOT_PROVIDED = "CONTENT NOT PROVIDED";
   readonly worthMetadataTypes = ["description", "author", "keywords"];
-
-  private analyzedWebInfo: ExtractedWebPageContent;
 
   constructor() {
     super("SUMMARIZER", "the description about the colour adjuster");
 
-    this.analyzedWebInfo = this.analyzePage();
+    this.attach();
+  }
+
+  private attach() {
+    this.mainDOM.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        const webpageData = this.analyzePage();
+
+        sendCommandMessage<SendingPageAnalyzerMessage, ExpectedRespondingPageAnalyzerMessage>({
+          messageBody: {
+            type: "PAGE_ANALYZER",
+            body: {
+              referencedData: webpageData,
+              speak: true
+            }
+          }
+        });
+      }
+    });
   }
 
   private analyzePage(): ExtractedWebPageContent {
@@ -120,4 +141,4 @@ class Summzrizer extends Helper {
   }
 }
 
-export default Summzrizer;
+export default PageAnalyzer;

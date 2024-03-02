@@ -43,7 +43,7 @@ class AIManager {
 
   public async analyzeImage(selectedImageURL: string): Promise<string> {
     const response = await this.client.chat.completions.create({
-      model: "gpt-4-vision-preview",
+      model: "gpt-4",
       temperature: 0.1,
       messages: [
         {
@@ -56,19 +56,21 @@ class AIManager {
           content: [
             {
               type: "text",
-              text: "Generate a script for blind people. Print script only."
+              text: "Generate a fully descriptive script for blind people. Print script only."
             },
             {
               type: "image_url",
               image_url: {
                 url: selectedImageURL,
-                detail: "high"
+                detail: "low"
               }
             }
           ]
         }
       ]
     });
+
+    console.log(response);
 
     return this.generateScript(response);
   }

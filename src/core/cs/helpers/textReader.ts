@@ -1,8 +1,8 @@
 import {
-  ExpectedRespondingTTSMessage,
+  ExpectedRespondingTTSSpeakMessage,
   ExpectedRespondingTTSStopMessage,
   ExpectedRespondingTextSummarizerMessage,
-  SendingTTSMessage,
+  SendingTTSSpeakMessage,
   SendingTTSStopMessage,
   SendingTextSummarizerMessage
 } from "@src/shapes/message";
@@ -112,7 +112,7 @@ class TextReader extends Helper {
     const allText = this.generateText();
 
     if (this.currentMode === "PLAIN") {
-      sendCommandMessage<SendingTTSMessage, ExpectedRespondingTTSMessage>({
+      sendCommandMessage<SendingTTSSpeakMessage, ExpectedRespondingTTSSpeakMessage>({
         messageBody: {
           type: "TTS",
           body: {
@@ -125,7 +125,7 @@ class TextReader extends Helper {
         messageBody: {
           type: "TEXT_SUMMARIZER",
           body: {
-            text: allText,
+            referencedData: allText,
             speak: true
           }
         }
