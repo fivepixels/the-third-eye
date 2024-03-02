@@ -32,7 +32,9 @@ class PageAnalyzer extends Helper {
             type: "PAGE_ANALYZER",
             body: {
               referencedData: webpageData,
-              speak: true
+              degree: 3,
+              speak: true,
+              log: true
             }
           }
         });

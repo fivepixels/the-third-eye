@@ -67,7 +67,10 @@ const pageAnalyzerCallback: RespondingMessageMainFunction<
 > = async message => {
   let spoken = false;
   let logged = false;
-  const analyzedPageScript = await aiManager.analyzePage(message.body.referencedData);
+  const analyzedPageScript = await aiManager.analyzePage(
+    message.body.referencedData,
+    message.body.degree
+  );
 
   if (message.body.speak) {
     chrome.tts.speak(analyzedPageScript);
@@ -92,7 +95,10 @@ const ImageAnalyzerCallback: RespondingMessageMainFunction<
 > = async message => {
   let spoken = false;
   let logged = false;
-  const analyzedImageScript = await aiManager.analyzeImage(message.body.referencedData);
+  const analyzedImageScript = await aiManager.analyzeImage(
+    message.body.referencedData,
+    message.body.degree
+  );
 
   if (message.body.speak) {
     chrome.tts.speak(analyzedImageScript);
@@ -116,7 +122,10 @@ const textSummarizerCallback: RespondingMessageMainFunction<
 > = async message => {
   let spoken = false;
   let logged = false;
-  const summarizedScript = await aiManager.summarizeText(message.body.referencedData);
+  const summarizedScript = await aiManager.summarizeText(
+    message.body.referencedData,
+    message.body.degree
+  );
 
   if (message.body.speak) {
     chrome.tts.speak(summarizedScript);

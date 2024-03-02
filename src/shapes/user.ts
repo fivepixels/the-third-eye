@@ -4,6 +4,11 @@ interface user {
   problems: Problems;
   abilities: Difficulties[];
   neededHelpers: Helpers[];
+  personalReference: {
+    ai: {
+      aiGeneratedScriptDegree: number;
+    };
+  };
 }
 
 export type Problems =

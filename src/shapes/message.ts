@@ -40,6 +40,7 @@ export interface ExpectedRespondingTTSStopMessage extends ExpectedRespondingMess
 // AI
 export interface SendingAIMessage<T> {
   referencedData: T;
+  degree: number;
   speak?: boolean;
   log?: boolean;
 }

@@ -126,7 +126,9 @@ class TextReader extends Helper {
           type: "TEXT_SUMMARIZER",
           body: {
             referencedData: allText,
-            speak: true
+            degree: 3,
+            speak: true,
+            log: true
           }
         }
       });

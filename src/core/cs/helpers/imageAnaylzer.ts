@@ -45,9 +45,10 @@ class ImageAnalyzer extends Helper {
           messageBody: {
             type: "IMAGE_ANALYZER",
             body: {
-              referencedData: currentTarget.src,
-              log: true,
-              speak: true
+              referencedData: this.allSources[imageIdx],
+              degree: 3,
+              speak: true,
+              log: true
             }
           }
         });
