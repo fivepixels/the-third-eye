@@ -1,11 +1,11 @@
 {
   "include": ["./src/**/*.ts", "src/core/sw/messageManager."],
   "compilerOptions": {
-    "lib": ["DOM", "ES2015", "DOM.Iterable", "ScriptHost"],
+    "lib": ["ES6", "DOM", "ES2016", "DOM.Iterable", "ScriptHost"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "module": "CommonJS",
-    "target": "ES5",
+    "target": "ES6",
     "baseUrl": "./",
     "allowJs": false,
     "outDir": "./dist",
@@ -15,8 +15,9 @@
     "skipLibCheck": true,
     "paths": {
       "@src/*": ["./src/*"],
-      "@cs/*": ["./src/cs/*"],
-      "@sw/*": ["./src/sw/*"],
+      "@core/*": ["./src/core/*"],
+      "@cs/*": ["./src/core/cs/*"],
+      "@sw/*": ["./src/core/sw/*"],
       "@shapes/*": ["./src/shapes/*"]
     },
     "noImplicitAny": false

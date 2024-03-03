@@ -16,7 +16,14 @@ const config: webpack.Configuration = {
   },
   resolve: {
     extensions: [".ts", ".js"],
-    preferRelative: true
+    preferRelative: true,
+    alias: {
+      "@src": path.resolve(__dirname, "./src"),
+      "@core": path.resolve(__dirname, "./src/core"),
+      "@cs": path.resolve(__dirname, "./src/core/cs"),
+      "@sw": path.resolve(__dirname, "./src/core/sw"),
+      "@shapes": path.resolve(__dirname, "./src/shapes")
+    }
   },
   module: {
     rules: [
