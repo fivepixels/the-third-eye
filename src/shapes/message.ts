@@ -1,4 +1,3 @@
-import { AIType } from "./ai";
 import { ExtractedWebPageContent } from "./analyzer";
 import user from "./user";
 
@@ -8,7 +7,9 @@ export type SendingMessageType =
   | "TTS"
   | "TTS_STOP"
   | "OPEN_ONBOARDING"
-  | AIType;
+  | "PAGE_ANALYZER"
+  | "IMAGE_ANALYZER"
+  | "TEXT_SUMMARIZER";
 
 export interface SendingMessageShape<T extends SendingMessage> {
   body: T;

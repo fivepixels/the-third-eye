@@ -10,7 +10,7 @@ import {
 } from "@shapes/message";
 import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
 import Helper from "./helper";
-import { AIPreference } from "@shapes/user";
+import { AIPreference, Helpers } from "@shapes/user";
 
 type TextReaderMode = "PLAIN" | "SUMMARIZED";
 class TextReader extends Helper {
@@ -24,7 +24,7 @@ class TextReader extends Helper {
   readonly attachableTagsType = "h1, h2, h3, h4, h5, h6, span, p, a, li, ul, ol";
 
   constructor() {
-    super("TEXT_SUMMARIZER", "the description about the colour adjuster");
+    super(Helpers.TEXT_SUMMARIZER, "the description about the colour adjuster");
 
     this.allTags = [];
     this.currentMode = "NONE";

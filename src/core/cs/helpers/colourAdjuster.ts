@@ -10,7 +10,7 @@
 import Helper from "./helper";
 import { getResponseFromMessage } from "../utils/messenger";
 import { ExpectedRespondingFetchDataMessage, SendingFetchDataMessage } from "@shapes/message";
-import { ColourDeficiency } from "@src/shapes/user";
+import { ColourDeficiency, Helpers } from "@src/shapes/user";
 
 type CSSFilters = {
   [K in keyof typeof ColourDeficiency]: string;
@@ -39,7 +39,7 @@ class ColourAdjuster extends Helper {
   };
 
   constructor() {
-    super("COLOUR_ADJUSTER", "the description about the colour adjuster");
+    super(Helpers.COLOUR_ADJUSTER, "the description about the colour adjuster");
 
     this.colourDeficiency = ColourDeficiency.MONOCHROMACY;
 

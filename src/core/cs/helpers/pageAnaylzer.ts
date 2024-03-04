@@ -11,7 +11,7 @@ import {
   PageLinks,
   PageMainData
 } from "@shapes/analyzer";
-import { AIPreference } from "@shapes/user";
+import { AIPreference, Helpers } from "@shapes/user";
 import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
 import Helper from "./helper";
 
@@ -21,7 +21,7 @@ class PageAnalyzer extends Helper {
   private aiPreference: AIPreference = this.defaultAIPreference;
 
   constructor() {
-    super("PAGE_ANALYZER", "the description about the colour adjuster");
+    super(Helpers.PAGE_ANALYZER, "the description about the colour adjuster");
 
     const result = this.init();
 

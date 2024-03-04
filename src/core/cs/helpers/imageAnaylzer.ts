@@ -4,7 +4,7 @@ import {
   SendingFetchDataMessage,
   SendingImageAnalyzerMessage
 } from "@shapes/message";
-import { AIPreference } from "@shapes/user";
+import { AIPreference, Helpers } from "@shapes/user";
 import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
 import Helper from "./helper";
 
@@ -15,7 +15,7 @@ class ImageAnalyzer extends Helper {
   private aiPreference: AIPreference;
 
   constructor() {
-    super("IMAGE_ANALYZER", "the description about the colour adjuster");
+    super(Helpers.IMAGE_ANALYZER, "the description about the colour adjuster");
 
     this.selectingMode = false;
 

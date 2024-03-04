@@ -1,1 +1,0 @@
-export type AIType = "PAGE_ANALYZER" | "IMAGE_ANALYZER" | "TEXT_SUMMARIZER";

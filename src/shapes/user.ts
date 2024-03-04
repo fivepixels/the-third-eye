@@ -1,12 +1,16 @@
-import { AIType } from "./ai";
-
 interface user {
   isConfigured: boolean;
   neededHelpers: Helpers[];
   personalPreference: PersonalReferenceType;
 }
 
-export type Helpers = "MOVER" | "COLOUR_ADJUSTER" | AIType;
+export enum Helpers {
+  MOVER = "MOVER",
+  COLOUR_ADJUSTER = "COLOUR_ADJUSTER",
+  PAGE_ANALYZER = "PAGE_ANALYZER",
+  IMAGE_ANALYZER = "IMAGE_ANALYZER",
+  TEXT_SUMMARIZER = "TEXT_SUMMARIZER"
+}
 
 export enum ColourDeficiency {
   PROTANOPIA = "PROTANOPIA",
