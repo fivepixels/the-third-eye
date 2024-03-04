@@ -1,14 +1,15 @@
-import webpack from "webpack";
+import webpack, { ExternalItemFunctionData } from "webpack";
 import path from "path";
 import { sync } from "glob";
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
-const config: webpack.Configuration = {
+const webpackConfig: webpack.Configuration = {
   mode: "development",
-  devtool: process.env.NODE_ENV === "production" ? false : "source-map",
+  devtool: false,
   entry: {
     cs: sync("./src/core/cs/**/*.ts"),
     sw: sync("./src/core/sw/**/*.ts"),
-    client: sync("./src/core/client/**/*.ts")
+    popup: sync("./src/core/client/popup/popup.ts")
   },
   output: {
     filename: "[name].js",
@@ -36,14 +37,13 @@ const config: webpack.Configuration = {
   },
   optimization: {
     splitChunks: {
-      cacheGroups: {
-        default: false
-      }
+      cacheGroups: { default: false }
     }
   },
   stats: {
     errorDetails: true
-  }
+  },
+  plugins: [new BundleAnalyzerPlugin()]
 };
 
-export default config;
+export default webpackConfig;
