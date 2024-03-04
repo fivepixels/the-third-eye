@@ -3,9 +3,9 @@ import {
   ExpectedRespondingFetchDataMessage,
   SendingChangeDataMessage,
   SendingFetchDataMessage
-} from "@src/shapes/message";
+} from "@shapes/message";
 import { getResponseFromMessage } from "../utils/messenger";
-import user from "@src/shapes/user";
+import user from "@shapes/user";
 
 class StorageManager {
   constructor() {}

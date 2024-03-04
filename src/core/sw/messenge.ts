@@ -4,7 +4,7 @@ import {
   SendingMessage,
   SendingMessageType,
   responseCallback
-} from "@src/shapes/message";
+} from "@shapes/message";
 
 export default function AttachListener<
   T extends SendingMessage,

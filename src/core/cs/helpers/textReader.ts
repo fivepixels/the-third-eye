@@ -1,13 +1,16 @@
 import {
+  ExpectedRespondingFetchDataMessage,
   ExpectedRespondingTTSSpeakMessage,
   ExpectedRespondingTTSStopMessage,
   ExpectedRespondingTextSummarizerMessage,
+  SendingFetchDataMessage,
   SendingTTSSpeakMessage,
   SendingTTSStopMessage,
   SendingTextSummarizerMessage
-} from "@src/shapes/message";
-import { sendCommandMessage } from "../utils/messenger";
+} from "@shapes/message";
+import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
 import Helper from "./helper";
+import { AIPreference } from "@shapes/user";
 
 type TextReaderMode = "PLAIN" | "SUMMARIZED";
 class TextReader extends Helper {
@@ -16,17 +19,49 @@ class TextReader extends Helper {
     selected: boolean;
   }[];
   private currentMode: TextReaderMode | "NONE";
+  private aiPreference: AIPreference;
 
   readonly attachableTagsType = "h1, h2, h3, h4, h5, h6, span, p, a, li, ul, ol";
 
   constructor() {
-    super("TEXT_READER", "the description about the colour adjuster");
+    super("TEXT_SUMMARIZER", "the description about the colour adjuster");
 
     this.allTags = [];
     this.currentMode = "NONE";
 
+    this.aiPreference = this.defaultAIPreference;
+
+    const result = this.init();
+
+    if (!result) {
+      alert("Please select your ai preference by clicking on the popup menu.");
+    }
+
     this.findAllTags();
     this.attach();
+  }
+
+  private async init() {
+    try {
+      const { userInfo } = await getResponseFromMessage<
+        SendingFetchDataMessage,
+        ExpectedRespondingFetchDataMessage
+      >({
+        type: "FETCH_DATA",
+        body: {}
+      });
+
+      const currentUserPersonalAIPreference = userInfo.personalPreference.ai;
+
+      if (!currentUserPersonalAIPreference) return false;
+
+      this.aiPreference = currentUserPersonalAIPreference;
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 
   private findAllTags() {
@@ -54,7 +89,7 @@ class TextReader extends Helper {
         this.currentMode = "PLAIN";
       } else if (event.key === "Control") {
         this.currentMode = "SUMMARIZED";
-      } else if (event.key === "Enter") {
+      } else if (event.key === "a") {
         this.analyzeText();
       } else if (event.key === "Backspace") {
         this.stopTalking();
@@ -126,9 +161,9 @@ class TextReader extends Helper {
           type: "TEXT_SUMMARIZER",
           body: {
             referencedData: allText,
-            degree: 3,
-            speak: true,
-            log: true
+            degree: this.aiPreference.degree,
+            speak: this.aiPreference.preferToSpeak,
+            log: this.aiPreference.preferToLog
           }
         }
       });

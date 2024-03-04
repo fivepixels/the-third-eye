@@ -14,8 +14,8 @@ import {
   SendingTextSummarizerMessage,
   ExpectedRespondingTextSummarizerMessage,
   SendingPageAnalyzerMessage
-} from "@src/shapes/message";
-import user from "@src/shapes/user";
+} from "@shapes/message";
+import user, { ColourDeficiency } from "@shapes/user";
 import AttachListener from "./messenge";
 import AIManager from "./aiManager";
 
@@ -143,6 +143,31 @@ const textSummarizerCallback: RespondingMessageMainFunction<
     logged
   };
 };
+
+export const defaultUserConfiguration: user = {
+  isConfigured: false,
+  neededHelpers: [],
+  personalPreference: {
+    colourAdjuster: {
+      deficiency: ColourDeficiency.MONOCHROMACY
+    },
+    ai: {
+      degree: 1,
+      preferToSpeak: true,
+      preferToLog: true
+    }
+  }
+};
+
+const initializeServiceWorker = async (): Promise<void> => {
+  const userInfo = (await chrome.storage.sync.get()) as user;
+
+  if (!userInfo?.isConfigured) {
+    await chrome.storage.sync.set(defaultUserConfiguration);
+  }
+};
+
+initializeServiceWorker();
 
 chrome.runtime.onMessage.addListener(AttachListener("FETCH_DATA", fetchDataCallback));
 chrome.runtime.onMessage.addListener(AttachListener("CHANGE_DATA", changeDataCallback));

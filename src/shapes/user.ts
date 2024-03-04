@@ -1,40 +1,36 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+import { AIType } from "./ai";
+
 interface user {
   isConfigured: boolean;
-  problems: Problems;
-  abilities: Difficulties[];
   neededHelpers: Helpers[];
-  personalReference: {
-    ai: {
-      aiGeneratedScriptDegree: number;
-    };
-  };
+  personalPreference: PersonalReferenceType;
 }
 
-export type Problems =
-  | "COMPLETE_BLINDNESS"
-  | "PARTIAL_BLINDNESS"
-  | "BLURINESS"
-  | "COLOUR_BLINDNESS";
+export type Helpers = "MOVER" | "COLOUR_ADJUSTER" | AIType;
 
-export type Difficulties =
-  | "CAN_SEE_WHOLE_SCREEN"
-  | "CAN_SEE_PART_SCREEN"
-  | "CAN_READ_TEXT"
-  | "CAN_SEE_IMAGES"
-  | "CAN_RECOGNIZE_COLOURS";
+export enum ColourDeficiency {
+  PROTANOPIA = "PROTANOPIA",
+  DEUTERANOPIA = "DEUTERANOPIA",
+  TRITANOPIA = "TRITANOPIA",
+  PROTANOMALY = "PROTANOMALY",
+  DEUTERANOMALY = "DEUTERANOMALY",
+  TRITANOMALY = "TRITANOMALY",
+  ACHROMATOMALY = "ACHROMATOMALY",
+  ACHROMATOPSIA = "ACHROMATOPSIA",
+  MONOCHROMACY = "MONOCHROMACY"
+}
 
-export type Helpers = "SUMMARIZER" | "TEXT_READER" | "IMAGE_ANAYLZER" | "MOVER" | "COLOUR_ADJUSTER";
+export interface PersonalReferenceType {
+  colourAdjuster: {
+    deficiency: ColourDeficiency;
+  };
+  ai: AIPreference;
+}
 
-export type ColourDeficiency =
-  | "PROTANOPIA"
-  | "DEUTERANOPIA"
-  | "TRITANOPIA"
-  | "PROTANOMALY"
-  | "DEUTERANOMALY"
-  | "TRITANOMALY"
-  | "ACHROMATOMALY"
-  | "ACHROMATOPSIA"
-  | "MONOCHROMACY";
+export interface AIPreference {
+  degree: number;
+  preferToLog: boolean;
+  preferToSpeak: boolean;
+}
 
 export default user;

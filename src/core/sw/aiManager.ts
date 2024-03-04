@@ -1,4 +1,4 @@
-import { ExtractedWebPageContent } from "@src/shapes/analyzer";
+import { ExtractedWebPageContent } from "@shapes/analyzer";
 import ENV_VAR from "./env";
 import OpenAI from "openai";
 

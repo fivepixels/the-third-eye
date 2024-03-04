@@ -1,9 +1,9 @@
 import {
+  ExpectedRespondingFetchDataMessage,
   ExpectedRespondingPageAnalyzerMessage,
+  SendingFetchDataMessage,
   SendingPageAnalyzerMessage
-} from "@src/shapes/message";
-import { sendCommandMessage } from "../utils/messenger";
-import Helper from "./helper";
+} from "@shapes/message";
 import {
   ExtractedWebPageContent,
   PageHeadings,
@@ -11,15 +11,48 @@ import {
   PageLinks,
   PageMainData
 } from "@shapes/analyzer";
+import { AIPreference } from "@shapes/user";
+import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
+import Helper from "./helper";
 
 class PageAnalyzer extends Helper {
   readonly NOT_PROVIDED = "CONTENT NOT PROVIDED";
   readonly worthMetadataTypes = ["description", "author", "keywords"];
+  private aiPreference: AIPreference = this.defaultAIPreference;
 
   constructor() {
-    super("SUMMARIZER", "the description about the colour adjuster");
+    super("PAGE_ANALYZER", "the description about the colour adjuster");
+
+    const result = this.init();
+
+    if (!result) {
+      alert("Please select your ai preference by clicking on the popup menu.");
+    }
 
     this.attach();
+  }
+
+  private async init(): Promise<boolean> {
+    try {
+      const { userInfo } = await getResponseFromMessage<
+        SendingFetchDataMessage,
+        ExpectedRespondingFetchDataMessage
+      >({
+        type: "FETCH_DATA",
+        body: {}
+      });
+
+      const currentUserPersonalAIPreference = userInfo.personalPreference.ai;
+
+      if (!currentUserPersonalAIPreference) return false;
+
+      this.aiPreference = currentUserPersonalAIPreference;
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 
   private attach() {
@@ -32,9 +65,9 @@ class PageAnalyzer extends Helper {
             type: "PAGE_ANALYZER",
             body: {
               referencedData: webpageData,
-              degree: 3,
-              speak: true,
-              log: true
+              degree: this.aiPreference.degree,
+              speak: this.aiPreference.preferToSpeak,
+              log: this.aiPreference.preferToLog
             }
           }
         });

@@ -3,7 +3,7 @@ import {
   RespondingMessageShape,
   SendingMessage,
   SendingMessageShape
-} from "@src/shapes/message";
+} from "@shapes/message";
 
 interface SendingMessageReceive<T extends SendingMessage, U extends ExpectedRespondingMessage> {
   messageBody: SendingMessageShape<T>;
@@ -15,7 +15,7 @@ export function sendCommandMessage<T extends SendingMessage, U extends ExpectedR
   messageBody,
   onMessageReceive,
   onError
-}: SendingMessageReceive<T, U>) {
+}: SendingMessageReceive<T, U>): void {
   chrome.runtime.sendMessage<SendingMessageShape<T>, RespondingMessageShape<U>>(
     messageBody,
     response => {

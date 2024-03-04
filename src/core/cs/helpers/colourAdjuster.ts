@@ -7,11 +7,13 @@
  * Big Thanks to @Andrew Vaness<http://oftheheadland.github.io/> again.
  */
 
-import { ColourDeficiency } from "@src/shapes/user";
 import Helper from "./helper";
+import { getResponseFromMessage } from "../utils/messenger";
+import { ExpectedRespondingFetchDataMessage, SendingFetchDataMessage } from "@shapes/message";
+import { ColourDeficiency } from "@src/shapes/user";
 
 type CSSFilters = {
-  [K in ColourDeficiency]: string;
+  [K in keyof typeof ColourDeficiency]: string;
 };
 
 class ColourAdjuster extends Helper {
@@ -36,14 +38,38 @@ class ColourAdjuster extends Helper {
       "0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0"
   };
 
-  constructor(colourDeficiency: ColourDeficiency) {
+  constructor() {
     super("COLOUR_ADJUSTER", "the description about the colour adjuster");
 
-    this.colourDeficiency = colourDeficiency;
+    this.colourDeficiency = ColourDeficiency.MONOCHROMACY;
 
-    console.log("HELLO WORLD");
+    const result = this.init();
+
+    if (!result) {
+      return;
+    }
 
     this.applyCSSFilter();
+  }
+
+  private async init(): Promise<boolean> {
+    const { userInfo } = await getResponseFromMessage<
+      SendingFetchDataMessage,
+      ExpectedRespondingFetchDataMessage
+    >({
+      type: "FETCH_DATA",
+      body: {}
+    });
+
+    const currentUserDeficiency = userInfo.personalPreference.colourAdjuster.deficiency;
+
+    if (!currentUserDeficiency) {
+      alert("Please select your colour deficiency by clicking on the popup menu.");
+      return false;
+    }
+
+    this.colourDeficiency = userInfo.personalPreference.colourAdjuster.deficiency;
+    return true;
   }
 
   private applyCSSFilter() {
