@@ -1,6 +1,6 @@
 {
   "name": "the-third-eye",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "The New Approach for Blind People to Navigate Websites and Mobile Applications.  ",
   "main": "dist/index.js",
   "repository": "git@github.com:cattynip/the-third-eye.git",
