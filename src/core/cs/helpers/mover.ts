@@ -1,4 +1,5 @@
-import Helper from "@core/cs/helpers";
+import { Helpers } from "@src/shapes/user";
+import Helper from "./helper";
 
 type MoverMode = "NONE" | "MOVING" | "ZOOMING";
 
@@ -14,10 +15,7 @@ class Mover extends Helper {
   private isIndicatorOn: boolean;
 
   constructor() {
-    super(
-      "MOVER",
-      "The helper mover is the main helper for partially blind people who cannot see a part of their vision. You can use this helper by pressing the command or control key on your keyboard and dragging it with the mouse pointer. If you do that, you will be able to see the whole screen moving, following along with your pointer."
-    );
+    super(Helpers.MOVER);
 
     this.currentMode = "NONE";
     this.currentX = 0;
@@ -36,7 +34,6 @@ class Mover extends Helper {
     this.initializeIndicator();
 
     this.mainDOM.addEventListener("keyup", () => {
-      // this.act("SUCCESSED", `${this.currentMode} is disabled.`);
       this.currentMode = "NONE";
       this.removeIndicator();
     });
@@ -46,7 +43,6 @@ class Mover extends Helper {
         this.currentMode = "MOVING";
         this.attachIndicator();
         this.adjustMovability(false);
-        // this.act("SUCCESSED", "MOVING MODE is enabled.");
 
         return;
       }
@@ -55,12 +51,10 @@ class Mover extends Helper {
         this.currentMode = "ZOOMING";
         this.attachIndicator();
         this.adjustMovability(true);
-        // this.act("SUCCESSED", "ZOOMING MODE is enabled.");
 
         return;
       }
 
-      // this.act("SUCCESSED", `${this.currentMode} is disabled.`);
       this.currentMode = "NONE";
       this.removeIndicator();
       this.adjustMovability(false);

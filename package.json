@@ -7,20 +7,29 @@
   "author": "cattynip <hi@cattynip.dev>",
   "license": "MIT",
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
-    "lint": "yarn eslint . --fix && yarn prettier . --write"
+    "notworking": "rm -rf node_modules/ && yarn install",
+    "build": "rm -rf dist/ && webpack",
+    "dev": "rm -rf dist/ && webpack --watch",
+    "lint": "eslint . --fix && prettier . --write"
   },
   "devDependencies": {
-    "@swc/core": "^1.4.0",
-    "@types/chrome": "^0.0.256",
+    "@types/chrome": "^0.0.262",
+    "@types/node": "^20.11.19",
+    "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
     "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "glob": "^10.3.10",
     "prettier": "3.1.1",
+    "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.2",
+    "webpack-bundle-analyzer": "^4.10.1",
+    "webpack-cli": "^5.1.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "openai": "^4.28.4"
+  }
 }

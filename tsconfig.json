@@ -1,22 +1,25 @@
 {
+  "include": ["./src/**/*.ts", "src/core/sw/messageManager."],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2023"],
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "lib": ["ES6", "DOM", "ES2016", "DOM.Iterable", "ScriptHost"],
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "incremental": true,
-    "baseUrl": ".",
-    "typeRoots": ["./types", "node_modules/@types"],
+    "module": "CommonJS",
+    "target": "ES6",
+    "baseUrl": "./",
+    "allowJs": false,
+    "outDir": "./dist",
+    "removeComments": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "skipLibCheck": true,
     "paths": {
       "@src/*": ["./src/*"],
-      "@types/*": ["./types/*"],
-      "@client/*": ["./src/client/*"],
-      "@core/*": ["./src/core/*"]
+      "@core/*": ["./src/core/*"],
+      "@cs/*": ["./src/core/cs/*"],
+      "@sw/*": ["./src/core/sw/*"],
+      "@shapes/*": ["./src/shapes/*"]
     },
-    "include": ["./src/**/*.ts"]
+    "noImplicitAny": false
   }
 }

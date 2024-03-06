@@ -1,45 +1,34 @@
-import UserInformation from "@src/types/user";
-
-import Helper from "@core/cs/helpers";
-
-// import Mover from "./helpers/major/mover";
-// import ColourAdjuster from "./helpers/major/colourAdjuster";
-// import Speaker from "./helpers/major/speaker";
+import { ExpectedRespondingFetchDataMessage, SendingFetchDataMessage } from "@shapes/message";
+import { getResponseFromMessage } from "./utils/messenger";
+import { Helpers } from "@src/shapes/user";
+import Mover from "./helpers/mover";
+import ColourAdjuster from "./helpers/colourAdjuster";
+import PageAnalyzer from "./helpers/pageAnaylzer";
+import ImageAnalyzer from "./helpers/imageAnaylzer";
+import TextReader from "./helpers/textReader";
 
 class App {
-  private id: number;
-  private userInformation?: UserInformation;
-  private neededHelpers: Helper[];
+  private readonly actions: { [K in Helpers]: () => void } = {
+    MOVER: () => new Mover(),
+    COLOUR_ADJUSTER: () => new ColourAdjuster(),
+    PAGE_ANALYZER: () => new PageAnalyzer(),
+    IMAGE_ANALYZER: () => new ImageAnalyzer(),
+    TEXT_SUMMARIZER: () => new TextReader()
+  };
 
-  constructor(userInformation?: UserInformation) {
-    this.id = 1;
-    this.userInformation = userInformation;
+  constructor() {}
 
-    this.neededHelpers = [];
+  public async init() {
+    const { userInfo } = await getResponseFromMessage<
+      SendingFetchDataMessage,
+      ExpectedRespondingFetchDataMessage
+    >({
+      type: "FETCH_DATA",
+      body: {}
+    });
 
-    this.init();
-
-    console.log("NEW APP INSTANCE HAS BEEN CREATED.", Math.random() * 1000);
-
-    // this.logger.log({
-    //   logger: "MAIN",
-    //   message: "New Tab is open. New APP instance has been created.",
-    //   status: "SUCCESSED",
-    //   category: "SYSTEM"
-    // });
-  }
-
-  private init() {
-    if (!this.userInformation || !this.userInformation.major) return;
-
-    this.userInformation.major.neededHelpers.map(value => {
-      if (value.helper === "MOVER") {
-        // this.neededHelpers.push(new Mover(this.logger));
-      } else if (value.helper === "COLOUR_ADJUSTER") {
-        // this.neededHelpers.push(new ColourAdjuster(this.logger));
-      } else if (value.helper === "SPEAKER") {
-        // this.neededHelpers.push(new Speaker(this.logger));
-      }
+    userInfo.neededHelpers.map(value => {
+      this.actions[value]();
     });
   }
 }
