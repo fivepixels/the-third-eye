@@ -162,9 +162,11 @@ export const defaultUserConfiguration: user = {
 const initializeServiceWorker = async (): Promise<void> => {
   const userInfo = (await chrome.storage.sync.get()) as user;
 
-  if (!userInfo?.isConfigured) {
+  if (userInfo === ({} as any)) {
     await chrome.storage.sync.set(defaultUserConfiguration);
   }
+
+  return;
 };
 
 initializeServiceWorker();

@@ -9,8 +9,9 @@ import user, { ColourDeficiency, Helpers } from "@src/shapes/user";
 
 async function popup() {
   const main = document.querySelector("main");
+  const saveOptionButton = document.querySelector("#save-options");
 
-  if (!main) {
+  if (!main || !saveOptionButton) {
     console.error("There is an error with initializing the UI/UX.");
 
     const createdErrorMessage = document.createElement("p");
@@ -23,6 +24,8 @@ async function popup() {
 
     return;
   }
+
+  saveOptionButton.addEventListener("click", () => {});
 
   const helpersLayout = addLayout(
     main,
@@ -76,6 +79,7 @@ async function popup() {
         }
 
         prevUser.neededHelpers = prevUser.neededHelpers.filter(value => value !== currentId);
+
         return prevUser;
       }
     });
@@ -126,11 +130,7 @@ async function popup() {
   allPreferences.push({
     title: "Prefer to Speak",
     layout: aiLayout,
-    defaultValue: () => ({
-      min: 1,
-      max: 3,
-      default: userInfo.personalPreference.ai.degree
-    }),
+    defaultValue: () => userInfo.personalPreference.ai.preferToSpeak,
     onChanged(prevUser, _id, changedTo) {
       if (typeof changedTo === "number") return prevUser;
       prevUser.personalPreference.ai.preferToSpeak = changedTo;

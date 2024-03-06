@@ -17,8 +17,6 @@ type CSSFilters = {
 };
 
 class ColourAdjuster extends Helper {
-  private colourDeficiency: ColourDeficiency;
-
   private readonly cssFilters: CSSFilters = {
     PROTANOPIA:
       "0.10889,0.89111,-0.00000,0,0 0.10889,0.89111,0.00000,0,0 0.00447,-0.00447,1.00000,0,0 0,0,0,1,0",
@@ -26,53 +24,49 @@ class ColourAdjuster extends Helper {
       "0.29031,0.70969,-0.00000,0,0 0.29031,0.70969,-0.00000,0,0 -0.02197,0.02197,1.00000,0,0 0,0,0,1,0",
     TRITANOPIA:
       "1.00000,0.15236,-0.15236,0,0 0.00000,0.86717,0.13283,0,0 -0.00000,0.86717,0.13283,0,0 0,0,0,1,0",
-    ACHROMATOPSIA: "0.299,0.587,0.114,0,0 0.299,0.587,0.114,0,0 0.299,0.587,0.114,0,0 0,0,0,1,0",
     PROTANOMALY:
       "0.46533,0.53467,-0.00000,0,0 0.06533,0.93467,0.00000,0,0 0.00268,-0.00268,1.00000,0,0 0,0,0,1,0",
     DEUTERANOMALY:
       "0.57418,0.42582,-0.00000,0,0 0.17418,0.82582,-0.00000,0,0 -0.01318,0.01318,1.00000,0,0 0,0,0,1,0",
     TRITANOMALY:
       "1.00000,0.09142,-0.09142,0,0 0.00000,0.92030,0.07970,0,0 -0.00000,0.52030,0.47970,0,0 0,0,0,1,0",
-    ACHROMATOMALY: "0.618,0.320,0.062,0,0 0.163,0.775,0.062,0,0 0.163,0.320,0.516,0,0 0,0,0,1,0",
     MONOCHROMACY:
       "0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0"
   };
 
   constructor() {
-    super(Helpers.COLOUR_ADJUSTER, "the description about the colour adjuster");
+    super(Helpers.COLOUR_ADJUSTER);
 
-    this.colourDeficiency = ColourDeficiency.MONOCHROMACY;
-
-    const result = this.init();
-
-    if (!result) {
-      return;
-    }
-
-    this.applyCSSFilter();
+    this.init();
   }
 
-  private async init(): Promise<boolean> {
-    const { userInfo } = await getResponseFromMessage<
-      SendingFetchDataMessage,
-      ExpectedRespondingFetchDataMessage
-    >({
-      type: "FETCH_DATA",
-      body: {}
-    });
+  private async init() {
+    try {
+      const { userInfo } = await getResponseFromMessage<
+        SendingFetchDataMessage,
+        ExpectedRespondingFetchDataMessage
+      >({
+        type: "FETCH_DATA",
+        body: {}
+      });
 
-    const currentUserDeficiency = userInfo.personalPreference.colourAdjuster.deficiency;
+      const currentUserDeficiency = userInfo.personalPreference.colourAdjuster.deficiency;
 
-    if (!currentUserDeficiency) {
-      alert("Please select your colour deficiency by clicking on the popup menu.");
+      if (!currentUserDeficiency) {
+        alert("Please select your colour deficiency by clicking on the popup menu.");
+        return false;
+      }
+
+      this.applyCSSFilter(currentUserDeficiency);
+    } catch (error) {
+      console.error(error);
+      alert("There was an error while receiving your data. Please refresh the page.");
+
       return false;
     }
-
-    this.colourDeficiency = userInfo.personalPreference.colourAdjuster.deficiency;
-    return true;
   }
 
-  private applyCSSFilter() {
+  private applyCSSFilter(colourDeficiencyToApply: ColourDeficiency) {
     const styleTag = document.createElement("style");
     styleTag.innerHTML =
       "html{-webkit-filter:url(#tte);-moz-filter:(#tte);-ms-filter:(#tte);-o-filter:(#tte);filter:(#tte);}";
@@ -90,7 +84,7 @@ class ColourAdjuster extends Helper {
           <filter id="tte" color-interpolation-filters="linearRGB">
             <feColorMatrix
               type="matrix"
-              values="${this.cssFilters[this.colourDeficiency]}"
+              values="${this.cssFilters[colourDeficiencyToApply]}"
               in="SourceGraphic">
             </feColorMatrix>
           </filter>
@@ -98,8 +92,10 @@ class ColourAdjuster extends Helper {
       </svg>
     `;
 
-    document.body.appendChild(filterDiv);
-    document.body.appendChild(styleTag);
+    this.mainDOM.body.appendChild(filterDiv);
+    this.mainDOM.body.appendChild(styleTag);
+
+    // this.mainDOM.body.style.filter = "invert(100%)";
   }
 }
 

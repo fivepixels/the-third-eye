@@ -144,7 +144,7 @@ class AIManager {
   }
 
   private getMaxTokens(degree: number): number {
-    return degree === 1 ? 50 : degree === 2 ? 500 : 1200;
+    return degree === 1 ? 200 : degree === 2 ? 500 : 1200;
   }
 }
 

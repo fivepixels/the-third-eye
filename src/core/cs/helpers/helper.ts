@@ -2,7 +2,6 @@ import { AIPreference, Helpers } from "@shapes/user";
 
 abstract class Helper {
   private name: Helpers;
-  private description: string;
   protected mainDOM: Document;
 
   protected readonly defaultAIPreference: AIPreference = {
@@ -11,9 +10,8 @@ abstract class Helper {
     preferToLog: true
   };
 
-  constructor(name: Helpers, description: string) {
+  constructor(name: Helpers) {
     this.name = name;
-    this.description = description;
     this.mainDOM = document;
   }
 }

@@ -15,10 +15,7 @@ class Mover extends Helper {
   private isIndicatorOn: boolean;
 
   constructor() {
-    super(
-      Helpers.MOVER,
-      "The helper mover is the main helper for partially blind people who cannot see a part of their vision. You can use this helper by pressing the command or control key on your keyboard and dragging it with the mouse pointer. If you do that, you will be able to see the whole screen moving, following along with your pointer."
-    );
+    super(Helpers.MOVER);
 
     this.currentMode = "NONE";
     this.currentX = 0;

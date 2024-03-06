@@ -21,18 +21,13 @@ class PageAnalyzer extends Helper {
   private aiPreference: AIPreference = this.defaultAIPreference;
 
   constructor() {
-    super(Helpers.PAGE_ANALYZER, "the description about the colour adjuster");
+    super(Helpers.PAGE_ANALYZER);
 
-    const result = this.init();
-
-    if (!result) {
-      alert("Please select your ai preference by clicking on the popup menu.");
-    }
-
+    this.init();
     this.attach();
   }
 
-  private async init(): Promise<boolean> {
+  private async init() {
     try {
       const { userInfo } = await getResponseFromMessage<
         SendingFetchDataMessage,
@@ -47,11 +42,9 @@ class PageAnalyzer extends Helper {
       if (!currentUserPersonalAIPreference) return false;
 
       this.aiPreference = currentUserPersonalAIPreference;
-
-      return true;
     } catch (error) {
       console.error(error);
-      return false;
+      alert("Please select your ai preference by clicking on the popup menu.");
     }
   }
 
