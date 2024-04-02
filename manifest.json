@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "The Third Eye",
-  "description": "The Third Eye",
+  "description": "The New Approach for Blind People to Navigate Websites and Mobile Applications.",
   "version": "0.0.1",
   "permissions": ["storage", "tabs", "activeTab", "tts"],
   "icons": {

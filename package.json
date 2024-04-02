@@ -1,27 +1,55 @@
 {
   "name": "the-third-eye",
-  "version": "0.0.0",
-  "description": "The New Approach for Blind People to Navigate Websites and Mobile Applications.  ",
-  "main": "dist/index.js",
-  "repository": "git@github.com:cattynip/the-third-eye.git",
-  "author": "cattynip <hi@cattynip.dev>",
+  "description": "The New Approach for Blind People to Navigate Websites and Mobile Applications.",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "private": true,
   "license": "MIT",
+  "homepage": "https://github.com/fivepixels/the-third-eye",
+  "keywords": [
+    "chrome",
+    "extension",
+    "openai",
+    "disabled people"
+  ],
+  "author": {
+    "name": "Seol SO",
+    "url": "https://fivepixels.dev",
+    "email": "hi@fivepixels.dev"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/fivepixels"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fivepixels/the-third-eye"
+  },
+  "bugs": {
+    "url": "https://github.com/fivepixels/the-third-eye/issues/new",
+    "email": "hi@fivepixels.dev"
+  },
   "scripts": {
-    "notworking": "rm -rf node_modules/ && yarn install",
     "build": "rm -rf dist/ && webpack",
     "dev": "rm -rf dist/ && webpack --watch",
-    "lint": "eslint . --fix && prettier . --write"
+    "format": "bunx prettier --write . && bunx eslint --fix ."
+  },
+  "dependencies": {
+    "openai": "^4.28.4"
   },
   "devDependencies": {
+    "@types/bun": "latest",
     "@types/chrome": "^0.0.262",
+    "@types/glob": "^8.1.0",
     "@types/node": "^20.11.19",
     "@types/webpack": "^5.28.5",
-    "@typescript-eslint/eslint-plugin": "^6.18.1",
-    "@typescript-eslint/parser": "^6.18.1",
-    "eslint": "^8.56.0",
+    "@types/webpack-bundle-analyzer": "^4.7.0",
+    "@typescript-eslint/eslint-plugin": "^7.3.0",
+    "@typescript-eslint/parser": "^7.3.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "glob": "^10.3.10",
-    "prettier": "3.1.1",
+    "prettier": "^3.2.5",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
@@ -29,7 +57,7 @@
     "webpack-bundle-analyzer": "^4.10.1",
     "webpack-cli": "^5.1.4"
   },
-  "dependencies": {
-    "openai": "^4.28.4"
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }

@@ -1,7 +1,9 @@
-import webpack, { ExternalItemFunctionData } from "webpack";
+import webpack from "webpack";
+import bundleAnalyzer from "webpack-bundle-analyzer";
 import path from "path";
 import { sync } from "glob";
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+
+const BundleAnalyzerPlugin = bundleAnalyzer.BundleAnalyzerPlugin;
 
 const webpackConfig: webpack.Configuration = {
   mode: "development",
