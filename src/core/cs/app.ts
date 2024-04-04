@@ -1,4 +1,7 @@
-import { ExpectedRespondingFetchDataMessage, SendingFetchDataMessage } from "@shapes/message";
+import {
+  ExpectedRespondingFetchDataMessage,
+  SendingFetchDataMessage
+} from "@shapes/message";
 import { getResponseFromMessage } from "./utils/messenger";
 import { Helpers } from "@src/shapes/user";
 import Mover from "./helpers/mover";
@@ -10,6 +13,7 @@ import TextReader from "./helpers/textReader";
 class App {
   private readonly actions: { [K in Helpers]: () => void } = {
     MOVER: () => new Mover(),
+    ZOOMER: () => {},
     COLOUR_ADJUSTER: () => new ColourAdjuster(),
     PAGE_ANALYZER: () => new PageAnalyzer(),
     IMAGE_ANALYZER: () => new ImageAnalyzer(),

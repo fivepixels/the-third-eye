@@ -9,7 +9,10 @@
 
 import Helper from "./helper";
 import { getResponseFromMessage } from "../utils/messenger";
-import { ExpectedRespondingFetchDataMessage, SendingFetchDataMessage } from "@shapes/message";
+import {
+  ExpectedRespondingFetchDataMessage,
+  SendingFetchDataMessage
+} from "@shapes/message";
 import { ColourDeficiency, Helpers } from "@src/shapes/user";
 
 type CSSFilters = {
@@ -50,17 +53,22 @@ class ColourAdjuster extends Helper {
         body: {}
       });
 
-      const currentUserDeficiency = userInfo.personalPreference.colourAdjuster.deficiency;
+      const currentUserDeficiency =
+        userInfo.personalPreference.colourAdjuster.deficiency;
 
       if (!currentUserDeficiency) {
-        alert("Please select your colour deficiency by clicking on the popup menu.");
+        alert(
+          "Please select your colour deficiency by clicking on the popup menu."
+        );
         return false;
       }
 
       this.applyCSSFilter(currentUserDeficiency);
     } catch (error) {
       console.error(error);
-      alert("There was an error while receiving your data. Please refresh the page.");
+      alert(
+        "There was an error while receiving your data. Please refresh the page."
+      );
 
       return false;
     }

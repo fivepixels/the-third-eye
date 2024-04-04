@@ -1,8 +1,10 @@
 import {
   ExpectedRespondingFetchDataMessage,
   ExpectedRespondingImageAnalyzerMessage,
+  ExpectedRespondingTTSSpeakMessage,
   SendingFetchDataMessage,
-  SendingImageAnalyzerMessage
+  SendingImageAnalyzerMessage,
+  SendingTTSSpeakMessage
 } from "@shapes/message";
 import { AIPreference, Helpers } from "@shapes/user";
 import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
@@ -14,6 +16,7 @@ class ImageAnalyzer extends Helper {
   private allImages: HTMLImageElement[];
   private aiPreference: AIPreference;
   private mouseIndicator: HTMLDivElement;
+
   private readonly marginPrefix = 10;
   private readonly paddingPrefix = 15;
 
@@ -56,7 +59,9 @@ class ImageAnalyzer extends Helper {
   }
 
   private changeIndicatorVisibility(visibility: boolean) {
-    this.mouseIndicator.style.backgroundColor = visibility ? "green" : "transparent";
+    this.mouseIndicator.style.backgroundColor = visibility
+      ? "green"
+      : "transparent";
   }
 
   private async init() {
@@ -97,9 +102,19 @@ class ImageAnalyzer extends Helper {
       }
 
       if (currentKey === "Enter") {
-        console.log(this.selectedImageSrc);
-
         if (!this.selectedImageSrc) return;
+
+        sendCommandMessage<
+          SendingTTSSpeakMessage,
+          ExpectedRespondingTTSSpeakMessage
+        >({
+          messageBody: {
+            type: "TTS",
+            body: {
+              speak: "Wait a second... We are analyzing the current image."
+            }
+          }
+        });
 
         this.analyzeSelectedImage(this.selectedImageSrc);
       }
@@ -169,7 +184,10 @@ class ImageAnalyzer extends Helper {
   }
 
   private analyzeSelectedImage(imageUrl: string) {
-    sendCommandMessage<SendingImageAnalyzerMessage, ExpectedRespondingImageAnalyzerMessage>({
+    sendCommandMessage<
+      SendingImageAnalyzerMessage,
+      ExpectedRespondingImageAnalyzerMessage
+    >({
       messageBody: {
         type: "IMAGE_ANALYZER",
         body: {

@@ -68,11 +68,18 @@ class Mover extends Helper {
     });
 
     this.mainDOM.addEventListener("mousemove", movingMouseEvent => {
-      if (this.currentMode === "NONE" || this.currentMode === "ZOOMING" || !this.isMouseDown)
+      if (
+        this.currentMode === "NONE" ||
+        this.currentMode === "ZOOMING" ||
+        !this.isMouseDown
+      )
         return;
 
       if (this.currentMode === "MOVING") {
-        this.moveMainDOM(movingMouseEvent.movementX, movingMouseEvent.movementY);
+        this.moveMainDOM(
+          movingMouseEvent.movementX,
+          movingMouseEvent.movementY
+        );
         return;
       }
     });

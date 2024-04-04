@@ -109,6 +109,7 @@ const ImageAnalyzerCallback: RespondingMessageMainFunction<
     console.log(`LOGGING: RESULT FOR PAGE ANALYZER - ${analyzedImageScript}`);
     logged = true;
   }
+
   return {
     script: analyzedImageScript,
     spoken,
@@ -145,7 +146,7 @@ const textSummarizerCallback: RespondingMessageMainFunction<
 };
 
 export const defaultUserConfiguration: user = {
-  isConfigured: false,
+  isCreated: true,
   neededHelpers: [],
   personalPreference: {
     colourAdjuster: {
@@ -162,7 +163,7 @@ export const defaultUserConfiguration: user = {
 const initializeServiceWorker = async (): Promise<void> => {
   const userInfo = (await chrome.storage.sync.get()) as user;
 
-  if (userInfo === ({} as any)) {
+  if (!userInfo.isCreated) {
     await chrome.storage.sync.set(defaultUserConfiguration);
   }
 
@@ -171,10 +172,22 @@ const initializeServiceWorker = async (): Promise<void> => {
 
 initializeServiceWorker();
 
-chrome.runtime.onMessage.addListener(AttachListener("FETCH_DATA", fetchDataCallback));
-chrome.runtime.onMessage.addListener(AttachListener("CHANGE_DATA", changeDataCallback));
+chrome.runtime.onMessage.addListener(
+  AttachListener("FETCH_DATA", fetchDataCallback)
+);
+chrome.runtime.onMessage.addListener(
+  AttachListener("CHANGE_DATA", changeDataCallback)
+);
 chrome.runtime.onMessage.addListener(AttachListener("TTS", ttsCallback));
-chrome.runtime.onMessage.addListener(AttachListener("TTS_STOP", ttsStopCallback));
-chrome.runtime.onMessage.addListener(AttachListener("PAGE_ANALYZER", pageAnalyzerCallback));
-chrome.runtime.onMessage.addListener(AttachListener("IMAGE_ANALYZER", ImageAnalyzerCallback));
-chrome.runtime.onMessage.addListener(AttachListener("TEXT_SUMMARIZER", textSummarizerCallback));
+chrome.runtime.onMessage.addListener(
+  AttachListener("TTS_STOP", ttsStopCallback)
+);
+chrome.runtime.onMessage.addListener(
+  AttachListener("PAGE_ANALYZER", pageAnalyzerCallback)
+);
+chrome.runtime.onMessage.addListener(
+  AttachListener("IMAGE_ANALYZER", ImageAnalyzerCallback)
+);
+chrome.runtime.onMessage.addListener(
+  AttachListener("TEXT_SUMMARIZER", textSummarizerCallback)
+);

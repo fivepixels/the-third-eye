@@ -5,13 +5,19 @@ import {
   SendingMessageShape
 } from "@shapes/message";
 
-interface SendingMessageReceive<T extends SendingMessage, U extends ExpectedRespondingMessage> {
+interface SendingMessageReceive<
+  T extends SendingMessage,
+  U extends ExpectedRespondingMessage
+> {
   messageBody: SendingMessageShape<T>;
   onMessageReceive?: (body: U) => void;
   onError?: (errorMessage: string) => void;
 }
 
-export function sendCommandMessage<T extends SendingMessage, U extends ExpectedRespondingMessage>({
+export function sendCommandMessage<
+  T extends SendingMessage,
+  U extends ExpectedRespondingMessage
+>({
   messageBody,
   onMessageReceive,
   onError

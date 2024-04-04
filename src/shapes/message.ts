@@ -21,22 +21,26 @@ export interface ExpectedRespondingMessage {}
 
 // DATA
 export interface SendingFetchDataMessage extends SendingMessage {}
-export interface ExpectedRespondingFetchDataMessage extends ExpectedRespondingMessage {
+export interface ExpectedRespondingFetchDataMessage
+  extends ExpectedRespondingMessage {
   userInfo: user;
 }
 
 export interface SendingChangeDataMessage extends SendingMessage {
   changedData: user;
 }
-export interface ExpectedRespondingChangeDataMessage extends ExpectedRespondingMessage {}
+export interface ExpectedRespondingChangeDataMessage
+  extends ExpectedRespondingMessage {}
 
 // TTS
 export interface SendingTTSSpeakMessage extends SendingMessage {
   speak: string;
 }
-export interface ExpectedRespondingTTSSpeakMessage extends ExpectedRespondingMessage {}
+export interface ExpectedRespondingTTSSpeakMessage
+  extends ExpectedRespondingMessage {}
 export interface SendingTTSStopMessage extends SendingMessage {}
-export interface ExpectedRespondingTTSStopMessage extends ExpectedRespondingMessage {}
+export interface ExpectedRespondingTTSStopMessage
+  extends ExpectedRespondingMessage {}
 
 // AI
 export interface SendingAIMessage<T> {
@@ -55,8 +59,12 @@ export interface ExpectedRespondingAIMessage {
 export interface SendingPageAnalyzerMessage
   extends SendingAIMessage<ExtractedWebPageContent>,
     SendingMessage {}
-export interface SendingImageAnalyzerMessage extends SendingMessage, SendingAIMessage<string> {}
-export interface SendingTextSummarizerMessage extends SendingMessage, SendingAIMessage<string> {}
+export interface SendingImageAnalyzerMessage
+  extends SendingMessage,
+    SendingAIMessage<string> {}
+export interface SendingTextSummarizerMessage
+  extends SendingMessage,
+    SendingAIMessage<string> {}
 
 export interface ExpectedRespondingPageAnalyzerMessage
   extends ExpectedRespondingMessage,
@@ -68,7 +76,10 @@ export interface ExpectedRespondingTextSummarizerMessage
   extends ExpectedRespondingMessage,
     ExpectedRespondingAIMessage {}
 
-export type responseCallback<T extends SendingMessage, U extends ExpectedRespondingMessage> = (
+export type responseCallback<
+  T extends SendingMessage,
+  U extends ExpectedRespondingMessage
+> = (
   message: SendingMessageShape<T>,
   sender: chrome.runtime.MessageSender,
   sendResponse: (response: RespondingMessageShape<U>) => void
@@ -87,4 +98,7 @@ export interface RespondingMessageShape<T extends ExpectedRespondingMessage> {
 export type RespondingMessageMainFunction<
   T extends SendingMessage,
   U extends ExpectedRespondingMessage
-> = (message: SendingMessageShape<T>, sender: chrome.runtime.MessageSender) => Promise<U> | U;
+> = (
+  message: SendingMessageShape<T>,
+  sender: chrome.runtime.MessageSender
+) => Promise<U> | U;

@@ -22,7 +22,9 @@ class StorageManager {
     return response.userInfo;
   }
 
-  public async setUser(setUserCallback: (userInfo: user) => Partial<user>): Promise<void> {
+  public async setUser(
+    setUserCallback: (userInfo: user) => Partial<user>
+  ): Promise<void> {
     const prevUserInfo = await this.getUser();
     const updatedUserInfo = setUserCallback(prevUserInfo);
     const changedUserInfo = {
@@ -30,7 +32,10 @@ class StorageManager {
       ...updatedUserInfo
     };
 
-    await getResponseFromMessage<SendingChangeDataMessage, ExpectedRespondingChangeDataMessage>({
+    await getResponseFromMessage<
+      SendingChangeDataMessage,
+      ExpectedRespondingChangeDataMessage
+    >({
       type: "CHANGE_DATA",
       body: {
         changedData: changedUserInfo

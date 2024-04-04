@@ -1,4 +1,7 @@
-import { getResponseFromMessage, sendCommandMessage } from "@src/core/cs/utils/messenger";
+import {
+  getResponseFromMessage,
+  sendCommandMessage
+} from "@src/core/cs/utils/messenger";
 import {
   ExpectedRespondingChangeDataMessage,
   ExpectedRespondingFetchDataMessage,
@@ -16,7 +19,8 @@ async function popup() {
 
     const createdErrorMessage = document.createElement("p");
 
-    createdErrorMessage.innerText = "There is an error with initializing the UI/UX.";
+    createdErrorMessage.innerText =
+      "There is an error with initializing the UI/UX.";
     createdErrorMessage.style.color = "red";
     createdErrorMessage.style.fontWeight = "700";
 
@@ -44,6 +48,7 @@ async function popup() {
     "Colour Deficiency",
     "These options for the people who have Colour Blindness. You can choose one of these selections."
   );
+
   const aiLayout = addLayout(
     preferenceLayout,
     "AI Deficiency",
@@ -58,8 +63,8 @@ async function popup() {
     body: {}
   });
 
-  const allHelpers: ButtonUIOption[] = [];
-  const allPreferences: ButtonUIOption[] = [];
+  const allHelpers: AddButtonReceive[] = [];
+  const allPreferences: AddButtonReceive[] = [];
 
   Object.keys(Helpers).map(currentKey => {
     const currentHelper = Helpers[currentKey as keyof typeof Helpers];
@@ -78,7 +83,9 @@ async function popup() {
           return prevUser;
         }
 
-        prevUser.neededHelpers = prevUser.neededHelpers.filter(value => value !== currentId);
+        prevUser.neededHelpers = prevUser.neededHelpers.filter(
+          value => value !== currentId
+        );
 
         return prevUser;
       }
@@ -86,16 +93,19 @@ async function popup() {
   });
 
   Object.keys(ColourDeficiency).map(currentKey => {
-    const currentDeficiency = ColourDeficiency[currentKey as keyof typeof ColourDeficiency];
+    const currentDeficiency =
+      ColourDeficiency[currentKey as keyof typeof ColourDeficiency];
 
     allPreferences.push({
       title: currentDeficiency,
       layout: colourDeficiencyLaouyt,
       uniqueAmong: Object.values(ColourDeficiency),
       defaultValue: () =>
-        userInfo.personalPreference.colourAdjuster.deficiency === currentDeficiency,
+        userInfo.personalPreference.colourAdjuster.deficiency ===
+        currentDeficiency,
       onChanged(prevUser) {
-        prevUser.personalPreference.colourAdjuster.deficiency = currentDeficiency;
+        prevUser.personalPreference.colourAdjuster.deficiency =
+          currentDeficiency;
         return prevUser;
       }
     });
@@ -147,27 +157,27 @@ async function popup() {
   });
 }
 
-function addLayout(parentLayout: HTMLElement, title: string, description?: string): HTMLDivElement {
+function addLayout(
+  parentLayout: HTMLElement,
+  title: string,
+  description: string
+): HTMLDivElement {
   const createdLayout = document.createElement("div");
   const createdTitle = document.createElement("h2");
+  const createdDescription = document.createElement("p");
 
   createdTitle.innerText = title;
   createdTitle.id = title.replace(" ", "-");
+  createdDescription.innerText = description;
 
   createdLayout.appendChild(createdTitle);
-
-  if (description) {
-    const createdDescription = document.createElement("p");
-    createdDescription.innerText = description;
-    createdLayout.appendChild(createdDescription);
-  }
-
+  createdLayout.appendChild(createdDescription);
   parentLayout.appendChild(createdLayout);
 
   return createdLayout;
 }
 
-interface ButtonUIOption {
+interface AddButtonReceive {
   layout: HTMLElement;
   title: string;
   uniqueAmong?: string[];
@@ -180,18 +190,25 @@ interface ButtonUIOption {
       };
   onChanged: (prevUser: user, id: string, changedTo: boolean | number) => user;
 }
-function addButton({ layout, title, defaultValue, uniqueAmong, onChanged }: ButtonUIOption) {
+
+function addButton({
+  layout,
+  title,
+  defaultValue,
+  uniqueAmong,
+  onChanged
+}: AddButtonReceive) {
   const createdParentDiv = document.createElement("div");
   const createdButton = document.createElement("input");
   const createdLabel = document.createElement("label");
+
+  const defaultButtonValue = defaultValue();
+  const isDefaultValueBoolean = typeof defaultButtonValue === "boolean";
 
   createdParentDiv.style.display = "flex";
   createdParentDiv.style.flexDirection = "row";
   createdParentDiv.style.alignItems = "center";
   createdParentDiv.style.justifyContent = "left";
-
-  const defaultButtonValue = defaultValue();
-  const isDefaultValueBoolean = typeof defaultButtonValue === "boolean";
 
   if (isDefaultValueBoolean) {
     createdButton.type = "checkbox";
@@ -205,43 +222,51 @@ function addButton({ layout, title, defaultValue, uniqueAmong, onChanged }: Butt
 
   createdButton.id = title;
 
-  createdButton.addEventListener(isDefaultValueBoolean ? "click" : "change", async () => {
-    const { userInfo } = await getResponseFromMessage<
-      SendingFetchDataMessage,
-      ExpectedRespondingFetchDataMessage
-    >({
-      type: "FETCH_DATA",
-      body: {}
-    });
+  createdButton.addEventListener(
+    isDefaultValueBoolean ? "click" : "change",
+    async () => {
+      const { userInfo } = await getResponseFromMessage<
+        SendingFetchDataMessage,
+        ExpectedRespondingFetchDataMessage
+      >({
+        type: "FETCH_DATA",
+        body: {}
+      });
 
-    if (uniqueAmong) {
-      const allButtons = document.querySelectorAll("input");
+      if (uniqueAmong) {
+        const allButtons = document.querySelectorAll("input");
 
-      const selectedButtons = Array.from(allButtons).filter(currentButton =>
-        uniqueAmong.includes(currentButton.id)
+        const selectedButtons = Array.from(allButtons).filter(currentButton =>
+          uniqueAmong.includes(currentButton.id)
+        );
+
+        selectedButtons.map(currentButton => {
+          currentButton.checked = false;
+          createdButton.checked = true;
+        });
+      }
+
+      const changedUserData = onChanged(
+        userInfo,
+        title,
+        isDefaultValueBoolean
+          ? createdButton.checked
+          : Number(createdButton.value)
       );
 
-      selectedButtons.map(currentButton => {
-        currentButton.checked = false;
-        createdButton.checked = true;
+      sendCommandMessage<
+        SendingChangeDataMessage,
+        ExpectedRespondingChangeDataMessage
+      >({
+        messageBody: {
+          type: "CHANGE_DATA",
+          body: {
+            changedData: changedUserData
+          }
+        }
       });
     }
-
-    const changedUserData = onChanged(
-      userInfo,
-      title,
-      isDefaultValueBoolean ? createdButton.checked : Number(createdButton.value)
-    );
-
-    sendCommandMessage<SendingChangeDataMessage, ExpectedRespondingChangeDataMessage>({
-      messageBody: {
-        type: "CHANGE_DATA",
-        body: {
-          changedData: changedUserData
-        }
-      }
-    });
-  });
+  );
 
   createdLabel.innerText = title;
   createdLabel.htmlFor = title;

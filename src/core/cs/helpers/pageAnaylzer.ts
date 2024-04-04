@@ -1,8 +1,10 @@
 import {
   ExpectedRespondingFetchDataMessage,
   ExpectedRespondingPageAnalyzerMessage,
+  ExpectedRespondingTTSSpeakMessage,
   SendingFetchDataMessage,
-  SendingPageAnalyzerMessage
+  SendingPageAnalyzerMessage,
+  SendingTTSSpeakMessage
 } from "@shapes/message";
 import {
   ExtractedWebPageContent,
@@ -51,9 +53,24 @@ class PageAnalyzer extends Helper {
   private attach() {
     this.mainDOM.addEventListener("keydown", event => {
       if (event.key === "Enter") {
+        sendCommandMessage<
+          SendingTTSSpeakMessage,
+          ExpectedRespondingTTSSpeakMessage
+        >({
+          messageBody: {
+            type: "TTS",
+            body: {
+              speak: "Wait a second... We are analyzing the current page."
+            }
+          }
+        });
+
         const webpageData = this.analyzePage();
 
-        sendCommandMessage<SendingPageAnalyzerMessage, ExpectedRespondingPageAnalyzerMessage>({
+        sendCommandMessage<
+          SendingPageAnalyzerMessage,
+          ExpectedRespondingPageAnalyzerMessage
+        >({
           messageBody: {
             type: "PAGE_ANALYZER",
             body: {
@@ -94,12 +111,14 @@ class PageAnalyzer extends Helper {
   }
 
   private getMetadatas(): HTMLMetaElement[] {
-    return Array.from(this.mainDOM.head.querySelectorAll("meta")).filter(value => {
-      const firstAttribute = value.attributes[0].nodeValue;
-      if (firstAttribute === null) return;
+    return Array.from(this.mainDOM.head.querySelectorAll("meta")).filter(
+      value => {
+        const firstAttribute = value.attributes[0].nodeValue;
+        if (firstAttribute === null) return;
 
-      return this.worthMetadataTypes.includes(firstAttribute);
-    });
+        return this.worthMetadataTypes.includes(firstAttribute);
+      }
+    );
   }
 
   private getMaindatas(): PageMainData {
@@ -109,12 +128,15 @@ class PageAnalyzer extends Helper {
     const links: PageLinks[] = [];
     const images: PageImages[] = [];
 
-    this.extractPropertiesFromTags<HTMLHeadingElement>("h1, h2, h3, h4, h5, h6", currentHeading => {
-      headings.push({
-        headingNumber: Number(currentHeading.tagName.slice(1, 2)),
-        content: currentHeading.innerHTML
-      });
-    });
+    this.extractPropertiesFromTags<HTMLHeadingElement>(
+      "h1, h2, h3, h4, h5, h6",
+      currentHeading => {
+        headings.push({
+          headingNumber: Number(currentHeading.tagName.slice(1, 2)),
+          content: currentHeading.innerHTML
+        });
+      }
+    );
 
     this.extractPropertiesFromTags<HTMLAnchorElement>("a", currentLink => {
       links.push({
@@ -138,7 +160,10 @@ class PageAnalyzer extends Helper {
     };
   }
 
-  private findCertainMetada(metaDatas: HTMLMetaElement[], firstAttribute: string): string {
+  private findCertainMetada(
+    metaDatas: HTMLMetaElement[],
+    firstAttribute: string
+  ): string {
     const satisfiedMetadata = metaDatas.find(value => {
       const foundFirstAttribute = value.attributes[0].nodeValue;
 
@@ -164,7 +189,7 @@ class PageAnalyzer extends Helper {
   ): void {
     const allSelectedTags = this.mainDOM.querySelectorAll(querySelector);
 
-    // @ts-ignore
+    // @ts-expect-error since the `callbackFunction` function will be the same...?
     Array.from(allSelectedTags).map(callbackFunction);
   }
 }

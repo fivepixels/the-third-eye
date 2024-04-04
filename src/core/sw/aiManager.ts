@@ -19,7 +19,6 @@ class AIManager {
       const response = await this.client.chat.completions.create({
         model: "gpt-3.5-turbo",
         temperature: this.getTemperature(degree),
-        max_tokens: this.getMaxTokens(degree),
         messages: [
           {
             role: "system",
@@ -35,7 +34,33 @@ class AIManager {
               },
               {
                 type: "text",
-                text: JSON.stringify(webpageContent)
+                text:
+                  "This is the metadata: " +
+                  JSON.stringify(webpageContent.metadata)
+              },
+              {
+                type: "text",
+                text:
+                  "This is the all headings: " +
+                  JSON.stringify(webpageContent.main.headings)
+              },
+              {
+                type: "text",
+                text:
+                  "This is all links included: " +
+                  JSON.stringify(webpageContent.main.links)
+              },
+              {
+                type: "text",
+                text:
+                  "This is all images attached: " +
+                  JSON.stringify(webpageContent.main.images)
+              },
+              {
+                type: "text",
+                text:
+                  "This is the innerText property of the body: " +
+                  JSON.stringify(webpageContent.main.innerText)
               }
             ]
           }
@@ -49,12 +74,14 @@ class AIManager {
     }
   }
 
-  public async analyzeImage(selectedImageURL: string, degree: number): Promise<string> {
+  public async analyzeImage(
+    selectedImageURL: string,
+    degree: number
+  ): Promise<string> {
     try {
       const response = await this.client.chat.completions.create({
         model: "gpt-4-vision-preview",
         temperature: this.getTemperature(degree),
-        max_tokens: this.getMaxTokens(degree),
         messages: [
           {
             role: "system",
@@ -87,12 +114,14 @@ class AIManager {
     }
   }
 
-  public async summarizeText(selectedText: string, degree: number): Promise<string> {
+  public async summarizeText(
+    selectedText: string,
+    degree: number
+  ): Promise<string> {
     try {
       const response = await this.client.chat.completions.create({
         model: "gpt-3.5-turbo",
         temperature: this.getTemperature(degree),
-        max_tokens: this.getMaxTokens(degree),
         messages: [
           {
             role: "system",
@@ -125,7 +154,9 @@ class AIManager {
   private generateScript(response: OpenAI.Chat.ChatCompletion): string {
     const script = response.choices[0].message.content;
 
-    return script ? script : "The AI does not provide any scripts. Try to refresh or contact to us";
+    return script
+      ? script
+      : "The AI does not provide any scripts. Try to refresh or contact to us";
   }
 
   private generateErrorScript() {
@@ -134,9 +165,13 @@ class AIManager {
 
   private generateUserScript(degree: number): string {
     const adjective =
-      degree === 1 ? "simple and consice" : degree === 2 ? "normal" : "long fully descriptive";
+      degree === 1
+        ? "simple and consice"
+        : degree === 2
+          ? "normal"
+          : "long fully descriptive";
 
-    return `Generate a ${adjective} script for blind people. Print script only please. Thank you!`;
+    return `Generate a ${adjective} script for blind people. Print ONLY SCRIPT please.`;
   }
 
   private getTemperature(degree: number): number {

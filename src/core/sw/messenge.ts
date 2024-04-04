@@ -22,7 +22,10 @@ export default function AttachListener<
 
         sendResponse({ body: responseBody, successfullyProcessed: true });
       } catch (error) {
-        sendResponse({ body: {} as U, successfullyProcessed: "LISTENER_ERROR" });
+        sendResponse({
+          body: {} as U,
+          successfullyProcessed: "LISTENER_ERROR"
+        });
       }
     })();
 

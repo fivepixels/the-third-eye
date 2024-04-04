@@ -21,7 +21,8 @@ class TextReader extends Helper {
   private currentMode: TextReaderMode | "NONE";
   private aiPreference: AIPreference;
 
-  readonly attachableTagsType = "h1, h2, h3, h4, h5, h6, span, p, a, li, ul, ol";
+  readonly attachableTagsType =
+    "h1, h2, h3, h4, h5, h6, span, p, a, li, ul, ol";
 
   constructor() {
     super(Helpers.TEXT_SUMMARIZER);
@@ -67,15 +68,17 @@ class TextReader extends Helper {
   private findAllTags() {
     this.allTags = [];
 
-    this.mainDOM.body.querySelectorAll(this.attachableTagsType).forEach(selectedNode => {
-      const currentNode = selectedNode as HTMLElement;
-      currentNode.style.backgroundColor = "transparent";
+    this.mainDOM.body
+      .querySelectorAll(this.attachableTagsType)
+      .forEach(selectedNode => {
+        const currentNode = selectedNode as HTMLElement;
+        currentNode.style.backgroundColor = "transparent";
 
-      this.allTags.push({
-        node: selectedNode,
-        selected: false
+        this.allTags.push({
+          node: selectedNode,
+          selected: false
+        });
       });
-    });
   }
 
   private attach() {
@@ -89,7 +92,7 @@ class TextReader extends Helper {
         this.currentMode = "PLAIN";
       } else if (event.key === "Control") {
         this.currentMode = "SUMMARIZED";
-      } else if (event.key === "a") {
+      } else if (event.key === "Enter") {
         this.analyzeText();
       } else if (event.key === "Backspace") {
         this.stopTalking();
@@ -147,7 +150,10 @@ class TextReader extends Helper {
     const allText = this.generateText();
 
     if (this.currentMode === "PLAIN") {
-      sendCommandMessage<SendingTTSSpeakMessage, ExpectedRespondingTTSSpeakMessage>({
+      sendCommandMessage<
+        SendingTTSSpeakMessage,
+        ExpectedRespondingTTSSpeakMessage
+      >({
         messageBody: {
           type: "TTS",
           body: {
@@ -156,7 +162,10 @@ class TextReader extends Helper {
         }
       });
     } else {
-      sendCommandMessage<SendingTextSummarizerMessage, ExpectedRespondingTextSummarizerMessage>({
+      sendCommandMessage<
+        SendingTextSummarizerMessage,
+        ExpectedRespondingTextSummarizerMessage
+      >({
         messageBody: {
           type: "TEXT_SUMMARIZER",
           body: {
@@ -171,15 +180,20 @@ class TextReader extends Helper {
   }
 
   private async stopTalking(): Promise<void> {
-    sendCommandMessage<SendingTTSStopMessage, ExpectedRespondingTTSStopMessage>({
-      messageBody: {
-        type: "TTS_STOP",
-        body: {}
+    sendCommandMessage<SendingTTSStopMessage, ExpectedRespondingTTSStopMessage>(
+      {
+        messageBody: {
+          type: "TTS_STOP",
+          body: {}
+        }
       }
-    });
+    );
   }
 
-  private adjustBackgroundColor(currentElement: HTMLElement, to: "transparent" | "red" | "blue") {
+  private adjustBackgroundColor(
+    currentElement: HTMLElement,
+    to: "transparent" | "red" | "blue"
+  ) {
     currentElement.style.backgroundColor = to;
   }
 
