@@ -13,7 +13,6 @@ import TextReader from "./helpers/textReader";
 class App {
   private readonly actions: { [K in Helpers]: () => void } = {
     MOVER: () => new Mover(),
-    ZOOMER: () => {},
     COLOUR_ADJUSTER: () => new ColourAdjuster(),
     PAGE_ANALYZER: () => new PageAnalyzer(),
     IMAGE_ANALYZER: () => new ImageAnalyzer(),

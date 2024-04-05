@@ -1,6 +1,13 @@
 /* BASIC HELPER */
 
 import { AIPreference, Helpers } from "@shapes/user";
+import { sendCommandMessage } from "../utils/messenger";
+import {
+  ExpectedRespondingTTSSpeakMessage,
+  ExpectedRespondingTTSStopMessage,
+  SendingTTSSpeakMessage,
+  SendingTTSStopMessage
+} from "@src/shapes/message";
 
 abstract class Helper {
   private name: Helpers;
@@ -15,6 +22,35 @@ abstract class Helper {
   constructor(name: Helpers) {
     this.name = name;
     this.mainDOM = document;
+  }
+
+  protected speak(speak: string) {
+    sendCommandMessage<
+      SendingTTSSpeakMessage,
+      ExpectedRespondingTTSSpeakMessage
+    >({
+      messageBody: {
+        type: "TTS",
+        body: {
+          speak
+        }
+      }
+    });
+
+    return;
+  }
+
+  protected stopSpeaking() {
+    sendCommandMessage<SendingTTSStopMessage, ExpectedRespondingTTSStopMessage>(
+      {
+        messageBody: {
+          type: "TTS_STOP",
+          body: {}
+        }
+      }
+    );
+
+    return;
   }
 }
 

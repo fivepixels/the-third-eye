@@ -6,7 +6,6 @@ interface user {
 
 export enum Helpers {
   MOVER = "MOVER",
-  ZOOMER = "ZOOMER",
   COLOUR_ADJUSTER = "COLOUR_ADJUSTER",
   PAGE_ANALYZER = "PAGE_ANALYZER",
   IMAGE_ANALYZER = "IMAGE_ANALYZER",
