@@ -1,3 +1,5 @@
+/* Normal Helper: MOVER */
+
 import { Helpers } from "@src/shapes/user";
 import Helper from "./helper";
 

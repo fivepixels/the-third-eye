@@ -1,3 +1,5 @@
+/* Normal Helper: COLOUR ADJUSTER */
+
 /*
  * Inspired by ColorBlindly extension by @Andrew VanNess<http://oftheheadland.github.io/>
  * The fold that I copied the cssFilters values from : https://github.com/oftheheadland/Colorblindly/tree/master/filters

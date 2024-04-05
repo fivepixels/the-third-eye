@@ -1,10 +1,12 @@
+/* AI Helper: IMAGE ANALYZER */
+
 import {
   ExpectedRespondingFetchDataMessage,
   ExpectedRespondingImageAnalyzerMessage,
-  ExpectedRespondingTTSSpeakMessage,
+  ExpectedRespondingTTSStopMessage,
   SendingFetchDataMessage,
   SendingImageAnalyzerMessage,
-  SendingTTSSpeakMessage
+  SendingTTSStopMessage
 } from "@shapes/message";
 import { AIPreference, Helpers } from "@shapes/user";
 import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
@@ -99,24 +101,16 @@ class ImageAnalyzer extends Helper {
         this.allImages.map(currentImage =>
           this.adjustBackgroundColoursOfImages(currentImage, "red")
         );
+
+        return;
       }
 
       if (currentKey === "Enter") {
         if (!this.selectedImageSrc) return;
 
-        sendCommandMessage<
-          SendingTTSSpeakMessage,
-          ExpectedRespondingTTSSpeakMessage
-        >({
-          messageBody: {
-            type: "TTS",
-            body: {
-              speak: "Wait a second... We are analyzing the current image."
-            }
-          }
-        });
-
         this.analyzeSelectedImage(this.selectedImageSrc);
+
+        return;
       }
 
       if (currentKey === "r") {
@@ -125,6 +119,22 @@ class ImageAnalyzer extends Helper {
           this.adjustBackgroundColoursOfImages(currentImage, "none")
         );
         this.allImages = this.grabAllImageTags();
+
+        return;
+      }
+
+      if (currentKey === "BackSpace") {
+        sendCommandMessage<
+          SendingTTSStopMessage,
+          ExpectedRespondingTTSStopMessage
+        >({
+          messageBody: {
+            type: "TTS_STOP",
+            body: {}
+          }
+        });
+
+        return;
       }
     });
 

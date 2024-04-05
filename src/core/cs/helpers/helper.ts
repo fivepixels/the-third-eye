@@ -1,3 +1,5 @@
+/* BASIC HELPER */
+
 import { AIPreference, Helpers } from "@shapes/user";
 
 abstract class Helper {

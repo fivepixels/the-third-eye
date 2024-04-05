@@ -1,10 +1,12 @@
+/* AI Helper: PAGE ANALYZER */
+
 import {
   ExpectedRespondingFetchDataMessage,
   ExpectedRespondingPageAnalyzerMessage,
-  ExpectedRespondingTTSSpeakMessage,
   SendingFetchDataMessage,
   SendingPageAnalyzerMessage,
-  SendingTTSSpeakMessage
+  SendingTTSStopMessage,
+  ExpectedRespondingTTSStopMessage
 } from "@shapes/message";
 import {
   ExtractedWebPageContent,
@@ -53,18 +55,6 @@ class PageAnalyzer extends Helper {
   private attach() {
     this.mainDOM.addEventListener("keydown", event => {
       if (event.key === "Enter") {
-        sendCommandMessage<
-          SendingTTSSpeakMessage,
-          ExpectedRespondingTTSSpeakMessage
-        >({
-          messageBody: {
-            type: "TTS",
-            body: {
-              speak: "Wait a second... We are analyzing the current page."
-            }
-          }
-        });
-
         const webpageData = this.analyzePage();
 
         sendCommandMessage<
@@ -81,6 +71,22 @@ class PageAnalyzer extends Helper {
             }
           }
         });
+
+        return;
+      }
+
+      if (event.key === "Backspace") {
+        sendCommandMessage<
+          SendingTTSStopMessage,
+          ExpectedRespondingTTSStopMessage
+        >({
+          messageBody: {
+            type: "TTS_STOP",
+            body: {}
+          }
+        });
+
+        return;
       }
     });
   }

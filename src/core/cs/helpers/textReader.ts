@@ -1,3 +1,5 @@
+/* AI Helper: TEXT READER */
+
 import {
   ExpectedRespondingFetchDataMessage,
   ExpectedRespondingTTSSpeakMessage,
@@ -95,7 +97,15 @@ class TextReader extends Helper {
       } else if (event.key === "Enter") {
         this.analyzeText();
       } else if (event.key === "Backspace") {
-        this.stopTalking();
+        sendCommandMessage<
+          SendingTTSStopMessage,
+          ExpectedRespondingTTSStopMessage
+        >({
+          messageBody: {
+            type: "TTS_STOP",
+            body: {}
+          }
+        });
       } else {
         this.currentMode = "NONE";
       }
@@ -177,17 +187,6 @@ class TextReader extends Helper {
         }
       });
     }
-  }
-
-  private async stopTalking(): Promise<void> {
-    sendCommandMessage<SendingTTSStopMessage, ExpectedRespondingTTSStopMessage>(
-      {
-        messageBody: {
-          type: "TTS_STOP",
-          body: {}
-        }
-      }
-    );
   }
 
   private adjustBackgroundColor(
