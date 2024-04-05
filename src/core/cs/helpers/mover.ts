@@ -32,9 +32,11 @@ class Mover extends Helper {
     this.init();
   }
 
-  private init() {
+  onInitializing(): void {
     this.initializeIndicator();
+  }
 
+  private init() {
     this.mainDOM.addEventListener("keyup", () => {
       this.currentMode = "NONE";
       this.removeIndicator();

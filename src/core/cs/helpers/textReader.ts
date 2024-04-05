@@ -1,18 +1,16 @@
 /* AI Helper: TEXT READER */
 
 import {
-  ExpectedRespondingFetchDataMessage,
   ExpectedRespondingTTSSpeakMessage,
   ExpectedRespondingTTSStopMessage,
   ExpectedRespondingTextSummarizerMessage,
-  SendingFetchDataMessage,
   SendingTTSSpeakMessage,
   SendingTTSStopMessage,
   SendingTextSummarizerMessage
 } from "@shapes/message";
-import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
+import { sendCommandMessage } from "../utils/messenger";
 import Helper from "./helper";
-import { AIPreference, Helpers } from "@shapes/user";
+import user, { AIPreference, Helpers } from "@shapes/user";
 
 type TextReaderMode = "PLAIN" | "SUMMARIZED";
 class TextReader extends Helper {
@@ -34,36 +32,17 @@ class TextReader extends Helper {
 
     this.aiPreference = this.defaultAIPreference;
 
-    const result = this.init();
-
-    if (!result) {
-      alert("Please select your ai preference by clicking on the popup menu.");
-    }
-
     this.findAllTags();
     this.attach();
   }
 
-  private async init() {
-    try {
-      const { userInfo } = await getResponseFromMessage<
-        SendingFetchDataMessage,
-        ExpectedRespondingFetchDataMessage
-      >({
-        type: "FETCH_DATA",
-        body: {}
-      });
+  onInitializing(safeUserInfo: user): void {
+    const currentUserPersonalAIPreference = safeUserInfo.personalPreference.ai;
 
-      const currentUserPersonalAIPreference = userInfo.personalPreference.ai;
-
-      if (!currentUserPersonalAIPreference) return false;
-
+    if (currentUserPersonalAIPreference) {
       this.aiPreference = currentUserPersonalAIPreference;
 
-      return true;
-    } catch (error) {
-      console.error(error);
-      return false;
+      return;
     }
   }
 

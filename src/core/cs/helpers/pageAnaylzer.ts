@@ -1,9 +1,7 @@
 /* AI Helper: PAGE ANALYZER */
 
 import {
-  ExpectedRespondingFetchDataMessage,
   ExpectedRespondingPageAnalyzerMessage,
-  SendingFetchDataMessage,
   SendingPageAnalyzerMessage,
   SendingTTSStopMessage,
   ExpectedRespondingTTSStopMessage
@@ -15,8 +13,8 @@ import {
   PageLinks,
   PageMainData
 } from "@shapes/analyzer";
-import { AIPreference, Helpers } from "@shapes/user";
-import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
+import user, { AIPreference, Helpers } from "@shapes/user";
+import { sendCommandMessage } from "../utils/messenger";
 import Helper from "./helper";
 
 class PageAnalyzer extends Helper {
@@ -27,28 +25,16 @@ class PageAnalyzer extends Helper {
   constructor() {
     super(Helpers.PAGE_ANALYZER);
 
-    this.init();
     this.attach();
   }
 
-  private async init() {
-    try {
-      const { userInfo } = await getResponseFromMessage<
-        SendingFetchDataMessage,
-        ExpectedRespondingFetchDataMessage
-      >({
-        type: "FETCH_DATA",
-        body: {}
-      });
+  onInitializing(safeUserInfo: user): void {
+    const currentUserPersonalAIPreference = safeUserInfo.personalPreference.ai;
 
-      const currentUserPersonalAIPreference = userInfo.personalPreference.ai;
-
-      if (!currentUserPersonalAIPreference) return false;
-
+    if (currentUserPersonalAIPreference) {
       this.aiPreference = currentUserPersonalAIPreference;
-    } catch (error) {
-      console.error(error);
-      alert("Please select your ai preference by clicking on the popup menu.");
+
+      return;
     }
   }
 

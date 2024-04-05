@@ -10,12 +10,7 @@
  */
 
 import Helper from "./helper";
-import { getResponseFromMessage } from "../utils/messenger";
-import {
-  ExpectedRespondingFetchDataMessage,
-  SendingFetchDataMessage
-} from "@shapes/message";
-import { ColourDeficiency, Helpers } from "@src/shapes/user";
+import user, { ColourDeficiency, Helpers } from "@src/shapes/user";
 
 type CSSFilters = {
   [K in keyof typeof ColourDeficiency]: string;
@@ -41,39 +36,12 @@ class ColourAdjuster extends Helper {
 
   constructor() {
     super(Helpers.COLOUR_ADJUSTER);
-
-    this.init();
   }
 
-  private async init() {
-    try {
-      const { userInfo } = await getResponseFromMessage<
-        SendingFetchDataMessage,
-        ExpectedRespondingFetchDataMessage
-      >({
-        type: "FETCH_DATA",
-        body: {}
-      });
-
-      const currentUserDeficiency =
-        userInfo.personalPreference.colourAdjuster.deficiency;
-
-      if (!currentUserDeficiency) {
-        alert(
-          "Please select your colour deficiency by clicking on the popup menu."
-        );
-        return false;
-      }
-
-      this.applyCSSFilter(currentUserDeficiency);
-    } catch (error) {
-      console.error(error);
-      alert(
-        "There was an error while receiving your data. Please refresh the page."
-      );
-
-      return false;
-    }
+  onInitializing(safeUserInfo: user): void {
+    this.applyCSSFilter(
+      safeUserInfo.personalPreference.colourAdjuster.deficiency
+    );
   }
 
   private applyCSSFilter(colourDeficiencyToApply: ColourDeficiency) {
@@ -104,8 +72,6 @@ class ColourAdjuster extends Helper {
 
     this.mainDOM.body.appendChild(filterDiv);
     this.mainDOM.body.appendChild(styleTag);
-
-    // this.mainDOM.body.style.filter = "invert(100%)";
   }
 }
 

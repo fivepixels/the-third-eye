@@ -1,15 +1,13 @@
 /* AI Helper: IMAGE ANALYZER */
 
 import {
-  ExpectedRespondingFetchDataMessage,
   ExpectedRespondingImageAnalyzerMessage,
   ExpectedRespondingTTSStopMessage,
-  SendingFetchDataMessage,
   SendingImageAnalyzerMessage,
   SendingTTSStopMessage
 } from "@shapes/message";
-import { AIPreference, Helpers } from "@shapes/user";
-import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
+import user, { AIPreference, Helpers } from "@shapes/user";
+import { sendCommandMessage } from "../utils/messenger";
 import Helper from "./helper";
 
 class ImageAnalyzer extends Helper {
@@ -30,13 +28,20 @@ class ImageAnalyzer extends Helper {
     this.allImages = [];
     this.aiPreference = this.defaultAIPreference;
     this.mouseIndicator = document.createElement("div");
+  }
 
+  onInitializing(safeUserInfo: user): void {
+    const currentUserPersonalAIPreference = safeUserInfo.personalPreference.ai;
+
+    this.aiPreference = currentUserPersonalAIPreference;
+    this.allImages = this.grabAllImageTags();
+
+    this.attach();
     this.setupIndicator();
-    this.init();
   }
 
   private setupIndicator() {
-    const mouseIndicatorRadius = 20;
+    const mouseIndicatorRadius = 100;
 
     this.mouseIndicator.style.width = `${mouseIndicatorRadius}px`;
     this.mouseIndicator.style.height = `${mouseIndicatorRadius}px`;
@@ -64,30 +69,6 @@ class ImageAnalyzer extends Helper {
     this.mouseIndicator.style.backgroundColor = visibility
       ? "green"
       : "transparent";
-  }
-
-  private async init() {
-    try {
-      const { userInfo } = await getResponseFromMessage<
-        SendingFetchDataMessage,
-        ExpectedRespondingFetchDataMessage
-      >({
-        type: "FETCH_DATA",
-        body: {}
-      });
-
-      const currentUserPersonalAIPreference = userInfo.personalPreference.ai;
-
-      if (!currentUserPersonalAIPreference) return;
-
-      this.aiPreference = currentUserPersonalAIPreference;
-      this.allImages = this.grabAllImageTags();
-
-      this.attach();
-    } catch (error) {
-      console.error(error);
-      alert("Please select your ai preference by clicking on the popup menu.");
-    }
   }
 
   private attach() {
