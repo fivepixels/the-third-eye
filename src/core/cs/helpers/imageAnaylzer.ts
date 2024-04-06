@@ -103,8 +103,7 @@ class ImageAnalyzer extends Helper {
 
         return;
       }
-
-      if (currentKey === "BackSpace") {
+      if (currentKey === "Backspace") {
         sendCommandMessage<
           SendingTTSStopMessage,
           ExpectedRespondingTTSStopMessage
