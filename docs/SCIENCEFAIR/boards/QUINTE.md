@@ -1,20 +1,20 @@
-<img src="../../images/header.jpg" />
+<img src="../../../images/header.jpg" />
 
 # THE THIRD EYE
 
-## BOARD
+## Board and Materials Images
 
-|                                  Whole Board                                  |
-| :---------------------------------------------------------------------------: |
-| ![an image showing the whole board](../../images/sciencefair/board/board.jpg) |
+|                                   Whole Board                                    |
+| :------------------------------------------------------------------------------: |
+| ![an image showing the whole board](../../../images/sciencefair/board/board.jpg) |
 
-|                                          LEFT SIDE                                           |                                              MIDDLE                                              |                                           RIGHT SIDE                                           |
-| :------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: |
-| ![an image showing the left side of the board](../../images/sciencefair/board/left_side.jpg) | ![an image showing the middle side of the board](../../images/sciencefair/board/middle_side.jpg) | ![an image showing the right side of the board](../../images/sciencefair/board/right_side.jpg) |
+|                                            LEFT SIDE                                            |                                               MIDDLE                                                |                                            RIGHT SIDE                                             |
+| :---------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: |
+| ![an image showing the left side of the board](../../../images/sciencefair/board/left_side.jpg) | ![an image showing the middle side of the board](../../../images/sciencefair/board/middle_side.jpg) | ![an image showing the right side of the board](../../../images/sciencefair/board/right_side.jpg) |
 
-|                                     Computer                                      |                                   iPad                                    |                                     Diagram                                     |                                       Printed Codes                                       |
-| :-------------------------------------------------------------------------------: | :-----------------------------------------------------------------------: | :-----------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
-| ![an image showing the computer](../../images/sciencefair/materials/computer.jpg) | ![an image showing the ipad](../../images/sciencefair/materials/ipad.jpg) | ![an image showing the diagram](../../images/sciencefair/materials/diagram.jpg) | ![an image showing the printed code](../../images/sciencefair/materials/printed_code.jpg) |
+|                                       Computer                                       |                                     iPad                                     |                                      Diagram                                       |                                        Printed Codes                                         |
+| :----------------------------------------------------------------------------------: | :--------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------: |
+| ![an image showing the computer](../../../images/sciencefair/materials/computer.jpg) | ![an image showing the ipad](../../../images/sciencefair/materials/ipad.jpg) | ![an image showing the diagram](../../../images/sciencefair/materials/diagram.jpg) | ![an image showing the printed code](../../../images/sciencefair/materials/printed_code.jpg) |
 
 ## LEFT SIDE
 
@@ -36,17 +36,17 @@ Before starting on this project directly, I first had to define what types of bl
 
 If users have partial blindness, they would need to move their heads or vision to focus on something. However, with this helper, the users will be able to move the whole page with the option key and zoom in an dout the whole page with the shift key.
 
-|                                       Before                                        |                                       After                                       |
-| :---------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: |
-| ![Before using the Mover Helper](../../images/sciencefair/effects/mover_before.png) | ![After using the Mover Helper](../../images/sciencefair/effects/mover_after.png) |
+|                                         Before                                         |                                        After                                         |
+| :------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: |
+| ![Before using the Mover Helper](../../../images/sciencefair/effects/mover_before.png) | ![After using the Mover Helper](../../../images/sciencefair/effects/mover_after.png) |
 
 ### Normal Helper: Colour Adjuster
 
 If users have a colour deficiency in their vision, it would be hard time seeing the colours on a page in a correct way. With this helper, they can get a colour fix by specifying what type of colour deficiency they have.
 
-|                                                 Before                                                  |                                                 After                                                 |
-| :-----------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
-| ![Before using the Colour Adjuster Helper](../../images/sciencefair/effects/colour_adjuster_before.png) | ![After using the Colour Adjuster Helper](../../images/sciencefair/effects/colour_adjuster_after.png) |
+|                                                   Before                                                   |                                                  After                                                   |
+| :--------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------: |
+| ![Before using the Colour Adjuster Helper](../../../images/sciencefair/effects/colour_adjuster_before.png) | ![After using the Colour Adjuster Helper](../../../images/sciencefair/effects/colour_adjuster_after.png) |
 
 ### AI Helper: Text Reader
 
