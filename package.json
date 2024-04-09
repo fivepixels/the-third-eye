@@ -34,9 +34,6 @@
     "dev": "rm -rf dist/ && webpack --watch",
     "format": "bunx prettier --write . && bunx eslint --fix ."
   },
-  "dependencies": {
-    "openai": "^4.28.4"
-  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/chrome": "^0.0.262",

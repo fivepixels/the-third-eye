@@ -26,13 +26,10 @@ export interface PersonalReferenceType {
   colourAdjuster: {
     deficiency: ColourDeficiency;
   };
-  ai: AIPreference;
-}
-
-export interface AIPreference {
-  degree: number;
-  preferToLog: boolean;
-  preferToSpeak: boolean;
+  ai: {
+    key?: string;
+    degree: number;
+  };
 }
 
 export default user;

@@ -1,25 +1,16 @@
 import {
-  ExpectedRespondingPageAnalyzerMessage,
-  ExpectedRespondingChangeDataMessage,
   ExpectedRespondingFetchDataMessage,
   RespondingMessageMainFunction,
   SendingChangeDataMessage,
   SendingFetchDataMessage,
   SendingImageAnalyzerMessage,
-  ExpectedRespondingImageAnalyzerMessage,
   SendingTTSSpeakMessage,
-  ExpectedRespondingTTSSpeakMessage,
   SendingTTSStopMessage,
-  ExpectedRespondingTTSStopMessage,
   SendingTextSummarizerMessage,
-  ExpectedRespondingTextSummarizerMessage,
   SendingPageAnalyzerMessage
 } from "@shapes/message";
 import user, { ColourDeficiency } from "@shapes/user";
 import AttachListener from "./messenge";
-import AIManager from "./aiManager";
-
-const aiManager = new AIManager();
 
 const fetchDataCallback: RespondingMessageMainFunction<
   SendingFetchDataMessage,
@@ -33,19 +24,15 @@ const fetchDataCallback: RespondingMessageMainFunction<
 };
 
 const changeDataCallback: RespondingMessageMainFunction<
-  SendingChangeDataMessage,
-  ExpectedRespondingChangeDataMessage
+  SendingChangeDataMessage
 > = async message => {
   await chrome.storage.sync.set(message.body.changedData);
 
-  return {
-    updated: true
-  };
+  return;
 };
 
 const ttsCallback: RespondingMessageMainFunction<
-  SendingTTSSpeakMessage,
-  ExpectedRespondingTTSSpeakMessage
+  SendingTTSSpeakMessage
 > = async message => {
   chrome.tts.speak(message.body.speak);
 
@@ -53,8 +40,7 @@ const ttsCallback: RespondingMessageMainFunction<
 };
 
 const ttsStopCallback: RespondingMessageMainFunction<
-  SendingTTSStopMessage,
-  ExpectedRespondingTTSStopMessage
+  SendingTTSStopMessage
 > = async () => {
   chrome.tts.stop();
 
@@ -62,125 +48,69 @@ const ttsStopCallback: RespondingMessageMainFunction<
 };
 
 const pageAnalyzerCallback: RespondingMessageMainFunction<
-  SendingPageAnalyzerMessage,
-  ExpectedRespondingPageAnalyzerMessage
-> = async message => {
-  let spoken = false;
-  let logged = false;
-
+  SendingPageAnalyzerMessage
+> = async () => {
   chrome.tts.speak("Wait a second, we are analyzing the current page");
-
-  const analyzedPageScript = await aiManager.analyzePage(
-    message.body.referencedData,
-    message.body.degree
-  );
-
   chrome.tts.stop();
 
-  if (message.body.speak) {
-    chrome.tts.speak(analyzedPageScript);
-    spoken = true;
-  }
+  // const analyzedPageScript = await aiManager.analyzePage(
+  //   message.body.referencedData,
+  //   message.body.degree
+  // );
 
-  if (message.body.log) {
-    console.log(`LOGGING: RESULT FOR PAGE ANALYZER - ${analyzedPageScript}`);
-    logged = true;
-  }
-
-  return {
-    script: analyzedPageScript,
-    spoken,
-    logged
-  };
+  return;
 };
 
 const ImageAnalyzerCallback: RespondingMessageMainFunction<
-  SendingImageAnalyzerMessage,
-  ExpectedRespondingImageAnalyzerMessage
-> = async message => {
-  let spoken = false;
-  let logged = false;
-
+  SendingImageAnalyzerMessage
+> = async () => {
   chrome.tts.speak("Wait a second, we are analyzing the current image");
 
-  const analyzedImageScript = await aiManager.analyzeImage(
-    message.body.referencedData,
-    message.body.degree
-  );
+  // const analyzedImageScript = await aiManager.analyzeImage(
+  //   message.body.referencedData,
+  //   message.body.degree
+  // );
 
   chrome.tts.stop();
 
-  if (message.body.speak) {
-    chrome.tts.speak(analyzedImageScript);
-    spoken = true;
-  }
-
-  if (message.body.log) {
-    console.log(`LOGGING: RESULT FOR PAGE ANALYZER - ${analyzedImageScript}`);
-    logged = true;
-  }
-
-  return {
-    script: analyzedImageScript,
-    spoken,
-    logged
-  };
+  return;
 };
 
 const textSummarizerCallback: RespondingMessageMainFunction<
-  SendingTextSummarizerMessage,
-  ExpectedRespondingTextSummarizerMessage
-> = async message => {
-  let spoken = false;
-  let logged = false;
-
+  SendingTextSummarizerMessage
+> = async ({ body: { text } }) => {
   chrome.tts.speak("Wait a second, we are analyzing the current text");
 
-  const summarizedScript = await aiManager.summarizeText(
-    message.body.referencedData,
-    message.body.degree
-  );
+  // const summarizedScript = await aiManager.summarizeText(
+  //   message.body.referencedData,
+  //   message.body.degree
+  // );
+  // chrome.tts.speak(summarizedScript);
 
   chrome.tts.stop();
 
-  if (message.body.speak) {
-    chrome.tts.speak(summarizedScript);
-    spoken = true;
-  }
-
-  if (message.body.log) {
-    console.log(`LOGGING: RESULT FOR PAGE ANALYZER - ${summarizedScript}`);
-    logged = true;
-  }
-
-  return {
-    script: summarizedScript,
-    spoken,
-    logged
-  };
-};
-
-export const defaultUserConfiguration: user = {
-  isCreated: true,
-  neededHelpers: [],
-  personalPreference: {
-    colourAdjuster: {
-      deficiency: ColourDeficiency.MONOCHROMACY
-    },
-    ai: {
-      degree: 1,
-      preferToSpeak: true,
-      preferToLog: true
-    }
-  }
+  return;
 };
 
 const initializeServiceWorker = async (): Promise<void> => {
   const userInfo = (await chrome.storage.sync.get()) as user;
 
   if (!userInfo.isCreated) {
-    await chrome.storage.sync.set(defaultUserConfiguration);
+    await chrome.storage.sync.set({
+      isCreated: true,
+      neededHelpers: [],
+      personalPreference: {
+        colourAdjuster: {
+          deficiency: ColourDeficiency.MONOCHROMACY
+        },
+        ai: {
+          degree: 3
+        }
+      }
+    } as user);
   }
+
+  await fetch();
 
   return;
 };
