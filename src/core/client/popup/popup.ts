@@ -159,6 +159,12 @@ function addLayout(
   createdTitle.id = title.replace(" ", "-");
   createdDescription.innerText = description;
 
+  if (degree === 2) {
+    const createdLine = document.createElement("hr");
+    createdLine.style.marginTop = "20px";
+    createdLayout.appendChild(createdLine);
+  }
+
   createdLayout.appendChild(createdTitle);
   createdLayout.appendChild(createdDescription);
   parentLayout.appendChild(createdLayout);
@@ -200,7 +206,9 @@ function addButton({
   createdParentDiv.style.display = "flex";
   createdParentDiv.style.flexDirection = "row";
   createdParentDiv.style.alignItems = "center";
-  createdParentDiv.style.justifyContent = "left";
+  createdParentDiv.style.justifyContent = "space-between";
+
+  createdButton.style.width = "50%";
 
   if (typeof defaultButtonValue === "object") {
     const defaultValue = defaultButtonValue as ButtonDefaultValue;
@@ -209,12 +217,16 @@ function addButton({
     createdButton.max = `${defaultValue.max}`;
     createdButton.min = `${defaultValue.min}`;
     createdButton.defaultValue = `${defaultValue.default}`;
+  } else if (typeof defaultButtonValue === "string") {
+    createdButton.type = "input";
+    createdButton.defaultValue = `${defaultButtonValue}`;
   } else if (typeof defaultButtonValue === "boolean") {
     createdButton.type = "checkbox";
     createdButton.defaultChecked = defaultButtonValue;
-  } else if (typeof defaultButtonValue === "string") {
-    createdButton.defaultValue = `${defaultButtonValue}`;
-    createdButton.type = "input";
+
+    createdButton.style.display = "flex";
+    createdButton.style.alignItems = "center";
+    createdButton.style.justifyContent = "flex-end";
   }
 
   createdButton.id = title;
@@ -264,13 +276,8 @@ function addButton({
   createdLabel.innerText = title;
   createdLabel.htmlFor = title;
 
-  if (typeof defaultValue === "boolean") {
-    createdParentDiv.appendChild(createdLabel);
-    createdParentDiv.appendChild(createdButton);
-  } else {
-    createdParentDiv.appendChild(createdButton);
-    createdParentDiv.appendChild(createdLabel);
-  }
+  createdParentDiv.appendChild(createdLabel);
+  createdParentDiv.appendChild(createdButton);
 
   layout.appendChild(createdParentDiv);
 }
