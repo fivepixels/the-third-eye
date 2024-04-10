@@ -11,33 +11,20 @@ import {
   PageLinks,
   PageMainData
 } from "@shapes/analyzer";
-import user, { AIPreference, Helpers } from "@shapes/user";
 import { sendCommandMessage } from "../utils/messenger";
-import Helper from "./helper";
 
-class PageAnalyzer extends Helper {
+class PageAnalyzer {
   readonly NOT_PROVIDED = "CONTENT NOT PROVIDED";
   readonly worthMetadataTypes = ["description", "author", "keywords"];
-  private aiPreference: AIPreference = this.defaultAIPreference;
 
   constructor() {
-    super(Helpers.PAGE_ANALYZER);
-
     this.attach();
   }
 
-  onInitializing(safeUserInfo: user): void {
-    const currentUserPersonalAIPreference = safeUserInfo.personalPreference.ai;
-
-    if (currentUserPersonalAIPreference) {
-      this.aiPreference = currentUserPersonalAIPreference;
-
-      return;
-    }
-  }
+  onInitializing(): void {}
 
   private attach() {
-    this.mainDOM.addEventListener("keydown", event => {
+    document.addEventListener("keydown", event => {
       if (event.key === "Enter") {
         const webpageData = this.analyzePage();
 
@@ -68,7 +55,7 @@ class PageAnalyzer extends Helper {
 
   private analyzePage(): ExtractedWebPageContent {
     const url = window.location.href;
-    const title = this.mainDOM.title;
+    const title = document.title;
     const metadatas = this.getMetadatas();
 
     const description = this.findCertainMetada(metadatas, "description");
@@ -92,18 +79,16 @@ class PageAnalyzer extends Helper {
   }
 
   private getMetadatas(): HTMLMetaElement[] {
-    return Array.from(this.mainDOM.head.querySelectorAll("meta")).filter(
-      value => {
-        const firstAttribute = value.attributes[0].nodeValue;
-        if (firstAttribute === null) return;
+    return Array.from(document.head.querySelectorAll("meta")).filter(value => {
+      const firstAttribute = value.attributes[0].nodeValue;
+      if (firstAttribute === null) return;
 
-        return this.worthMetadataTypes.includes(firstAttribute);
-      }
-    );
+      return this.worthMetadataTypes.includes(firstAttribute);
+    });
   }
 
   private getMaindatas(): PageMainData {
-    const innerText = this.mainDOM.body.innerText;
+    const innerText = document.body.innerText;
 
     const headings: PageHeadings[] = [];
     const links: PageLinks[] = [];
@@ -168,7 +153,7 @@ class PageAnalyzer extends Helper {
     querySelector: string,
     callbackFunction: (value: T, index: number, array: T[]) => void
   ): void {
-    const allSelectedTags = this.mainDOM.querySelectorAll(querySelector);
+    const allSelectedTags = document.querySelectorAll(querySelector);
 
     // @ts-expect-error since the `callbackFunction` function will be the same...?
     Array.from(allSelectedTags).map(callbackFunction);

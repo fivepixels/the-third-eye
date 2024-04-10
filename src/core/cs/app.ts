@@ -8,32 +8,28 @@ import Mover from "./helpers/mover";
 import ColourAdjuster from "./helpers/colourAdjuster";
 import PageAnalyzer from "./helpers/pageAnaylzer";
 import ImageAnalyzer from "./helpers/imageAnaylzer";
-import TextReader from "./helpers/textReader";
+import TextAnalyzer from "./helpers/textAnalyzer";
 
-class App {
-  private readonly actions: { [K in Helpers]: () => void } = {
-    MOVER: () => new Mover(),
-    COLOUR_ADJUSTER: () => new ColourAdjuster(),
-    PAGE_ANALYZER: () => new PageAnalyzer(),
-    IMAGE_ANALYZER: () => new ImageAnalyzer(),
-    TEXT_SUMMARIZER: () => new TextReader()
-  };
+const actions: { [K in Helpers]: () => void } = {
+  MOVER: () => new Mover(),
+  COLOUR_ADJUSTER: () => new ColourAdjuster(),
+  PAGE_ANALYZER: () => new PageAnalyzer(),
+  IMAGE_ANALYZER: () => new ImageAnalyzer(),
+  TEXT_ANALYZER: () => new TextAnalyzer()
+};
 
-  constructor() {}
+async function initApp() {
+  const { userInfo } = await getResponseFromMessage<
+    SendingFetchDataMessage,
+    ExpectedRespondingFetchDataMessage
+  >({
+    type: "FETCH_DATA",
+    body: {}
+  });
 
-  public async init() {
-    const { userInfo } = await getResponseFromMessage<
-      SendingFetchDataMessage,
-      ExpectedRespondingFetchDataMessage
-    >({
-      type: "FETCH_DATA",
-      body: {}
-    });
-
-    userInfo.neededHelpers.map(value => {
-      this.actions[value]();
-    });
-  }
+  userInfo.neededHelpers.map(value => {
+    actions[value]();
+  });
 }
 
-export default App;
+export default initApp;

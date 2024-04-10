@@ -4,36 +4,28 @@ import {
   SendingImageAnalyzerMessage,
   SendingTTSStopMessage
 } from "@shapes/message";
-import user, { AIPreference, Helpers } from "@shapes/user";
 import { sendCommandMessage } from "../utils/messenger";
-import Helper from "./helper";
 
-class ImageAnalyzer extends Helper {
+class ImageAnalyzer {
   private selectMode: boolean;
   private selectedImageSrc: string | null;
   private allImages: HTMLImageElement[];
-  private aiPreference: AIPreference;
   private mouseIndicator: HTMLDivElement;
 
   private readonly marginPrefix = 10;
   private readonly paddingPrefix = 15;
 
   constructor() {
-    super(Helpers.IMAGE_ANALYZER);
-
     this.selectMode = false;
     this.selectedImageSrc = null;
     this.allImages = [];
-    this.aiPreference = this.defaultAIPreference;
     this.mouseIndicator = document.createElement("div");
+
+    this.initialize();
   }
 
-  onInitializing(safeUserInfo: user): void {
-    const currentUserPersonalAIPreference = safeUserInfo.personalPreference.ai;
-
-    this.aiPreference = currentUserPersonalAIPreference;
+  private async initialize(): Promise<void> {
     this.allImages = this.grabAllImageTags();
-
     this.attach();
     this.setupIndicator();
   }
@@ -50,7 +42,7 @@ class ImageAnalyzer extends Helper {
     this.mouseIndicator.style.right = "0px";
     this.mouseIndicator.style.pointerEvents = "none";
 
-    this.mainDOM.body.addEventListener("mousemove", event => {
+    document.body.addEventListener("mousemove", event => {
       const scrollX = window.scrollX || document.documentElement.scrollLeft;
       const scrollY = window.scrollY || document.documentElement.scrollTop;
 
@@ -58,7 +50,7 @@ class ImageAnalyzer extends Helper {
       this.mouseIndicator.style.top = `${event.clientY + scrollY}px`;
     });
 
-    this.mainDOM.body.appendChild(this.mouseIndicator);
+    document.body.appendChild(this.mouseIndicator);
 
     this.changeIndicatorVisibility(false);
   }
@@ -70,7 +62,7 @@ class ImageAnalyzer extends Helper {
   }
 
   private attach() {
-    this.mainDOM.addEventListener("keydown", event => {
+    document.addEventListener("keydown", event => {
       const currentKey = event.key as "Shift" | "Enter" | "r";
 
       if (currentKey === "Shift") {
@@ -113,7 +105,7 @@ class ImageAnalyzer extends Helper {
       }
     });
 
-    this.mainDOM.addEventListener("keyup", () => {
+    document.addEventListener("keyup", () => {
       this.selectMode = false;
       this.changeIndicatorVisibility(false);
       this.allImages.map(currentImage =>
@@ -141,7 +133,7 @@ class ImageAnalyzer extends Helper {
   }
 
   private grabAllImageTags(): HTMLImageElement[] {
-    return Array.from(this.mainDOM.body.querySelectorAll("img, image"));
+    return Array.from(document.body.querySelectorAll("img, image"));
   }
 
   private adjustBackgroundColoursOfImages(

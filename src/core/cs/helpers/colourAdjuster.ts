@@ -9,14 +9,14 @@
  * Big Thanks to @Andrew Vaness<http://oftheheadland.github.io/> again.
  */
 
-import Helper from "./helper";
-import user, { ColourDeficiency, Helpers } from "@src/shapes/user";
+import { ColourDeficiency } from "@src/shapes/user";
+import getUserInfo from "../utils/helper";
 
 type CSSFilters = {
   [K in keyof typeof ColourDeficiency]: string;
 };
 
-class ColourAdjuster extends Helper {
+class ColourAdjuster {
   private readonly cssFilters: CSSFilters = {
     PROTANOPIA:
       "0.10889,0.89111,-0.00000,0,0 0.10889,0.89111,0.00000,0,0 0.00447,-0.00447,1.00000,0,0 0,0,0,1,0",
@@ -35,13 +35,13 @@ class ColourAdjuster extends Helper {
   };
 
   constructor() {
-    super(Helpers.COLOUR_ADJUSTER);
+    this.onInitializing();
   }
 
-  onInitializing(safeUserInfo: user): void {
-    this.applyCSSFilter(
-      safeUserInfo.personalPreference.colourAdjuster.deficiency
-    );
+  private async onInitializing(): Promise<void> {
+    const userInfo = await getUserInfo();
+    if (!userInfo) return;
+    this.applyCSSFilter(userInfo.personalPreference.colourAdjuster.deficiency);
   }
 
   private applyCSSFilter(colourDeficiencyToApply: ColourDeficiency) {
@@ -70,8 +70,8 @@ class ColourAdjuster extends Helper {
       </svg>
     `;
 
-    this.mainDOM.body.appendChild(filterDiv);
-    this.mainDOM.body.appendChild(styleTag);
+    document.body.appendChild(filterDiv);
+    document.body.appendChild(styleTag);
   }
 }
 
