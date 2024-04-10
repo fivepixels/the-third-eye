@@ -159,6 +159,8 @@ function addLayout(
   createdTitle.id = title.replace(" ", "-");
   createdDescription.innerText = description;
 
+  createdTitle.style.marginBottom = "5px";
+
   if (degree === 2) {
     const createdLine = document.createElement("hr");
     createdLine.style.marginTop = "20px";
@@ -207,6 +209,7 @@ function addButton({
   createdParentDiv.style.flexDirection = "row";
   createdParentDiv.style.alignItems = "center";
   createdParentDiv.style.justifyContent = "space-between";
+  createdParentDiv.style.marginBottom = "5px";
 
   createdButton.style.width = "50%";
 
