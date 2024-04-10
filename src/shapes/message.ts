@@ -9,7 +9,7 @@ export type SendingMessageType =
   | "OPEN_ONBOARDING"
   | "PAGE_ANALYZER"
   | "IMAGE_ANALYZER"
-  | "TEXT_SUMMARIZER";
+  | "TEXT_ANALYZER";
 
 export interface SendingMessageShape<T extends SendingMessage> {
   body: T;

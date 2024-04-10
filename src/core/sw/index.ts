@@ -122,5 +122,5 @@ chrome.runtime.onMessage.addListener(
   AttachListener("IMAGE_ANALYZER", ImageAnalyzerCallback)
 );
 chrome.runtime.onMessage.addListener(
-  AttachListener("TEXT_SUMMARIZER", textSummarizerCallback)
+  AttachListener("TEXT_ANALYZER", textSummarizerCallback)
 );
