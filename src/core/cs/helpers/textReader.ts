@@ -1,9 +1,6 @@
 /* AI Helper: TEXT READER */
 
 import {
-  ExpectedRespondingTTSSpeakMessage,
-  ExpectedRespondingTTSStopMessage,
-  ExpectedRespondingTextSummarizerMessage,
   SendingTTSSpeakMessage,
   SendingTTSStopMessage,
   SendingTextSummarizerMessage
@@ -76,10 +73,7 @@ class TextReader extends Helper {
       } else if (event.key === "Enter") {
         this.analyzeText();
       } else if (event.key === "Backspace") {
-        sendCommandMessage<
-          SendingTTSStopMessage,
-          ExpectedRespondingTTSStopMessage
-        >({
+        sendCommandMessage<SendingTTSStopMessage>({
           messageBody: {
             type: "TTS_STOP",
             body: {}
@@ -139,10 +133,7 @@ class TextReader extends Helper {
     const allText = this.generateText();
 
     if (this.currentMode === "PLAIN") {
-      sendCommandMessage<
-        SendingTTSSpeakMessage,
-        ExpectedRespondingTTSSpeakMessage
-      >({
+      sendCommandMessage<SendingTTSSpeakMessage>({
         messageBody: {
           type: "TTS",
           body: {
@@ -151,17 +142,11 @@ class TextReader extends Helper {
         }
       });
     } else {
-      sendCommandMessage<
-        SendingTextSummarizerMessage,
-        ExpectedRespondingTextSummarizerMessage
-      >({
+      sendCommandMessage<SendingTextSummarizerMessage>({
         messageBody: {
           type: "TEXT_SUMMARIZER",
           body: {
-            referencedData: allText,
-            degree: this.aiPreference.degree,
-            speak: this.aiPreference.preferToSpeak,
-            log: this.aiPreference.preferToLog
+            text: allText
           }
         }
       });

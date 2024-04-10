@@ -4,8 +4,6 @@ import user, { AIPreference, Helpers } from "@shapes/user";
 import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
 import {
   ExpectedRespondingFetchDataMessage,
-  ExpectedRespondingTTSSpeakMessage,
-  ExpectedRespondingTTSStopMessage,
   SendingFetchDataMessage,
   SendingTTSSpeakMessage,
   SendingTTSStopMessage
@@ -17,9 +15,7 @@ abstract class Helper {
   protected userInfo?: user;
 
   protected readonly defaultAIPreference: AIPreference = {
-    degree: 1,
-    preferToSpeak: true,
-    preferToLog: true
+    degree: 1
   };
 
   constructor(name: Helpers) {
@@ -52,10 +48,7 @@ abstract class Helper {
   }
 
   protected speak(speak: string) {
-    sendCommandMessage<
-      SendingTTSSpeakMessage,
-      ExpectedRespondingTTSSpeakMessage
-    >({
+    sendCommandMessage<SendingTTSSpeakMessage>({
       messageBody: {
         type: "TTS",
         body: {
@@ -68,14 +61,12 @@ abstract class Helper {
   }
 
   protected stopSpeaking() {
-    sendCommandMessage<SendingTTSStopMessage, ExpectedRespondingTTSStopMessage>(
-      {
-        messageBody: {
-          type: "TTS_STOP",
-          body: {}
-        }
+    sendCommandMessage<SendingTTSStopMessage>({
+      messageBody: {
+        type: "TTS_STOP",
+        body: {}
       }
-    );
+    });
 
     return;
   }

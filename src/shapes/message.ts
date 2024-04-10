@@ -47,7 +47,7 @@ export interface SendingTextSummarizerMessage {
 }
 
 export interface RespondingMessageShape<
-  T extends ExpectedRespondingMessage | undefined
+  T = ExpectedRespondingMessage | undefined
 > {
   body: T;
 }

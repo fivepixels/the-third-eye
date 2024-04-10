@@ -7,7 +7,7 @@ import {
 
 interface SendingMessageReceive<
   T extends SendingMessage,
-  U extends ExpectedRespondingMessage
+  U = ExpectedRespondingMessage | undefined
 > {
   messageBody: SendingMessageShape<T>;
   onMessageReceive?: (body: U) => void;
@@ -16,20 +16,11 @@ interface SendingMessageReceive<
 
 export function sendCommandMessage<
   T extends SendingMessage,
-  U extends ExpectedRespondingMessage
->({
-  messageBody,
-  onMessageReceive,
-  onError
-}: SendingMessageReceive<T, U>): void {
+  U = ExpectedRespondingMessage | undefined
+>({ messageBody, onMessageReceive }: SendingMessageReceive<T, U>): void {
   chrome.runtime.sendMessage<SendingMessageShape<T>, RespondingMessageShape<U>>(
     messageBody,
     response => {
-      if (!response.successfullyProcessed) {
-        if (onError) onError(response.successfullyProcessed);
-        return;
-      }
-
       if (onMessageReceive) onMessageReceive(response.body);
     }
   );
@@ -37,7 +28,7 @@ export function sendCommandMessage<
 
 export async function getResponseFromMessage<
   T extends SendingMessage,
-  U extends ExpectedRespondingMessage
+  U extends ExpectedRespondingMessage | undefined
 >(messageBody: SendingMessageShape<T>): Promise<U> {
   const response = await chrome.runtime.sendMessage<
     SendingMessageShape<T>,

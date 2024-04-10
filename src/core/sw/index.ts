@@ -11,6 +11,7 @@ import {
 } from "@shapes/message";
 import user, { ColourDeficiency } from "@shapes/user";
 import AttachListener from "./messenge";
+import { analyzeImage, analyzePage, analyzeText } from "./utils/ai";
 
 const fetchDataCallback: RespondingMessageMainFunction<
   SendingFetchDataMessage,
@@ -49,29 +50,22 @@ const ttsStopCallback: RespondingMessageMainFunction<
 
 const pageAnalyzerCallback: RespondingMessageMainFunction<
   SendingPageAnalyzerMessage
-> = async () => {
+> = async ({ body: { pageData } }) => {
   chrome.tts.speak("Wait a second, we are analyzing the current page");
+  const script = await analyzePage(pageData);
   chrome.tts.stop();
-
-  // const analyzedPageScript = await aiManager.analyzePage(
-  //   message.body.referencedData,
-  //   message.body.degree
-  // );
+  chrome.tts.speak(script);
 
   return;
 };
 
 const ImageAnalyzerCallback: RespondingMessageMainFunction<
   SendingImageAnalyzerMessage
-> = async () => {
-  chrome.tts.speak("Wait a second, we are analyzing the current image");
-
-  // const analyzedImageScript = await aiManager.analyzeImage(
-  //   message.body.referencedData,
-  //   message.body.degree
-  // );
-
+> = async ({ body: { imageUrl } }) => {
+  chrome.tts.speak("Wait a second, we are analyzing the current text");
+  const script = await analyzeImage(imageUrl);
   chrome.tts.stop();
+  chrome.tts.speak(script);
 
   return;
 };
@@ -80,14 +74,9 @@ const textSummarizerCallback: RespondingMessageMainFunction<
   SendingTextSummarizerMessage
 > = async ({ body: { text } }) => {
   chrome.tts.speak("Wait a second, we are analyzing the current text");
-
-  // const summarizedScript = await aiManager.summarizeText(
-  //   message.body.referencedData,
-  //   message.body.degree
-  // );
-  // chrome.tts.speak(summarizedScript);
-
+  const script = await analyzeText(text);
   chrome.tts.stop();
+  chrome.tts.speak(script);
 
   return;
 };
@@ -104,13 +93,12 @@ const initializeServiceWorker = async (): Promise<void> => {
           deficiency: ColourDeficiency.MONOCHROMACY
         },
         ai: {
+          apiKey: "",
           degree: 3
         }
       }
     } as user);
   }
-
-  await fetch();
 
   return;
 };

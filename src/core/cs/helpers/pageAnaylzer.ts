@@ -1,10 +1,8 @@
 /* AI Helper: PAGE ANALYZER */
 
 import {
-  ExpectedRespondingPageAnalyzerMessage,
   SendingPageAnalyzerMessage,
-  SendingTTSStopMessage,
-  ExpectedRespondingTTSStopMessage
+  SendingTTSStopMessage
 } from "@shapes/message";
 import {
   ExtractedWebPageContent,
@@ -43,17 +41,11 @@ class PageAnalyzer extends Helper {
       if (event.key === "Enter") {
         const webpageData = this.analyzePage();
 
-        sendCommandMessage<
-          SendingPageAnalyzerMessage,
-          ExpectedRespondingPageAnalyzerMessage
-        >({
+        sendCommandMessage<SendingPageAnalyzerMessage>({
           messageBody: {
             type: "PAGE_ANALYZER",
             body: {
-              referencedData: webpageData,
-              degree: this.aiPreference.degree,
-              speak: this.aiPreference.preferToSpeak,
-              log: this.aiPreference.preferToLog
+              pageData: webpageData
             }
           }
         });
@@ -62,10 +54,7 @@ class PageAnalyzer extends Helper {
       }
 
       if (event.key === "Backspace") {
-        sendCommandMessage<
-          SendingTTSStopMessage,
-          ExpectedRespondingTTSStopMessage
-        >({
+        sendCommandMessage<SendingTTSStopMessage>({
           messageBody: {
             type: "TTS_STOP",
             body: {}

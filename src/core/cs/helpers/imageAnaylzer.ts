@@ -1,8 +1,6 @@
 /* AI Helper: IMAGE ANALYZER */
 
 import {
-  ExpectedRespondingImageAnalyzerMessage,
-  ExpectedRespondingTTSStopMessage,
   SendingImageAnalyzerMessage,
   SendingTTSStopMessage
 } from "@shapes/message";
@@ -104,10 +102,7 @@ class ImageAnalyzer extends Helper {
         return;
       }
       if (currentKey === "Backspace") {
-        sendCommandMessage<
-          SendingTTSStopMessage,
-          ExpectedRespondingTTSStopMessage
-        >({
+        sendCommandMessage<SendingTTSStopMessage>({
           messageBody: {
             type: "TTS_STOP",
             body: {}
@@ -174,17 +169,11 @@ class ImageAnalyzer extends Helper {
   }
 
   private analyzeSelectedImage(imageUrl: string) {
-    sendCommandMessage<
-      SendingImageAnalyzerMessage,
-      ExpectedRespondingImageAnalyzerMessage
-    >({
+    sendCommandMessage<SendingImageAnalyzerMessage>({
       messageBody: {
         type: "IMAGE_ANALYZER",
         body: {
-          referencedData: imageUrl,
-          degree: this.aiPreference.degree,
-          speak: this.aiPreference.preferToSpeak,
-          log: this.aiPreference.preferToLog
+          imageUrl: imageUrl
         }
       }
     });
