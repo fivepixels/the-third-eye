@@ -54,6 +54,20 @@ class Mover {
         return;
       }
 
+      if (keyEvent.key === "r") {
+        this.currentMode = "NONE";
+        this.removeIndicator();
+        this.adjustMovability(false);
+
+        this.currentX = 0;
+        this.currentY = 0;
+        this.currentScale = 1;
+
+        this.apply();
+
+        return;
+      }
+
       this.currentMode = "NONE";
       this.removeIndicator();
       this.adjustMovability(false);
