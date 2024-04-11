@@ -9,7 +9,7 @@ export type SendingMessageType =
   | "OPEN_ONBOARDING"
   | "PAGE_ANALYZER"
   | "IMAGE_ANALYZER"
-  | "TEXT_SUMMARIZER";
+  | "TEXT_ANALYZER";
 
 export interface SendingMessageShape<T extends SendingMessage> {
   body: T;
@@ -25,80 +25,50 @@ export interface ExpectedRespondingFetchDataMessage
   extends ExpectedRespondingMessage {
   userInfo: user;
 }
-
 export interface SendingChangeDataMessage extends SendingMessage {
   changedData: user;
 }
-export interface ExpectedRespondingChangeDataMessage
-  extends ExpectedRespondingMessage {}
 
 // TTS
 export interface SendingTTSSpeakMessage extends SendingMessage {
   speak: string;
 }
-export interface ExpectedRespondingTTSSpeakMessage
-  extends ExpectedRespondingMessage {}
 export interface SendingTTSStopMessage extends SendingMessage {}
-export interface ExpectedRespondingTTSStopMessage
-  extends ExpectedRespondingMessage {}
 
 // AI
-export interface SendingAIMessage<T> {
-  referencedData: T;
-  degree: number;
-  speak?: boolean;
-  log?: boolean;
+export interface SendingPageAnalyzerMessage {
+  pageData: ExtractedWebPageContent;
+}
+export interface SendingImageAnalyzerMessage {
+  imageUrl: string;
+}
+export interface SendingTextSummarizerMessage {
+  text: string;
 }
 
-export interface ExpectedRespondingAIMessage {
-  script: string;
-  spoken: boolean;
-  logged: boolean;
+export interface RespondingMessageShape<
+  T = ExpectedRespondingMessage | undefined
+> {
+  body: T;
 }
-
-export interface SendingPageAnalyzerMessage
-  extends SendingAIMessage<ExtractedWebPageContent>,
-    SendingMessage {}
-export interface SendingImageAnalyzerMessage
-  extends SendingMessage,
-    SendingAIMessage<string> {}
-export interface SendingTextSummarizerMessage
-  extends SendingMessage,
-    SendingAIMessage<string> {}
-
-export interface ExpectedRespondingPageAnalyzerMessage
-  extends ExpectedRespondingMessage,
-    ExpectedRespondingAIMessage {}
-export interface ExpectedRespondingImageAnalyzerMessage
-  extends ExpectedRespondingMessage,
-    ExpectedRespondingAIMessage {}
-export interface ExpectedRespondingTextSummarizerMessage
-  extends ExpectedRespondingMessage,
-    ExpectedRespondingAIMessage {}
 
 export type responseCallback<
   T extends SendingMessage,
-  U extends ExpectedRespondingMessage
+  U extends ExpectedRespondingMessage | undefined
 > = (
   message: SendingMessageShape<T>,
   sender: chrome.runtime.MessageSender,
-  sendResponse: (response: RespondingMessageShape<U>) => void
+  sendResponse: (response: RespondingMessageShape<U | undefined>) => void
 ) => Promise<boolean> | boolean;
 
 export type sendResponseCallback<T extends ExpectedRespondingMessage> = (
   response: RespondingMessageShape<T>
 ) => void;
 
-type RespondingMessageError = "NOT_FOUND" | "LISTENER_ERROR";
-export interface RespondingMessageShape<T extends ExpectedRespondingMessage> {
-  body: T;
-  successfullyProcessed: true | RespondingMessageError;
-}
-
 export type RespondingMessageMainFunction<
   T extends SendingMessage,
-  U extends ExpectedRespondingMessage
+  U = ExpectedRespondingMessage | undefined
 > = (
   message: SendingMessageShape<T>,
   sender: chrome.runtime.MessageSender
-) => Promise<U> | U;
+) => Promise<U | undefined> | U | undefined;

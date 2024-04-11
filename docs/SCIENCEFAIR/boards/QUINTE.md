@@ -1,4 +1,4 @@
-<img src="../../../images/header.jpg" />
+<img src="../../../images/header.png" />
 
 # THE THIRD EYE
 
@@ -6,15 +6,15 @@
 
 |                                   Whole Board                                    |
 | :------------------------------------------------------------------------------: |
-| ![an image showing the whole board](../../../images/sciencefair/board/board.jpg) |
+| ![an image showing the whole board](../../../images/sciencefair/board/board.png) |
 
 |                                            LEFT SIDE                                            |                                               MIDDLE                                                |                                            RIGHT SIDE                                             |
 | :---------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------: |
-| ![an image showing the left side of the board](../../../images/sciencefair/board/left_side.jpg) | ![an image showing the middle side of the board](../../../images/sciencefair/board/middle_side.jpg) | ![an image showing the right side of the board](../../../images/sciencefair/board/right_side.jpg) |
+| ![an image showing the left side of the board](../../../images/sciencefair/board/left_side.png) | ![an image showing the middle side of the board](../../../images/sciencefair/board/middle_side.jpg) | ![an image showing the right side of the board](../../../images/sciencefair/board/right_side.jpg) |
 
 |                                       Computer                                       |                                     iPad                                     |                                      Diagram                                       |                                        Printed Codes                                         |
 | :----------------------------------------------------------------------------------: | :--------------------------------------------------------------------------: | :--------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------: |
-| ![an image showing the computer](../../../images/sciencefair/materials/computer.jpg) | ![an image showing the ipad](../../../images/sciencefair/materials/ipad.jpg) | ![an image showing the diagram](../../../images/sciencefair/materials/diagram.jpg) | ![an image showing the printed code](../../../images/sciencefair/materials/printed_code.jpg) |
+| ![an image showing the computer](../../../images/sciencefair/materials/computer.png) | ![an image showing the ipad](../../../images/sciencefair/materials/ipad.png) | ![an image showing the diagram](../../../images/sciencefair/materials/diagram.png) | ![an image showing the printed code](../../../images/sciencefair/materials/printed_code.png) |
 
 ## LEFT SIDE
 

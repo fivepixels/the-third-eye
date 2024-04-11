@@ -9,7 +9,7 @@ export enum Helpers {
   COLOUR_ADJUSTER = "COLOUR_ADJUSTER",
   PAGE_ANALYZER = "PAGE_ANALYZER",
   IMAGE_ANALYZER = "IMAGE_ANALYZER",
-  TEXT_SUMMARIZER = "TEXT_SUMMARIZER"
+  TEXT_ANALYZER = "TEXT_ANALYZER"
 }
 
 export enum ColourDeficiency {
@@ -30,9 +30,8 @@ export interface PersonalReferenceType {
 }
 
 export interface AIPreference {
+  apiKey?: string;
   degree: number;
-  preferToLog: boolean;
-  preferToSpeak: boolean;
 }
 
 export default user;

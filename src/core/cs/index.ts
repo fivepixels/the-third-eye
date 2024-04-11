@@ -1,7 +1,5 @@
-import App from "./app";
-
-const app = new App();
+import initApp from "./app";
 
 window.onload = () => {
-  app.init();
+  initApp();
 };

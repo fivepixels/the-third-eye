@@ -8,11 +8,11 @@ import {
 
 export default function AttachListener<
   T extends SendingMessage,
-  U extends ExpectedRespondingMessage
+  U extends ExpectedRespondingMessage | undefined
 >(
   messageType: SendingMessageType,
   mainFunction: RespondingMessageMainFunction<T, U>
-): responseCallback<T, U> {
+): responseCallback<T, U | undefined> {
   return (message, sender, sendResponse) => {
     if (message.type !== messageType) return false;
 
@@ -20,11 +20,12 @@ export default function AttachListener<
       try {
         const responseBody = await mainFunction(message, sender);
 
-        sendResponse({ body: responseBody, successfullyProcessed: true });
+        sendResponse({
+          body: responseBody
+        });
       } catch (error) {
         sendResponse({
-          body: {} as U,
-          successfullyProcessed: "LISTENER_ERROR"
+          body: {} as U
         });
       }
     })();

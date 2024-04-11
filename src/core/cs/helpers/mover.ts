@@ -1,11 +1,8 @@
 /* Normal Helper: MOVER */
 
-import { Helpers } from "@src/shapes/user";
-import Helper from "./helper";
-
 type MoverMode = "NONE" | "MOVING" | "ZOOMING";
 
-class Mover extends Helper {
+class Mover {
   private currentMode: MoverMode;
   private currentX: number;
   private currentY: number;
@@ -17,15 +14,13 @@ class Mover extends Helper {
   private isIndicatorOn: boolean;
 
   constructor() {
-    super(Helpers.MOVER);
-
     this.currentMode = "NONE";
     this.currentX = 0;
     this.currentY = 0;
     this.currentScale = 1;
     this.isMouseDown = false;
 
-    this.indicator = this.mainDOM.createElement("canvas");
+    this.indicator = document.createElement("canvas");
     this.pencil = this.indicator.getContext("2d")!;
     this.isIndicatorOn = false;
 
@@ -37,12 +32,12 @@ class Mover extends Helper {
   }
 
   private init() {
-    this.mainDOM.addEventListener("keyup", () => {
+    document.addEventListener("keyup", () => {
       this.currentMode = "NONE";
       this.removeIndicator();
     });
 
-    this.mainDOM.addEventListener("keydown", keyEvent => {
+    document.addEventListener("keydown", keyEvent => {
       if (keyEvent.key === "Alt") {
         this.currentMode = "MOVING";
         this.attachIndicator();
@@ -59,19 +54,33 @@ class Mover extends Helper {
         return;
       }
 
+      if (keyEvent.key === "r") {
+        this.currentMode = "NONE";
+        this.removeIndicator();
+        this.adjustMovability(false);
+
+        this.currentX = 0;
+        this.currentY = 0;
+        this.currentScale = 1;
+
+        this.apply();
+
+        return;
+      }
+
       this.currentMode = "NONE";
       this.removeIndicator();
       this.adjustMovability(false);
     });
 
-    this.mainDOM.addEventListener("wheel", wheelEvent => {
+    document.addEventListener("wheel", wheelEvent => {
       if (this.currentMode === "ZOOMING") {
         this.zoomMainDOM(wheelEvent.deltaY);
         return;
       }
     });
 
-    this.mainDOM.addEventListener("mousemove", movingMouseEvent => {
+    document.addEventListener("mousemove", movingMouseEvent => {
       if (
         this.currentMode === "NONE" ||
         this.currentMode === "ZOOMING" ||
@@ -88,11 +97,11 @@ class Mover extends Helper {
       }
     });
 
-    this.mainDOM.addEventListener("mousedown", () => {
+    document.addEventListener("mousedown", () => {
       this.isMouseDown = true;
 
       if (this.currentMode === "MOVING") {
-        this.mainDOM.body.style.border = "solid white 2px";
+        document.body.style.border = "solid white 2px";
         return;
       }
 
@@ -101,11 +110,11 @@ class Mover extends Helper {
       }
     });
 
-    this.mainDOM.addEventListener("mouseup", () => {
+    document.addEventListener("mouseup", () => {
       this.isMouseDown = false;
 
       if (this.currentMode === "MOVING") {
-        this.mainDOM.body.style.border = "none";
+        document.body.style.border = "none";
 
         return;
       }
@@ -131,21 +140,21 @@ class Mover extends Helper {
   }
 
   private adjustMovability(enable: boolean) {
-    this.mainDOM.body.style.overflow = enable ? "hidden" : "scroll";
+    document.body.style.overflow = enable ? "hidden" : "scroll";
   }
 
   private attachIndicator() {
     if (this.isIndicatorOn) return;
 
-    this.mainDOM.body.appendChild(this.indicator);
+    document.body.appendChild(this.indicator);
     this.isIndicatorOn = true;
-    this.mainDOM.body.style.border = "solid white 2px";
+    document.body.style.border = "solid white 2px";
   }
 
   private removeIndicator() {
     this.indicator.remove();
     this.isIndicatorOn = false;
-    this.mainDOM.body.style.border = "none";
+    document.body.style.border = "none";
   }
 
   private moveMainDOM(deltaX: number, deltaY: number) {
@@ -162,7 +171,7 @@ class Mover extends Helper {
   }
 
   private apply() {
-    this.mainDOM.body.style.transform = `translate(${this.currentX}px, ${this.currentY}px) scale(${this.currentScale})`;
+    document.body.style.transform = `translate(${this.currentX}px, ${this.currentY}px) scale(${this.currentScale})`;
   }
 }
 

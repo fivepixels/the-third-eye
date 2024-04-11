@@ -1,9 +1,11 @@
 {
   "manifest_version": 3,
+  "version": "0.0.1",
   "name": "The Third Eye",
   "description": "The New Approach for Blind People to Navigate Websites and Mobile Applications.",
-  "version": "0.0.1",
-  "permissions": ["storage", "tabs", "activeTab", "tts"],
+  "permissions": ["storage", "tts"],
+  "author": "Seol SO",
+  "homepage_url": "https://github.com/fivepixels/the-third-eye",
   "icons": {
     "16": "./images/logo_16.png",
     "32": "./images/logo_32.png",
@@ -14,7 +16,7 @@
   },
   "action": {
     "default_title": "The Third Eye",
-    "default_popup": "./src/core/client/popup/index.html",
+    "default_popup": "./popup.html",
     "default_icon": {
       "16": "./images/logo_16.png",
       "32": "./images/logo_32.png",
@@ -26,12 +28,11 @@
   },
   "content_scripts": [
     {
-      "js": ["./dist/cs.js"],
+      "js": ["./cs.js"],
       "matches": ["<all_urls>"]
     }
   ],
   "background": {
-    "service_worker": "./dist/sw.js"
-  },
-  "host_permissions": ["http://*/*", "https://*/*"]
+    "service_worker": "./sw.js"
+  }
 }

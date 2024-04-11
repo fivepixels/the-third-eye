@@ -1,4 +1,4 @@
-<img src="./images/header.jpg" />
+<img src="./images/header.png" />
 
 ## The Third Eye - the new approach for Visually Impaired People to Navigate Websites
 

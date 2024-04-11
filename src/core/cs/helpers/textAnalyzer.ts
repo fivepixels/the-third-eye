@@ -1,55 +1,37 @@
 /* AI Helper: TEXT READER */
 
 import {
-  ExpectedRespondingTTSSpeakMessage,
-  ExpectedRespondingTTSStopMessage,
-  ExpectedRespondingTextSummarizerMessage,
   SendingTTSSpeakMessage,
   SendingTTSStopMessage,
   SendingTextSummarizerMessage
 } from "@shapes/message";
 import { sendCommandMessage } from "../utils/messenger";
-import Helper from "./helper";
-import user, { AIPreference, Helpers } from "@shapes/user";
 
 type TextReaderMode = "PLAIN" | "SUMMARIZED";
-class TextReader extends Helper {
+class TextAnalyzer {
   private allTags: {
     node: Element;
     selected: boolean;
   }[];
   private currentMode: TextReaderMode | "NONE";
-  private aiPreference: AIPreference;
 
   readonly attachableTagsType =
     "h1, h2, h3, h4, h5, h6, span, p, a, li, ul, ol";
 
   constructor() {
-    super(Helpers.TEXT_SUMMARIZER);
-
     this.allTags = [];
     this.currentMode = "NONE";
-
-    this.aiPreference = this.defaultAIPreference;
 
     this.findAllTags();
     this.attach();
   }
 
-  onInitializing(safeUserInfo: user): void {
-    const currentUserPersonalAIPreference = safeUserInfo.personalPreference.ai;
-
-    if (currentUserPersonalAIPreference) {
-      this.aiPreference = currentUserPersonalAIPreference;
-
-      return;
-    }
-  }
+  onInitializing(): void {}
 
   private findAllTags() {
     this.allTags = [];
 
-    this.mainDOM.body
+    document.body
       .querySelectorAll(this.attachableTagsType)
       .forEach(selectedNode => {
         const currentNode = selectedNode as HTMLElement;
@@ -68,7 +50,7 @@ class TextReader extends Helper {
      * Control - SUMMARIZED
      */
 
-    this.mainDOM.addEventListener("keydown", event => {
+    document.addEventListener("keydown", event => {
       if (event.key === "Shift") {
         this.currentMode = "PLAIN";
       } else if (event.key === "Control") {
@@ -76,10 +58,7 @@ class TextReader extends Helper {
       } else if (event.key === "Enter") {
         this.analyzeText();
       } else if (event.key === "Backspace") {
-        sendCommandMessage<
-          SendingTTSStopMessage,
-          ExpectedRespondingTTSStopMessage
-        >({
+        sendCommandMessage<SendingTTSStopMessage>({
           messageBody: {
             type: "TTS_STOP",
             body: {}
@@ -139,10 +118,7 @@ class TextReader extends Helper {
     const allText = this.generateText();
 
     if (this.currentMode === "PLAIN") {
-      sendCommandMessage<
-        SendingTTSSpeakMessage,
-        ExpectedRespondingTTSSpeakMessage
-      >({
+      sendCommandMessage<SendingTTSSpeakMessage>({
         messageBody: {
           type: "TTS",
           body: {
@@ -151,17 +127,11 @@ class TextReader extends Helper {
         }
       });
     } else {
-      sendCommandMessage<
-        SendingTextSummarizerMessage,
-        ExpectedRespondingTextSummarizerMessage
-      >({
+      sendCommandMessage<SendingTextSummarizerMessage>({
         messageBody: {
-          type: "TEXT_SUMMARIZER",
+          type: "TEXT_ANALYZER",
           body: {
-            referencedData: allText,
-            degree: this.aiPreference.degree,
-            speak: this.aiPreference.preferToSpeak,
-            log: this.aiPreference.preferToLog
+            text: allText
           }
         }
       });
@@ -200,4 +170,4 @@ class TextReader extends Helper {
   }
 }
 
-export default TextReader;
+export default TextAnalyzer;
