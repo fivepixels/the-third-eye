@@ -30,7 +30,9 @@
     "email": "hi@fivepixels.dev"
   },
   "scripts": {
-    "build": "bun run build.ts",
+    "publish": "bun run build && bun run zip",
+    "build": "bun run build.ts && cp -R ./images ./dist/images ",
+    "zip": "rm tte.zip && zip tte.zip ./dist/*",
     "dev": "nodemon",
     "format": "bunx prettier --write . && bunx eslint --fix ."
   },
