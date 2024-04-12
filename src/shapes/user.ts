@@ -1,7 +1,12 @@
 interface user {
   isCreated: boolean;
   neededHelpers: Helpers[];
-  personalPreference: PersonalReferenceType;
+  personalPreference: {
+    colourAdjuster: {
+      deficiency: ColourDeficiency;
+    };
+    ai: AIPreference;
+  };
 }
 
 export enum Helpers {
@@ -20,13 +25,6 @@ export enum ColourDeficiency {
   DEUTERANOMALY = "DEUTERANOMALY",
   TRITANOMALY = "TRITANOMALY",
   MONOCHROMACY = "MONOCHROMACY"
-}
-
-export interface PersonalReferenceType {
-  colourAdjuster: {
-    deficiency: ColourDeficiency;
-  };
-  ai: AIPreference;
 }
 
 export interface AIPreference {

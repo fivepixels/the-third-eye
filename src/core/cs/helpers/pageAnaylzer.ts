@@ -4,14 +4,34 @@ import {
   SendingPageAnalyzerMessage,
   SendingTTSStopMessage
 } from "@shapes/message";
-import {
-  ExtractedWebPageContent,
-  PageHeadings,
-  PageImages,
-  PageLinks,
-  PageMainData
-} from "@shapes/analyzer";
 import { sendCommandMessage } from "../utils/messenger";
+
+export interface ExtractedWebPageContent {
+  metadata: PageMetaData;
+  main: PageMainData;
+}
+
+interface PageMetaData {
+  url: string;
+  title: string;
+  description: string;
+  author: string;
+  keywords: string[];
+}
+
+interface PageMainData {
+  innerText: string;
+  headings: PageHeadings[];
+  links: PageLinks[];
+  images: PageImages[];
+}
+
+type PageHeadings = {
+  headingNumber: number;
+  content: string;
+};
+type PageLinks = { linkTo: string; content: string };
+type PageImages = { imageUrl: string; alt: string };
 
 class PageAnalyzer {
   readonly NOT_PROVIDED = "CONTENT NOT PROVIDED";

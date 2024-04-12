@@ -1,10 +1,20 @@
 import {
   ExpectedRespondingMessage,
   RespondingMessageMainFunction,
+  RespondingMessageShape,
   SendingMessage,
-  SendingMessageType,
-  responseCallback
+  SendingMessageShape,
+  SendingMessageType
 } from "@shapes/message";
+
+export type responseCallback<
+  T extends SendingMessage,
+  U extends ExpectedRespondingMessage | undefined
+> = (
+  message: SendingMessageShape<T>,
+  sender: chrome.runtime.MessageSender,
+  sendResponse: (response: RespondingMessageShape<U | undefined>) => void
+) => Promise<boolean> | boolean;
 
 export default function AttachListener<
   T extends SendingMessage,

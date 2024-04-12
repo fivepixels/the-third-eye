@@ -1,4 +1,4 @@
-import { ExtractedWebPageContent } from "./analyzer";
+import { ExtractedWebPageContent } from "@src/core/cs/helpers/pageAnaylzer";
 import user from "./user";
 
 export type SendingMessageType =
@@ -51,19 +51,6 @@ export interface RespondingMessageShape<
 > {
   body: T;
 }
-
-export type responseCallback<
-  T extends SendingMessage,
-  U extends ExpectedRespondingMessage | undefined
-> = (
-  message: SendingMessageShape<T>,
-  sender: chrome.runtime.MessageSender,
-  sendResponse: (response: RespondingMessageShape<U | undefined>) => void
-) => Promise<boolean> | boolean;
-
-export type sendResponseCallback<T extends ExpectedRespondingMessage> = (
-  response: RespondingMessageShape<T>
-) => void;
 
 export type RespondingMessageMainFunction<
   T extends SendingMessage,

@@ -1,11 +1,29 @@
-import { ExtractedWebPageContent } from "@shapes/analyzer";
-import { AIContent, AIModels } from "@src/shapes/ai";
 import user, { AIPreference } from "@src/shapes/user";
+import { ExtractedWebPageContent } from "../cs/helpers/pageAnaylzer";
 
-export const AIErrorMessages = {
+const AIErrorMessages = {
   404: "There is no API Key input or the API Key is not valid. If you have entered the API key, then please refresh the page or change it.",
   500: "There was an error while communicating with the AI. Please attempt again."
 };
+
+type AIModels = "gpt-3.5-turbo" | "gpt-4-vision-preview";
+type AIRole = "system" | "user" | "assistant";
+type AIContentType = "text" | "image_url";
+type AIImageDetail = "low" | "auto" | "high";
+
+interface AIContent {
+  role: AIRole;
+  content: string | AIMessage[];
+}
+
+interface AIMessage {
+  type: AIContentType;
+  text?: string;
+  image_url?: {
+    url: string;
+    detail: AIImageDetail;
+  };
+}
 
 interface AskAIReceive {
   model: AIModels;

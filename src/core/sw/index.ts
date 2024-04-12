@@ -11,7 +11,7 @@ import {
 } from "@shapes/message";
 import user, { ColourDeficiency } from "@shapes/user";
 import AttachListener from "./messenge";
-import { analyzeImage, analyzePage, analyzeText } from "./utils/ai";
+import { analyzeImage, analyzePage, analyzeText } from "./ai";
 
 const fetchDataCallback: RespondingMessageMainFunction<
   SendingFetchDataMessage,
