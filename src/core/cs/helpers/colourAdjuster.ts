@@ -10,7 +10,12 @@
  */
 
 import { ColourDeficiency } from "@src/shapes/user";
-import getUserInfo from "../utils/helper";
+import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
+import {
+  ExpectedRespondingFetchDataMessage,
+  SendingFetchDataMessage,
+  SendingTTSSpeakMessage
+} from "@src/shapes/message";
 
 type CSSFilters = {
   [K in keyof typeof ColourDeficiency]: string;
@@ -39,9 +44,34 @@ class ColourAdjuster {
   }
 
   private async onInitializing(): Promise<void> {
-    const userInfo = await getUserInfo();
-    if (!userInfo) return;
-    this.applyCSSFilter(userInfo.personalPreference.colourAdjuster.deficiency);
+    try {
+      const { userInfo } = await getResponseFromMessage<
+        SendingFetchDataMessage,
+        ExpectedRespondingFetchDataMessage
+      >({
+        type: "FETCH_DATA",
+        body: {}
+      });
+
+      if (!userInfo) return;
+      this.applyCSSFilter(
+        userInfo.personalPreference.colourAdjuster.deficiency
+      );
+    } catch (error) {
+      console.error(error);
+
+      sendCommandMessage<SendingTTSSpeakMessage>({
+        messageBody: {
+          type: "TTS",
+          body: {
+            speak:
+              "There was an error while receiving your data. Please refresh the page."
+          }
+        }
+      });
+
+      return;
+    }
   }
 
   private applyCSSFilter(colourDeficiencyToApply: ColourDeficiency) {

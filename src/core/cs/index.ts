@@ -1,5 +1,6 @@
-import initApp from "./app";
+import initApp, { attachShortcuts } from "./app";
 
-window.onload = () => {
+window.onload = async () => {
   initApp();
+  attachShortcuts();
 };
