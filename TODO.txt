@@ -1,5 +1,0 @@
-TODO
-
-1. Make shortcuts for adjusting extra variables
-2. For text reader, when they press shift or option, turn every single texts into blue and red for plain and summzrizing mode
-3. Publish it
