@@ -1,6 +1,11 @@
 import Bun, { BuildConfig } from "bun";
 import fs from "fs";
 import path from "path";
+/**
+ * Copyright 2024 Seol SO
+ * SPDX-License-Identifier: MIT
+ */
+
 
 // remove pre-exisiting dist folder
 fs.rmSync("./dist", { recursive: true, force: true });
