@@ -1,21 +1,15 @@
-/* Normal Helper: COLOUR ADJUSTER */
-
-/*
- * Inspired by ColorBlindly extension by @Andrew VanNess<http://oftheheadland.github.io/>
- * The fold that I copied the cssFilters values from : https://github.com/oftheheadland/Colorblindly/tree/master/filters
- *
- * I took his idea of apply the CSS Filters and changed the approach better to this google chrome extension.
- *
- * Big Thanks to @Andrew Vaness<http://oftheheadland.github.io/> again.
+/**
+ * Copyright 2024 Seol SO
+ * SPDX-License-Identifier: MIT
  */
 
-import { ColourDeficiency } from "@src/shapes/user";
-import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
-import {
+import type {
   ExpectedRespondingFetchDataMessage,
   SendingFetchDataMessage,
-  SendingTTSSpeakMessage
-} from "@src/shapes/message";
+  SendingTTSSpeakMessage,
+} from "@type/message";
+import type { ColourDeficiency } from "@type/user";
+import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
 
 type CSSFilters = {
   [K in keyof typeof ColourDeficiency]: string;
@@ -36,7 +30,7 @@ class ColourAdjuster {
     TRITANOMALY:
       "1.00000,0.09142,-0.09142,0,0 0.00000,0.92030,0.07970,0,0 -0.00000,0.52030,0.47970,0,0 0,0,0,1,0",
     MONOCHROMACY:
-      "0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0"
+      "0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0",
   };
 
   constructor() {
@@ -50,12 +44,12 @@ class ColourAdjuster {
         ExpectedRespondingFetchDataMessage
       >({
         type: "FETCH_DATA",
-        body: {}
+        body: {},
       });
 
       if (!userInfo) return;
       this.applyCSSFilter(
-        userInfo.personalPreference.colourAdjuster.deficiency
+        userInfo.personalPreference.colourAdjuster.deficiency,
       );
     } catch (error) {
       console.error(error);
@@ -65,9 +59,9 @@ class ColourAdjuster {
           type: "TTS",
           body: {
             speak:
-              "There was an error while receiving your data. Please refresh the page."
-          }
-        }
+              "There was an error while receiving your data. Please refresh the page.",
+          },
+        },
       });
 
       return;

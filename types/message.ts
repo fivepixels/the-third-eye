@@ -1,4 +1,9 @@
-import { ExtractedWebPageContent } from "@src/core/cs/helpers/pageAnaylzer";
+/**
+ * Copyright 2024 Seol SO
+ * SPDX-License-Identifier: MIT
+ */
+
+import { ExtractedWebPageContent } from "@cs/helpers/pageAnaylzer";
 import user from "./user";
 
 export type SendingMessageType =
@@ -47,15 +52,15 @@ export interface SendingTextSummarizerMessage {
 }
 
 export interface RespondingMessageShape<
-  T = ExpectedRespondingMessage | undefined
+  T = ExpectedRespondingMessage | undefined,
 > {
   body: T;
 }
 
 export type RespondingMessageMainFunction<
   T extends SendingMessage,
-  U = ExpectedRespondingMessage | undefined
+  U = ExpectedRespondingMessage | undefined,
 > = (
   message: SendingMessageShape<T>,
-  sender: chrome.runtime.MessageSender
+  sender: chrome.runtime.MessageSender,
 ) => Promise<U | undefined> | U | undefined;

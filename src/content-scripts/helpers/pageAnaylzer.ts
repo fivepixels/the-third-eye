@@ -1,9 +1,12 @@
-/* AI Helper: PAGE ANALYZER */
+/**
+ * Copyright 2024 Seol SO
+ * SPDX-License-Identifier: MIT
+ */
 
-import {
+import type {
   SendingPageAnalyzerMessage,
-  SendingTTSStopMessage
-} from "@shapes/message";
+  SendingTTSStopMessage,
+} from "@type/message";
 import { sendCommandMessage } from "../utils/messenger";
 
 export interface ExtractedWebPageContent {
@@ -44,7 +47,7 @@ class PageAnalyzer {
   onInitializing(): void {}
 
   private attach() {
-    document.addEventListener("keydown", event => {
+    document.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         const webpageData = this.analyzePage();
 
@@ -52,9 +55,9 @@ class PageAnalyzer {
           messageBody: {
             type: "PAGE_ANALYZER",
             body: {
-              pageData: webpageData
-            }
-          }
+              pageData: webpageData,
+            },
+          },
         });
 
         return;
@@ -64,8 +67,8 @@ class PageAnalyzer {
         sendCommandMessage<SendingTTSStopMessage>({
           messageBody: {
             type: "TTS_STOP",
-            body: {}
-          }
+            body: {},
+          },
         });
 
         return;
@@ -81,7 +84,7 @@ class PageAnalyzer {
     const description = this.findCertainMetada(metadatas, "description");
     const author = this.findCertainMetada(metadatas, "author");
     const keywords = this.convertStringKeywordsToArray(
-      this.findCertainMetada(metadatas, "keywords")
+      this.findCertainMetada(metadatas, "keywords"),
     );
 
     const main = this.getMaindatas();
@@ -92,19 +95,21 @@ class PageAnalyzer {
         title,
         description,
         author,
-        keywords
+        keywords,
       },
-      main
+      main,
     };
   }
 
   private getMetadatas(): HTMLMetaElement[] {
-    return Array.from(document.head.querySelectorAll("meta")).filter(value => {
-      const firstAttribute = value.attributes[0].nodeValue;
-      if (firstAttribute === null) return;
+    return Array.from(document.head.querySelectorAll("meta")).filter(
+      (value) => {
+        const firstAttribute = value.attributes[0].nodeValue;
+        if (firstAttribute === null) return;
 
-      return this.worthMetadataTypes.includes(firstAttribute);
-    });
+        return this.worthMetadataTypes.includes(firstAttribute);
+      },
+    );
   }
 
   private getMaindatas(): PageMainData {
@@ -116,25 +121,25 @@ class PageAnalyzer {
 
     this.extractPropertiesFromTags<HTMLHeadingElement>(
       "h1, h2, h3, h4, h5, h6",
-      currentHeading => {
+      (currentHeading) => {
         headings.push({
           headingNumber: Number(currentHeading.tagName.slice(1, 2)),
-          content: currentHeading.innerHTML
+          content: currentHeading.innerHTML,
         });
-      }
+      },
     );
 
-    this.extractPropertiesFromTags<HTMLAnchorElement>("a", currentLink => {
+    this.extractPropertiesFromTags<HTMLAnchorElement>("a", (currentLink) => {
       links.push({
         linkTo: currentLink.href,
-        content: currentLink.innerText
+        content: currentLink.innerText,
       });
     });
 
-    this.extractPropertiesFromTags<HTMLImageElement>("img", currentImage => {
+    this.extractPropertiesFromTags<HTMLImageElement>("img", (currentImage) => {
       images.push({
         imageUrl: currentImage.src,
-        alt: currentImage.alt
+        alt: currentImage.alt,
       });
     });
 
@@ -142,15 +147,15 @@ class PageAnalyzer {
       innerText,
       headings,
       links,
-      images
+      images,
     };
   }
 
   private findCertainMetada(
     metaDatas: HTMLMetaElement[],
-    firstAttribute: string
+    firstAttribute: string,
   ): string {
-    const satisfiedMetadata = metaDatas.find(value => {
+    const satisfiedMetadata = metaDatas.find((value) => {
       const foundFirstAttribute = value.attributes[0].nodeValue;
 
       if (foundFirstAttribute === firstAttribute) return true;
@@ -171,7 +176,7 @@ class PageAnalyzer {
 
   private extractPropertiesFromTags<T>(
     querySelector: string,
-    callbackFunction: (value: T, index: number, array: T[]) => void
+    callbackFunction: (value: T, index: number, array: T[]) => void,
   ): void {
     const allSelectedTags = document.querySelectorAll(querySelector);
 

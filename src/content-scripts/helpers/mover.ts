@@ -1,4 +1,7 @@
-/* Normal Helper: MOVER */
+/**
+ * Copyright 2024 Seol SO
+ * SPDX-License-Identifier: MIT
+ */
 
 type MoverMode = "NONE" | "MOVING" | "ZOOMING";
 
@@ -37,7 +40,7 @@ class Mover {
       this.removeIndicator();
     });
 
-    document.addEventListener("keydown", keyEvent => {
+    document.addEventListener("keydown", (keyEvent) => {
       if (keyEvent.key === "Alt") {
         this.currentMode = "MOVING";
         this.attachIndicator();
@@ -73,14 +76,14 @@ class Mover {
       this.adjustMovability(false);
     });
 
-    document.addEventListener("wheel", wheelEvent => {
+    document.addEventListener("wheel", (wheelEvent) => {
       if (this.currentMode === "ZOOMING") {
         this.zoomMainDOM(wheelEvent.deltaY);
         return;
       }
     });
 
-    document.addEventListener("mousemove", movingMouseEvent => {
+    document.addEventListener("mousemove", (movingMouseEvent) => {
       if (
         this.currentMode === "NONE" ||
         this.currentMode === "ZOOMING" ||
@@ -91,7 +94,7 @@ class Mover {
       if (this.currentMode === "MOVING") {
         this.moveMainDOM(
           movingMouseEvent.movementX,
-          movingMouseEvent.movementY
+          movingMouseEvent.movementY,
         );
         return;
       }

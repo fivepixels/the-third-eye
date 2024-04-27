@@ -1,3 +1,8 @@
+/**
+ * Copyright 2024 Seol SO
+ * SPDX-License-Identifier: MIT
+ */
+
 interface user {
   isCreated: boolean;
   neededHelpers: Helpers[];
@@ -14,7 +19,7 @@ export enum Helpers {
   COLOUR_ADJUSTER = "COLOUR_ADJUSTER",
   PAGE_ANALYZER = "PAGE_ANALYZER",
   IMAGE_ANALYZER = "IMAGE_ANALYZER",
-  TEXT_ANALYZER = "TEXT_ANALYZER"
+  TEXT_ANALYZER = "TEXT_ANALYZER",
 }
 
 export enum ColourDeficiency {
@@ -24,7 +29,7 @@ export enum ColourDeficiency {
   PROTANOMALY = "PROTANOMALY",
   DEUTERANOMALY = "DEUTERANOMALY",
   TRITANOMALY = "TRITANOMALY",
-  MONOCHROMACY = "MONOCHROMACY"
+  MONOCHROMACY = "MONOCHROMACY",
 }
 
 export interface AIPreference {

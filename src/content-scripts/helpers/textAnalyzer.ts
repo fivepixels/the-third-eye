@@ -1,10 +1,13 @@
-/* AI Helper: TEXT READER */
+/**
+ * Copyright 2024 Seol SO
+ * SPDX-License-Identifier: MIT
+ */
 
-import {
+import type {
   SendingTTSSpeakMessage,
   SendingTTSStopMessage,
-  SendingTextSummarizerMessage
-} from "@shapes/message";
+  SendingTextSummarizerMessage,
+} from "@type/message";
 import { sendCommandMessage } from "../utils/messenger";
 
 type TextReaderMode = "PLAIN" | "SUMMARIZED";
@@ -31,17 +34,17 @@ class TextAnalyzer {
   private findAllTags() {
     this.allTags = [];
 
-    document.body
-      .querySelectorAll(this.attachableTagsType)
-      .forEach(selectedNode => {
-        const currentNode = selectedNode as HTMLElement;
-        currentNode.style.backgroundColor = "transparent";
+    for (const currentElement of document.body.querySelectorAll(
+      this.attachableTagsType,
+    )) {
+      const currentNode = currentElement as HTMLElement;
+      currentNode.style.backgroundColor = "transparent";
 
-        this.allTags.push({
-          node: selectedNode,
-          selected: false
-        });
+      this.allTags.push({
+        node: currentNode,
+        selected: false,
       });
+    }
   }
 
   private attach() {
@@ -50,7 +53,7 @@ class TextAnalyzer {
      * Control - SUMMARIZED
      */
 
-    document.addEventListener("keydown", event => {
+    document.addEventListener("keydown", (event) => {
       if (event.key === "Shift") {
         this.currentMode = "PLAIN";
       } else if (event.key === "Control") {
@@ -61,25 +64,25 @@ class TextAnalyzer {
         sendCommandMessage<SendingTTSStopMessage>({
           messageBody: {
             type: "TTS_STOP",
-            body: {}
-          }
+            body: {},
+          },
         });
       } else {
         this.currentMode = "NONE";
       }
 
-      this.allTags.forEach(selectedElement => {
-        selectedElement.selected = false;
-        const currentNode = selectedElement.node as HTMLElement;
+      for (const currentElement of this.allTags) {
+        currentElement.selected = false;
+        const currentNode = currentElement.node as HTMLElement;
         currentNode.style.backgroundColor = "transparent";
-      });
+      }
 
       return;
     });
 
     this.allTags.forEach((selectedElement, index) => {
       const currentNode = selectedElement.node as HTMLElement;
-      currentNode.addEventListener("click", event => {
+      currentNode.addEventListener("click", (event) => {
         if (this.currentMode === "PLAIN" || this.currentMode === "SUMMARIZED")
           event.preventDefault();
 
@@ -92,14 +95,14 @@ class TextAnalyzer {
         this.allTags[index].selected = !isSelected;
       });
 
-      currentNode.addEventListener("mouseenter", event => {
+      currentNode.addEventListener("mouseenter", (event) => {
         if (!event.target) return;
 
         const currentTarget = event.target as HTMLElement;
         this.adjustBackgroundColorBasedOnMode(currentTarget);
       });
 
-      currentNode.addEventListener("mouseleave", event => {
+      currentNode.addEventListener("mouseleave", (event) => {
         if (!event.target) return;
 
         const currentTarget = event.target as HTMLElement;
@@ -122,25 +125,25 @@ class TextAnalyzer {
         messageBody: {
           type: "TTS",
           body: {
-            speak: allText
-          }
-        }
+            speak: allText,
+          },
+        },
       });
     } else {
       sendCommandMessage<SendingTextSummarizerMessage>({
         messageBody: {
           type: "TEXT_ANALYZER",
           body: {
-            text: allText
-          }
-        }
+            text: allText,
+          },
+        },
       });
     }
   }
 
   private adjustBackgroundColor(
     currentElement: HTMLElement,
-    to: "transparent" | "red" | "blue"
+    to: "transparent" | "red" | "blue",
   ) {
     currentElement.style.backgroundColor = to;
   }
@@ -152,19 +155,19 @@ class TextAnalyzer {
         ? "blue"
         : this.currentMode === "SUMMARIZED"
           ? "red"
-          : "transparent"
+          : "transparent",
     );
   }
 
   private generateText(): string {
     const allTagsInnerText: string[] = [];
 
-    this.allTags.forEach(currentElement => {
-      if (!currentElement.selected) return;
+    for (const currentElement of this.allTags) {
+      if (!currentElement.selected) continue;
 
       const currentNode = currentElement.node as HTMLElement;
       allTagsInnerText.push(currentNode.innerText);
-    });
+    }
 
     return allTagsInnerText.join("\n\n");
   }

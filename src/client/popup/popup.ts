@@ -1,14 +1,20 @@
+/**
+ * Copyright 2024 Seol SO
+ * SPDX-License-Identifier: MIT
+ */
+
 import {
   getResponseFromMessage,
-  sendCommandMessage
-} from "@src/core/cs/utils/messenger";
-import {
+  sendCommandMessage,
+} from "@cs/utils/messenger";
+import type {
   ExpectedRespondingFetchDataMessage,
   SendingChangeDataMessage,
   SendingFetchDataMessage,
-  SendingTTSSpeakMessage
-} from "@src/shapes/message";
-import user, { ColourDeficiency, Helpers } from "@src/shapes/user";
+  SendingTTSSpeakMessage,
+} from "@type/message";
+import type user from "@type/user";
+import { ColourDeficiency, Helpers } from "@type/user";
 
 async function popup() {
   const main = document.querySelector("main");
@@ -23,28 +29,28 @@ async function popup() {
     main,
     2,
     "Helpers",
-    "You can select multiple helpers that will be helping you."
+    "You can select multiple helpers that will be helping you.",
   );
 
   const preferenceLayout = addLayout(
     main,
     2,
     "Preferences",
-    "You can select preference options that will adjust values for helpers."
+    "You can select preference options that will adjust values for helpers.",
   );
 
   const colourDeficiencyLaouyt = addLayout(
     preferenceLayout,
     3,
     "Colour Deficiency",
-    "These options for the people who have Colour Blindness. You can choose one of these selections."
+    "These options for the people who have Colour Blindness. You can choose one of these selections.",
   );
 
   const aiLayout = addLayout(
     preferenceLayout,
     3,
     "AI Deficiency",
-    "These options for AI options that you can change AI's preferences as you want."
+    "These options for AI options that you can change AI's preferences as you want.",
   );
 
   const { userInfo } = await getResponseFromMessage<
@@ -52,13 +58,13 @@ async function popup() {
     ExpectedRespondingFetchDataMessage
   >({
     type: "FETCH_DATA",
-    body: {}
+    body: {},
   });
 
   const allHelpers: AddButtonReceive[] = [];
   const allPreferences: AddButtonReceive[] = [];
 
-  Object.keys(Helpers).map(currentKey => {
+  Object.keys(Helpers).map((currentKey) => {
     const currentHelper = Helpers[currentKey as keyof typeof Helpers];
 
     allHelpers.push({
@@ -78,15 +84,15 @@ async function popup() {
         }
 
         prevUser.neededHelpers = prevUser.neededHelpers.filter(
-          value => value !== currentId
+          (value) => value !== currentId,
         );
 
         return prevUser;
-      }
+      },
     });
   });
 
-  Object.keys(ColourDeficiency).map(currentKey => {
+  Object.keys(ColourDeficiency).map((currentKey) => {
     const currentDeficiency =
       ColourDeficiency[currentKey as keyof typeof ColourDeficiency];
 
@@ -104,7 +110,7 @@ async function popup() {
         prevUser.personalPreference.colourAdjuster.deficiency =
           currentDeficiency;
         return prevUser;
-      }
+      },
     });
   });
 
@@ -118,7 +124,7 @@ async function popup() {
       if (typeof changedTo !== "number") return prevUser;
       prevUser.personalPreference.ai.degree = changedTo;
       return prevUser;
-    }
+    },
   });
 
   allPreferences.push({
@@ -133,14 +139,14 @@ async function popup() {
       if (typeof changedTo !== "string") return prevUser;
       prevUser.personalPreference.ai.apiKey = changedTo;
       return prevUser;
-    }
+    },
   });
 
-  allHelpers.map(currentHelperUIOption => {
+  allHelpers.map((currentHelperUIOption) => {
     addButton(currentHelperUIOption);
   });
 
-  allPreferences.map(currentHelperUIOption => {
+  allPreferences.map((currentHelperUIOption) => {
     addButton(currentHelperUIOption);
   });
 }
@@ -149,7 +155,7 @@ function addLayout(
   parentLayout: HTMLElement,
   degree: number,
   title: string,
-  description: string
+  description: string,
 ): HTMLDivElement {
   const createdLayout = document.createElement("div");
   const createdTitle = document.createElement(`h${degree}`);
@@ -182,7 +188,7 @@ interface AddButtonReceive {
   onChanged: (
     prevUser: user,
     id: string,
-    changedTo: boolean | number | string
+    changedTo: boolean | number | string,
   ) => user;
 }
 
@@ -197,7 +203,7 @@ function addButton({
   title,
   defaultValue,
   uniqueAmong,
-  onChanged
+  onChanged,
 }: AddButtonReceive) {
   const createdParentDiv = document.createElement("div");
   const createdButton = document.createElement("input");
@@ -240,17 +246,17 @@ function addButton({
       ExpectedRespondingFetchDataMessage
     >({
       type: "FETCH_DATA",
-      body: {}
+      body: {},
     });
 
     if (uniqueAmong) {
       const allButtons = document.querySelectorAll("input");
 
-      const selectedButtons = Array.from(allButtons).filter(currentButton =>
-        uniqueAmong.includes(currentButton.id)
+      const selectedButtons = Array.from(allButtons).filter((currentButton) =>
+        uniqueAmong.includes(currentButton.id),
       );
 
-      selectedButtons.map(currentButton => {
+      selectedButtons.map((currentButton) => {
         currentButton.checked = false;
         createdButton.checked = true;
       });
@@ -263,16 +269,16 @@ function addButton({
         ? Number(createdButton.value)
         : typeof defaultButtonValue === "boolean"
           ? createdButton.checked
-          : createdButton.value
+          : createdButton.value,
     );
 
     sendCommandMessage<SendingChangeDataMessage>({
       messageBody: {
         type: "CHANGE_DATA",
         body: {
-          changedData: changedUserData
-        }
-      }
+          changedData: changedUserData,
+        },
+      },
     });
   });
 
@@ -290,7 +296,7 @@ function onError() {
     "There is an error with initializing the UI and UX. Please refresh the page.";
 
   console.error(
-    "There is an error with initializing the UI and UX. Please refresh the page."
+    "There is an error with initializing the UI and UX. Please refresh the page.",
   );
 
   const createdErrorMessage = document.createElement("p");
@@ -305,9 +311,9 @@ function onError() {
     messageBody: {
       type: "TTS",
       body: {
-        speak: errorMessage
-      }
-    }
+        speak: errorMessage,
+      },
+    },
   });
 
   return;

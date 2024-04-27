@@ -1,16 +1,21 @@
-import {
+/**
+ * Copyright 2024 Seol SO
+ * SPDX-License-Identifier: MIT
+ */
+
+import type {
   ExpectedRespondingFetchDataMessage,
   SendingChangeDataMessage,
   SendingFetchDataMessage,
-  SendingTTSSpeakMessage
-} from "@shapes/message";
-import { getResponseFromMessage, sendCommandMessage } from "./utils/messenger";
-import { Helpers } from "@src/shapes/user";
-import Mover from "./helpers/mover";
+  SendingTTSSpeakMessage,
+} from "@type/message";
+import { Helpers } from "@type/user";
 import ColourAdjuster from "./helpers/colourAdjuster";
-import PageAnalyzer from "./helpers/pageAnaylzer";
 import ImageAnalyzer from "./helpers/imageAnaylzer";
+import Mover from "./helpers/mover";
+import PageAnalyzer from "./helpers/pageAnaylzer";
 import TextAnalyzer from "./helpers/textAnalyzer";
+import { getResponseFromMessage, sendCommandMessage } from "./utils/messenger";
 
 async function initApp() {
   const { userInfo } = await getResponseFromMessage<
@@ -18,16 +23,16 @@ async function initApp() {
     ExpectedRespondingFetchDataMessage
   >({
     type: "FETCH_DATA",
-    body: {}
+    body: {},
   });
 
-  userInfo.neededHelpers.map(value => {
+  userInfo.neededHelpers.map((value) => {
     const actions: { [K in Helpers]: () => void } = {
       MOVER: () => new Mover(),
       COLOUR_ADJUSTER: () => new ColourAdjuster(),
       PAGE_ANALYZER: () => new PageAnalyzer(),
       IMAGE_ANALYZER: () => new ImageAnalyzer(),
-      TEXT_ANALYZER: () => new TextAnalyzer()
+      TEXT_ANALYZER: () => new TextAnalyzer(),
     };
 
     actions[value]();
@@ -42,32 +47,32 @@ interface ShortCut {
 const ShortCuts: ShortCut[] = [
   {
     key: "m",
-    togglingHelper: Helpers.MOVER
+    togglingHelper: Helpers.MOVER,
   },
   {
     key: "c",
-    togglingHelper: Helpers.COLOUR_ADJUSTER
+    togglingHelper: Helpers.COLOUR_ADJUSTER,
   },
   {
     key: "t",
-    togglingHelper: Helpers.TEXT_ANALYZER
+    togglingHelper: Helpers.TEXT_ANALYZER,
   },
   {
     key: "i",
-    togglingHelper: Helpers.IMAGE_ANALYZER
+    togglingHelper: Helpers.IMAGE_ANALYZER,
   },
   {
     key: "p",
-    togglingHelper: Helpers.PAGE_ANALYZER
+    togglingHelper: Helpers.PAGE_ANALYZER,
   },
   {
     key: "ArrowUp",
-    togglingHelper: "degree"
+    togglingHelper: "degree",
   },
   {
     key: "ArrowDown",
-    togglingHelper: "degree"
-  }
+    togglingHelper: "degree",
+  },
 ];
 
 export async function attachShortcuts() {
@@ -76,14 +81,14 @@ export async function attachShortcuts() {
     ExpectedRespondingFetchDataMessage
   >({
     type: "FETCH_DATA",
-    body: {}
+    body: {},
   });
 
-  document.addEventListener("keydown", event => {
+  document.addEventListener("keydown", (event) => {
     const pressedKey = event.key;
 
     const foundShortCut = ShortCuts.find(
-      currentShortCut => currentShortCut.key === pressedKey
+      (currentShortCut) => currentShortCut.key === pressedKey,
     );
 
     if (!foundShortCut) return;
@@ -104,7 +109,7 @@ export async function attachShortcuts() {
       }
     } else {
       const indexOfFoundHelper = userInfo.neededHelpers.indexOf(
-        foundShortCut.togglingHelper
+        foundShortCut.togglingHelper,
       );
 
       if (indexOfFoundHelper === -1) {
@@ -120,8 +125,8 @@ export async function attachShortcuts() {
       messageBody: {
         type: "CHANGE_DATA",
         body: {
-          changedData: userInfo
-        }
+          changedData: userInfo,
+        },
       },
       onMessageReceive() {
         sendCommandMessage<SendingTTSSpeakMessage>({
@@ -130,12 +135,16 @@ export async function attachShortcuts() {
             body: {
               speak:
                 foundShortCut.togglingHelper === "degree"
-                  ? `The degree value has ${event.key === "ArrowUp" ? "increased" : "decreased"} to ${userInfo.personalPreference.ai.degree}`
-                  : `The helper ${foundShortCut.togglingHelper} has ${enabled ? "enabled" : "disabled"}`
-            }
-          }
+                  ? `The degree value has ${
+                      event.key === "ArrowUp" ? "increased" : "decreased"
+                    } to ${userInfo.personalPreference.ai.degree}`
+                  : `The helper ${foundShortCut.togglingHelper} has ${
+                      enabled ? "enabled" : "disabled"
+                    }`,
+            },
+          },
         });
-      }
+      },
     });
   });
 }

@@ -51,7 +51,7 @@
   },
   "nodemonConfig": {
     "exec": "bun run build",
-    "watch": "src",
+    "watch": "src,types",
     "ext": "ts,html"
   }
 }

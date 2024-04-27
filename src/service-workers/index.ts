@@ -1,17 +1,23 @@
-import {
+/**
+ * Copyright 2024 Seol SO
+ * SPDX-License-Identifier: MIT
+ */
+
+import type {
   ExpectedRespondingFetchDataMessage,
   RespondingMessageMainFunction,
   SendingChangeDataMessage,
   SendingFetchDataMessage,
   SendingImageAnalyzerMessage,
+  SendingPageAnalyzerMessage,
   SendingTTSSpeakMessage,
   SendingTTSStopMessage,
   SendingTextSummarizerMessage,
-  SendingPageAnalyzerMessage
-} from "@shapes/message";
-import user, { ColourDeficiency } from "@shapes/user";
-import AttachListener from "./messenge";
+} from "@type/message";
+import type user from "@type/user";
+import { ColourDeficiency } from "@type/user";
 import { analyzeImage, analyzePage, analyzeText } from "./ai";
+import AttachListener from "./message";
 
 const fetchDataCallback: RespondingMessageMainFunction<
   SendingFetchDataMessage,
@@ -20,33 +26,31 @@ const fetchDataCallback: RespondingMessageMainFunction<
   const userInfo = (await chrome.storage.sync.get()) as user;
 
   return {
-    userInfo
+    userInfo,
   };
 };
 
 const changeDataCallback: RespondingMessageMainFunction<
   SendingChangeDataMessage
-> = async message => {
+> = async (message) => {
   await chrome.storage.sync.set(message.body.changedData);
 
   return;
 };
 
-const ttsCallback: RespondingMessageMainFunction<
-  SendingTTSSpeakMessage
-> = async message => {
-  chrome.tts.speak(message.body.speak);
+const ttsCallback: RespondingMessageMainFunction<SendingTTSSpeakMessage> =
+  async (message) => {
+    chrome.tts.speak(message.body.speak);
 
-  return;
-};
+    return;
+  };
 
-const ttsStopCallback: RespondingMessageMainFunction<
-  SendingTTSStopMessage
-> = async () => {
-  chrome.tts.stop();
+const ttsStopCallback: RespondingMessageMainFunction<SendingTTSStopMessage> =
+  async () => {
+    chrome.tts.stop();
 
-  return;
-};
+    return;
+  };
 
 const pageAnalyzerCallback: RespondingMessageMainFunction<
   SendingPageAnalyzerMessage
@@ -90,13 +94,13 @@ const initializeServiceWorker = async (): Promise<void> => {
       neededHelpers: [],
       personalPreference: {
         colourAdjuster: {
-          deficiency: ColourDeficiency.MONOCHROMACY
+          deficiency: ColourDeficiency.MONOCHROMACY,
         },
         ai: {
           apiKey: "",
-          degree: 3
-        }
-      }
+          degree: 3,
+        },
+      },
     } as user);
   }
 
@@ -106,21 +110,21 @@ const initializeServiceWorker = async (): Promise<void> => {
 initializeServiceWorker();
 
 chrome.runtime.onMessage.addListener(
-  AttachListener("FETCH_DATA", fetchDataCallback)
+  AttachListener("FETCH_DATA", fetchDataCallback),
 );
 chrome.runtime.onMessage.addListener(
-  AttachListener("CHANGE_DATA", changeDataCallback)
+  AttachListener("CHANGE_DATA", changeDataCallback),
 );
 chrome.runtime.onMessage.addListener(AttachListener("TTS", ttsCallback));
 chrome.runtime.onMessage.addListener(
-  AttachListener("TTS_STOP", ttsStopCallback)
+  AttachListener("TTS_STOP", ttsStopCallback),
 );
 chrome.runtime.onMessage.addListener(
-  AttachListener("PAGE_ANALYZER", pageAnalyzerCallback)
+  AttachListener("PAGE_ANALYZER", pageAnalyzerCallback),
 );
 chrome.runtime.onMessage.addListener(
-  AttachListener("IMAGE_ANALYZER", ImageAnalyzerCallback)
+  AttachListener("IMAGE_ANALYZER", ImageAnalyzerCallback),
 );
 chrome.runtime.onMessage.addListener(
-  AttachListener("TEXT_ANALYZER", textSummarizerCallback)
+  AttachListener("TEXT_ANALYZER", textSummarizerCallback),
 );
