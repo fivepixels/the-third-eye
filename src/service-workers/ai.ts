@@ -87,16 +87,14 @@ export async function analyzePage(
     messages: [
       {
         role: "system",
-        content:
-          'You are the assistant for Blind People exploring websites in a Google Chrome Extension called "The Third Eye." Your name is Bob for now. Your main job is to generate a script for blind people to understand the website based on the analyzed serialized JSON object provided as a string. The JSON object will introduce you to the metadata, which is additional information about the page, and the main page data, which includes all Inner Text of the page, all headings, links and images.',
+        content: generateUserScript(
+          degree,
+          "an analyzed serialized JSON object provided as a string. The JSON object will introduce you to the metadata, which is additional information about the page, and the main page data, which includes all Inner Text of the page, all headings, links and images.",
+        ),
       },
       {
         role: "user",
         content: [
-          {
-            type: "text",
-            text: generateUserScript(degree),
-          },
           {
             type: "text",
             text: `This is the metadata: ${JSON.stringify(
@@ -145,16 +143,11 @@ export async function analyzeImage(selectedImageURL: string): Promise<string> {
     messages: [
       {
         role: "system",
-        content:
-          'You are the assistant for Blind People exploring websites in a Google Chrome Extension called  "The Third Eye." Your name is Bob for now. Your main job is to generate a script for blind people to understand a provided image. TTS will speak the script in Google Chrome Extension.',
+        content: generateUserScript(degree, "an image url to analyze"),
       },
       {
         role: "user",
         content: [
-          {
-            type: "text",
-            text: generateUserScript(degree),
-          },
           {
             type: "image_url",
             image_url: {
@@ -180,16 +173,11 @@ export async function analyzeText(selectedText: string): Promise<string> {
     messages: [
       {
         role: "system",
-        content:
-          'You are the assistant for Blind People exploring websites in a Google Chrome Extension called  "The Third Eye." Your name is Bob for now. Your main job is to summarize the provided text and generate a script for blind people to understand a provided text. TTS will speak the script in Google Chrome Extension.',
+        content: generateUserScript(degree, "a groupe of texts"),
       },
       {
         role: "user",
         content: [
-          {
-            type: "text",
-            text: generateUserScript(degree),
-          },
           {
             type: "text",
             text: selectedText,
@@ -202,15 +190,15 @@ export async function analyzeText(selectedText: string): Promise<string> {
   return script;
 }
 
-function generateUserScript(degree: number): string {
+function generateUserScript(degree: number, after: string): string {
   const adjective =
     degree === 1
-      ? "simple and consice"
+      ? "very simple and consice"
       : degree === 2
         ? "normal"
         : "long fully descriptive";
 
-  return `Generate a ${adjective} script for blind people. Print ONLY SCRIPT please.`;
+  return `You are the assistant in a Google Chrome Extension called "The Third Eye," for Visually Impaired People exploring websites. Your main job is to generate a ${adjective} script for visually imparied people to understand the website based on the provided information. The script that you generate will then be spoken by TTS in Google Chrome Extension. For now, you will get ${after}. Like I mentioned, you have to make a ${adjective} script for blind people. Print ONLY SCRIPT please. GO.`;
 }
 
 function getTemperature(degree: number): number {
