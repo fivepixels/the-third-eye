@@ -15,7 +15,7 @@ import ImageAnalyzer from "./helpers/imageAnaylzer";
 import Mover from "./helpers/mover";
 import PageAnalyzer from "./helpers/pageAnaylzer";
 import TextAnalyzer from "./helpers/textAnalyzer";
-import { getResponseFromMessage, sendCommandMessage } from "./utils/messenger";
+import { getResponseFromMessage, sendCommandMessage } from "./messenger";
 
 async function initApp() {
   const { userInfo } = await getResponseFromMessage<

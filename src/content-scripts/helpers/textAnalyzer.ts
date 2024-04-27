@@ -8,7 +8,7 @@ import type {
   SendingTTSStopMessage,
   SendingTextSummarizerMessage,
 } from "@type/message";
-import { sendCommandMessage } from "../utils/messenger";
+import { sendCommandMessage } from "../messenger";
 
 type TextReaderMode = "PLAIN" | "SUMMARIZED";
 class TextAnalyzer {

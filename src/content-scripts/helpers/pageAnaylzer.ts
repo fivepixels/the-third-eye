@@ -7,7 +7,7 @@ import type {
   SendingPageAnalyzerMessage,
   SendingTTSStopMessage,
 } from "@type/message";
-import { sendCommandMessage } from "../utils/messenger";
+import { sendCommandMessage } from "../messenger";
 
 export interface ExtractedWebPageContent {
   metadata: PageMetaData;

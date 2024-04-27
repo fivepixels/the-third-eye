@@ -3,10 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import {
-  getResponseFromMessage,
-  sendCommandMessage,
-} from "@cs/utils/messenger";
+import { getResponseFromMessage, sendCommandMessage } from "@cs/messenger";
 import type {
   ExpectedRespondingFetchDataMessage,
   SendingChangeDataMessage,

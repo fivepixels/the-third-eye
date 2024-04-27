@@ -7,7 +7,7 @@ import type {
   SendingImageAnalyzerMessage,
   SendingTTSStopMessage,
 } from "@type/message";
-import { sendCommandMessage } from "../utils/messenger";
+import { sendCommandMessage } from "../messenger";
 
 class ImageAnalyzer {
   private selectMode: boolean;

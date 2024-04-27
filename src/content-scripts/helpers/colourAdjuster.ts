@@ -9,7 +9,7 @@ import type {
   SendingTTSSpeakMessage,
 } from "@type/message";
 import type { ColourDeficiency } from "@type/user";
-import { getResponseFromMessage, sendCommandMessage } from "../utils/messenger";
+import { getResponseFromMessage, sendCommandMessage } from "../messenger";
 
 type CSSFilters = {
   [K in keyof typeof ColourDeficiency]: string;
