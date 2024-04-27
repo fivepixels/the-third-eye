@@ -1,8 +1,0 @@
-node_modules
-dist
-
-.eslintignore
-.eslintrc.json
-.prettierignore
-.prettierrc.json
-.gitignore
