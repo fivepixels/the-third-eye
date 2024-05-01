@@ -1,7 +1,7 @@
 {
   "name": "the-third-eye",
   "description": "The New Approach for Visually Impaired People to Navigate Websites and Mobile Applications.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./dist/index.js",
   "private": true,
   "license": "MIT",
@@ -10,7 +10,9 @@
     "chrome",
     "extension",
     "openai",
-    "disabled people"
+    "visually imapried",
+    "blind",
+    "accessbility"
   ],
   "author": {
     "name": "Seol SO",
@@ -31,22 +33,17 @@
   },
   "scripts": {
     "publish": "bun run build && bun run zip",
-    "build": "bun run build.ts && cp -R ./images ./dist/images ",
+    "build": "bun run build.ts",
     "zip": "rm tte.zip && zip tte.zip ./dist/*",
     "dev": "nodemon",
-    "format": "bunx prettier --write . && bunx eslint --fix ."
+    "check": "bunx @biomejs/biome check --apply src"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/chrome": "^0.0.262",
     "@types/glob": "^8.1.0",
     "@types/node": "^20.11.19",
-    "@typescript-eslint/eslint-plugin": "^7.3.0",
-    "@typescript-eslint/parser": "^7.3.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
     "nodemon": "^3.1.0",
-    "prettier": "^3.2.5",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
@@ -56,7 +53,7 @@
   },
   "nodemonConfig": {
     "exec": "bun run build",
-    "watch": "src",
+    "watch": "src,types",
     "ext": "ts,html"
   }
 }

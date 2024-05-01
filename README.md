@@ -23,3 +23,7 @@ If you want to contribute to this project, click [here](./docs/CONTRIBUTING.md) 
 ### HOW IT WORKS
 
 If you want to know about how things are working together in this project, click [here](./docs/HOW.md) to check everything you need to know about it.
+
+### License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

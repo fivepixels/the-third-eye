@@ -1,5 +1,5 @@
 {
-  "include": ["./src/**/*.ts", "src/core/sw/messageManager."],
+  "include": ["src", "types"],
   "compilerOptions": {
     "lib": ["ES6", "DOM", "ES2016", "DOM.Iterable", "ScriptHost"],
     "allowSyntheticDefaultImports": true,
@@ -15,10 +15,9 @@
     "skipLibCheck": true,
     "paths": {
       "@src/*": ["./src/*"],
-      "@core/*": ["./src/core/*"],
-      "@cs/*": ["./src/core/cs/*"],
-      "@sw/*": ["./src/core/sw/*"],
-      "@shapes/*": ["./src/shapes/*"]
+      "@cs/*": ["./src/content-scripts/*"],
+      "@sw/*": ["./src/service-workers/*"],
+      "@type/*": ["./types/*"]
     },
     "noImplicitAny": false
   }

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "version": "0.0.2",
+  "version": "0.0.1",
   "name": "The Third Eye",
-  "description": "The New Approach for Visually Impaired People to Navigate Websites and Mobile Applications.",
+  "description": "The New Approach for Blind People to Navigate Websites and Mobile Applications.",
   "permissions": ["storage", "tts"],
   "author": "Seol SO",
   "homepage_url": "https://github.com/fivepixels/the-third-eye",
