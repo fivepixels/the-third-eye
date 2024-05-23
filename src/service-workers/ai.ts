@@ -1,6 +1,7 @@
 /**
  * Copyright 2024 Seol SO
  * SPDX-License-Identifier: MIT
+ * Service Workers - AI
  */
 
 import type { ExtractedWebPageContent } from "@cs/helpers/pageAnaylzer";

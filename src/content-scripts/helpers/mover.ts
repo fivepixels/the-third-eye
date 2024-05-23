@@ -1,6 +1,7 @@
 /**
  * Copyright 2024 Seol SO
  * SPDX-License-Identifier: MIT
+ * Helper - Mover
  */
 
 type MoverMode = "NONE" | "MOVING" | "ZOOMING";

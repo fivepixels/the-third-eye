@@ -1,6 +1,7 @@
 /**
  * Copyright 2024 Seol SO
  * SPDX-License-Identifier: MIT
+ * Helper - Colour Adjuster
  */
 
 import type {

@@ -1,6 +1,7 @@
 /**
  * Copyright 2024 Seol SO
  * SPDX-License-Identifier: MIT
+ * Service Workers - Message
  */
 
 import type {
