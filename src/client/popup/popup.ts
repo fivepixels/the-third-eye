@@ -47,7 +47,7 @@ async function popup() {
   const aiLayout = addLayout(
     preferenceLayout,
     3,
-    "AI Deficiency",
+    "AI Settings",
     "These options for AI options that you can change AI's preferences as you want.",
   );
 
@@ -293,9 +293,7 @@ function onError() {
   const errorMessage =
     "There is an error with initializing the UI and UX. Please refresh the page.";
 
-  console.error(
-    "There is an error with initializing the UI and UX. Please refresh the page.",
-  );
+  console.error(errorMessage);
 
   const createdErrorMessage = document.createElement("p");
 

@@ -197,7 +197,7 @@ var pageAnalyzerCallback = async ({ body: { pageData } }) => {
   return;
 };
 var ImageAnalyzerCallback = async ({ body: { imageUrl } }) => {
-  chrome.tts.speak("Wait a second, we are analyzing the current text");
+  chrome.tts.speak("Wait a second, we are analyzing the current image");
   const script = await analyzeImage(imageUrl);
   chrome.tts.stop();
   chrome.tts.speak(script);

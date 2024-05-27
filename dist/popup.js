@@ -40,7 +40,7 @@ async function popup() {
   const helpersLayout = addLayout(main, 2, "Helpers", "You can select multiple helpers that will be helping you.");
   const preferenceLayout = addLayout(main, 2, "Preferences", "You can select preference options that will adjust values for helpers.");
   const colourDeficiencyLaouyt = addLayout(preferenceLayout, 3, "Colour Deficiency", "These options for the people who have Colour Blindness. You can choose one of these selections.");
-  const aiLayout = addLayout(preferenceLayout, 3, "AI Deficiency", "These options for AI options that you can change AI's preferences as you want.");
+  const aiLayout = addLayout(preferenceLayout, 3, "AI Settings", "These options for AI options that you can change AI's preferences as you want.");
   const { userInfo } = await getResponseFromMessage({
     type: "FETCH_DATA",
     body: {}
@@ -199,7 +199,7 @@ var addButton = function({
 };
 var onError = function() {
   const errorMessage = "There is an error with initializing the UI and UX. Please refresh the page.";
-  console.error("There is an error with initializing the UI and UX. Please refresh the page.");
+  console.error(errorMessage);
   const createdErrorMessage = document.createElement("p");
   createdErrorMessage.innerText = errorMessage;
   createdErrorMessage.style.color = "red";
