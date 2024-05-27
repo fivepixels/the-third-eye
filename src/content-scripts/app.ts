@@ -86,6 +86,17 @@ export async function attachShortcuts() {
   });
 
   document.addEventListener("keydown", (event) => {
+    if (!document.activeElement) return;
+
+    const activeTagName = document.activeElement.tagName;
+
+    if (
+      activeTagName.toLowerCase() === "input" ||
+      activeTagName.toLowerCase() === "textarea"
+    ) {
+      return;
+    }
+
     const pressedKey = event.key;
 
     const foundShortCut = ShortCuts.find(
